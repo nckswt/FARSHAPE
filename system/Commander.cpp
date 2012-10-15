@@ -1,4 +1,5 @@
 #include "Commander.h"
+#include <fstream>
 
 sensor_msgs::JointState Rx;
 sensor_msgs::JointState Tx;
@@ -267,8 +268,20 @@ void Commander::readCommunications()
 int main(int argc, char **argv)
 {
 	//<>TODO implement init.tab to restart if necessary
+
+	std::ifstream namefile;
+	std::string robot_name;
+	namefile.open("/etc/hostname");
+	if (namefile.is_open())
+		getline(namefile,robot_name);
+	namefile.close();
+	//<>STUB
+	std::cout << "Robot name is: " << robot_name << std::endl;
+
+
 	Position initial_position{0,0,0,0};
-	Commander* commander = new Commander(initial_position, "Ash", argc, argv); //get name from file.
+
+	Commander* commander = new Commander(initial_position, robot_name, argc, argv); //get name from file.
 
 	//Initial setup of comms & create thread to update variables based on ROS messages
 	commander->setupComms();

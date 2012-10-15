@@ -9,7 +9,7 @@
 #include "FSObject.h"
 #include <math.h>
 #include "Helm.h"
-#include "../sensing/camera/Camera.h"
+#include "../sensing/camera/camera.h"
 
 
 class Commander : public FSObject{
