@@ -4,17 +4,16 @@
 #include <stdint.h>
 #include "../location/Encoder.h"
 #include "../mobility/Motor.h"
-#include "../location/includes.h"
 
 struct robot {
   int id; // is an enum
-  xyz location;
+  Position location;
   int status; // is an enum
 };
 
 struct part {
   int type; // is an enum
-  xyz location;
+  Position location;
   part* next;
 };
 
@@ -28,7 +27,7 @@ private:
   
   float rotation; // rotation in degrees from y axis. 
   
-  xyz current_position;
+  Position current_position;
   robot robots[3];
   part* parts;
   
@@ -42,7 +41,7 @@ private:
   
   
 public:
-  void goTo( xyz location ); // unused for now
+  void goTo( Position location ); // unused for now
   void goDistance( float distance );
   void rotate( float theta );
   void goForward( int speed );
@@ -51,7 +50,7 @@ public:
   void stop();
   Helm();
   ~Helm();
-  xyz getLocation();
+  Position getLocation();
   float getRotation();
   
 };
