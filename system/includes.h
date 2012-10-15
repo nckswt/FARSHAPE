@@ -20,6 +20,7 @@
 	enum RobotMode {NO_MODE, EXPLORER_MODE, BUILDER_MODE, INSPECTOR_MODE};
 
 	const float kSearchRadius = 2.0; //(2 meters)
+	const float kMaxIRRange = 30.0; //30cms 
 
 
 

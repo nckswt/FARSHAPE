@@ -18,7 +18,6 @@ private:
 	int priority; //this specific robot's position in the robot hierarchy
 	bool is_master;
 	int number_of_robots; //max of 3 robots. less if one deactivates.
-	RobotMode mode; //current mode (none, explorer, builder or inspector)
 	Structure* structure;
 	Helm* helm;
 	Camera* camera;
@@ -35,7 +34,10 @@ private:
 
 
 public:
-Commander(Position initial_position, std::string robot_name,int argc, char **argv);
+  RobotMode mode; //current mode (none, explorer, builder or inspector)
+  bool structure_is_complete;
+
+  Commander(Position initial_position, std::string robot_name,int argc, char **argv);
   
   void setupComms(); //initialize communications
   void communicate(std::string,float,float,float); //send & receive messages

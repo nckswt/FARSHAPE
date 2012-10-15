@@ -15,8 +15,6 @@
 #define DEFAULT_SPI_CHANNEL 0
 #define IR_CALIBRATION_FILE "calibration.txt"
 
-using namespace std; // GET RID OF THIS!
-
 class IRsensor
 {
 public:
@@ -34,7 +32,7 @@ private:
   ADC_SPI* adc;
   double IRDistanceMap[141][2];
   int adcChannel;
-  string calibrationDataFile;
+  std::string calibrationDataFile;
   double value;
 
 };

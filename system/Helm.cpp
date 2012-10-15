@@ -10,14 +10,20 @@
 
 #define MOTOR_SPEED 80
 #define MOTOR_PAUSE 200000
+#define LEFT_ADC_CHANNEL 0 //<>CHECK
+#define RIGHT_ADC_CHANNEL 1 //<>CHECK
+
 
 // pthread_t updater;
 
 Helm::Helm() {
   
   left_encoder = Encoder ( ENCODER1_ADDRESS, false, false );
-  right_encoder = Encoder ( ENCODER2_ADDRESS, true,  true  );
-  
+  right_encoder = Encoder ( ENCODER2_ADDRESS, true,  true );
+
+  left_IR = IRsensor(LEFT_ADC_CHANNEL);
+  right_IR = IRsensor(RIGHT_ADC_CHANNEL);
+
   left_motor = Motor ( LEFT_MOTOR_PIN,  LEFT_MOTOR_REVERSED,  "/dev/servoblaster" );
   right_motor = Motor ( RIGHT_MOTOR_PIN, RIGHT_MOTOR_REVERSED, "/dev/servoblaster" );
   
@@ -167,6 +173,14 @@ void Helm::rotate( float theta ) {
   updateRotation( theta );
   // glitch compensator
   usleep(MOTOR_PAUSE);
+}
+
+float Helm::rightRange(){
+  return right_IR.getDistance();
+}
+
+float Helm::leftRange(){
+  return left_IR.getDistance();
 }
 
 void Helm::_readEncoders() {

@@ -81,7 +81,7 @@ void Commander::explore()
 {
 	//<>TODO: change target to an FSObject
 	float angle = 0;//Returned from encoders, in Radians
-	float range = 0; //Returned from IR sensors
+	float left_range, right_range, center_range; //Returned from IR sensors
 	int detected_object = 0; //Returns either a beam or a column
 	int checkpoints = 0; //search algorithm has 4 points
 	angle = helm->getRotation(); //Must be in radians
@@ -91,40 +91,57 @@ void Commander::explore()
 	target_position.x = position.x + kSearchRadius*cos(angle - (M_PI/6));
 	target_position.y = position.y + kSearchRadius*sin(angle - (M_PI/6));
 
-	while(checkpoints < 4)
-	{
+	while(checkpoints < 4){
+		//See if object is in view
 		detected_object = camera.detectObject(); // 0 for nothing, 1 for Beam, 2 for Column
-		if (detected_object != 0)
-		{
-			//Get -> left or right from camera to guide in, then send to motors
-			range = range_IR();
-			if (sensorIR->range_IR() < max_range_IR)
-			{
-				//Check to see if robot is in the way?
-				//First check locPieces to see if theres an object with a very similar position
-				use_Comms("Add Piece",position.x + range*cos(angle),position.y + range*sin(angle),detected_object);//z will be used to send if its a beam or a column
 
-				piece_locations.push_back(new FSObject(position.x + range*cos(angle),position.y + range*sin(angle),0,detected_object));
-				//Send this to other robots
-				//Make sure robot will now turn around and continue instead of constantly detecting the same bar!
+		//if object is detected
+		if (detected_object != 0){
+
+			//see if object is within range
+			left_range = helm->leftRange();
+			right_range = helm->rightRange();
+
+			//<>TODO: find center of object;
+			//<>STUB: currently just taking the average
+			center_range = (left_range + right_range)/2;
+
+			if (left_range < kMaxIRRange || right_range < kMaxIRRange){
+
+				//<>TODO:Check to see if robot is in the way
+
+				//<>TODO check if found object has already been found
+
+				//send position of found object to other robots
+				communicate("Add Piece",position.x + center_range*cos(angle),position.y + center_range*sin(angle),detected_object);
+
+				//<>TODO:add object to local piece list
+				//piece_locations.push_back(new FSObject(position.x + center_range*cos(center_range),position.y + center_range*sin(center_range),0,detected_object));
+				
+				//<>TODO: Coordinate piece_locations with other robots
+				
+				//<>TODO: Make sure robot will now turn around and continue instead of constantly detecting the same bar!
+			
+			} else if (1/*Make sure the robot stays within its own search zone*/) {
+				//<>TODO: If bar is in another search zone, check with the other robots to see if they have found it already,
+
+				//<>TODO: if not, add it
+				
+				//<>TODO: Head towards the piece based on camera
 			}
-			else if (1/*Make sure the robot stays within its own search zone*/)
-			{
-				//If bar is in another search zone, check with the other robots to see if they have found it already,
-				//if not, then its okay to add
-				//Allow camera to guide towards the piece
-			}
-		}
-		else
-		{
-			//Go towards target
-			if (checkpoints == 3)
-			{
-				//go to center of search area
-			}
-			else if (position.x == target_x /*within some sort of error*/ && position.y == target_y)
-			{
-				//rotate 60 degrees, range = radius
+
+		} else { //if no object is detected
+			
+			//<>TODO: Go towards target position
+			
+			if (checkpoints == 3){
+			
+				//<>TODO: go to center of search area
+			
+			} else if (fabs(target_position.y - position.y) < 1 && fabs(position.x - target_position.x) < 1){ //close to target
+
+				//<>TODO: rotate 60 degrees, range = radius
+				
 				checkpoints++;
 			}
 		}
@@ -254,26 +271,26 @@ int main(int argc, char **argv)
 	Commander* commander = new Commander(initial_position, "Ash", argc, argv); //get name from file.
 
 	//Initial setup of comms & create thread to update variables based on ROS messages
-	commander.setupComms();
+	commander->setupComms();
 
 	std::cout << "well at least we got this far" << std::endl;
 
-	while (!structure_is_complete){
-		commander.checkVitals();
+	while (!commander->structure_is_complete){
+		commander->checkVitals();
 		switch(commander->mode){
 			case NO_MODE:
 				commander->mode = EXPLORER_MODE;
 				break;
 			case EXPLORER_MODE:
-				commander.explore();
+				commander->explore();
 				commander->mode = BUILDER_MODE;
 				break;
 			case BUILDER_MODE:
-				commander.build();
+				commander->build();
 				commander->mode = INSPECTOR_MODE;
 				break;
 			case INSPECTOR_MODE:
-				commander.inspect();
+				commander->inspect();
 				commander->mode = EXPLORER_MODE;
 				break;
 		}
@@ -282,4 +299,3 @@ int main(int argc, char **argv)
 	system("PAUSE");//Only for testing purposes, take out before use
 	return 0;
 }
-*/

@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include "../location/Encoder.h"
 #include "../mobility/Motor.h"
+#include "../location/IRsensor.h"
 
 struct robot {
   int id; // is an enum
@@ -24,6 +25,8 @@ private:
   Encoder right_encoder;
   Motor left_motor;
   Motor right_motor;
+  IRsensor left_IR;
+  IRsensor right_IR;
   
   float rotation; // rotation in degrees from y axis. 
   
@@ -47,6 +50,8 @@ public:
   void goForward( int speed );
   void rotateLeft( int speed );
   void rotateRight( int speed );
+  float rightRange();
+  float leftRange();
   void stop();
   Helm();
   ~Helm();
