@@ -122,6 +122,9 @@ void Commander::explore()
 				
 				//<>TODO: Coordinate piece_locations with other robots
 				
+				helm->lineUp();
+
+
 				//<>TODO: Make sure robot will now turn around and continue instead of constantly detecting the same bar!
 			
 			} else if (1/*Make sure the robot stays within its own search zone*/) {
@@ -135,6 +138,7 @@ void Commander::explore()
 		} else { //if no object is detected
 			
 			//<>TODO: Go towards target position
+
 			
 			if (checkpoints == 3){
 			
@@ -289,9 +293,7 @@ int main(int argc, char **argv)
 	//<>STUB
 	std::cout << "Robot name is: " << robot_name << std::endl;
 
-
 	Position initial_position{0,0,0,0};
-
 	Commander* commander = new Commander(initial_position, robot_name, argc, argv); //get name from file.
 
 	//Initial setup of comms & create thread to update variables based on ROS messages

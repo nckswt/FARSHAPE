@@ -46,8 +46,8 @@ private:
   
 public:
   void goTo( Position location ); // unused for now
-  void goDistance( float distance );
-  void rotate( float theta );
+  void goDistance( float distance ); //in cm
+  void rotate( float theta ); //in degrees
   void goForward( int speed );
   void rotateLeft( int speed );
   void rotateRight( int speed );
@@ -58,6 +58,7 @@ public:
   ~Helm();
   Position getLocation();
   float getRotation();
+  void lineUp();
   
 };
 #endif

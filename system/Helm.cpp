@@ -10,8 +10,9 @@
 
 #define MOTOR_SPEED 80
 #define MOTOR_PAUSE 200000
-#define LEFT_IR_SENSOR 0
-#define RIGHT_IR_SENSOR 1
+const int kLeftADCChannel = 0; //<>CHECK
+const int kRightADCChannel = 1; //<>CHECK
+
 
 // pthread_t updater;
 
@@ -20,10 +21,8 @@ Helm::Helm() {
   left_encoder = Encoder ( ENCODER1_ADDRESS, false, false );
   right_encoder = Encoder ( ENCODER2_ADDRESS, true,  true );
 
-  // left_IR = IRsensor(LEFT_IR_SENSOR);
-  // right_IR = IRsensor(RIGHT_IR_SENSOR);
-
-  std::cout << LEFT_IR_SENSOR << std::endl;
+  left_IR = IRsensor(kLeftADCChannel);
+  right_IR = IRsensor(kRightADCChannel);
 
   left_motor = Motor ( LEFT_MOTOR_PIN,  LEFT_MOTOR_REVERSED,  "/dev/servoblaster" );
   right_motor = Motor ( RIGHT_MOTOR_PIN, RIGHT_MOTOR_REVERSED, "/dev/servoblaster" );
@@ -281,4 +280,52 @@ Helm::~Helm() {
 
 //   pthread_join( updater );
   
+}
+
+
+/*
+*
+*
+*
+*/
+
+void Helm::lineUp(){
+  float left_range, right_range, center_range; //Returned from IR sensors
+  float precision = 3; //cm
+  float range_diff;
+
+  while(1){
+    //update IR readings
+    left_range = leftRange();
+    right_range = rightRange();
+    range_diff = left_range - right_range;
+
+
+    if (abs(left_range - right_range) < precision){
+      //properly lined up
+      return;//<>TODO: find a better way out
+    } else if ((left_range < kMaxIRRange) && (right_range >= kMaxIRRange)){
+      rotate(-90);
+      goDistance(5); //<>TODO: change this for an actual distance
+      rotate(90);
+    } else if ((left_range >= kMaxIRRange) && (right_range < kMaxIRRange)){
+      rotate(90);
+      goDistance(5); //<>TODO: change this for an actual distance
+      rotate(-90);
+    } else if ((left_range > kMaxIRRange) && (right_range > kMaxIRRange)){
+      return; //<>TODO: find a better way out of this
+    } else {
+          rotate(5); //<>TODO: find a better number
+          left_range = leftRange();
+          right_range = rightRange();
+          if (range_diff > (left_range - right_range)){
+            if (abs(range_diff) < precision)
+              break;
+            rotate(5); //<>TODO: find a better number
+          } else {
+            rotate(-10); //<>TODO: find a better number
+          }
+    }
+    
+  }
 }

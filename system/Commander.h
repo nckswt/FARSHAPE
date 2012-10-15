@@ -32,7 +32,6 @@ private:
 	ros::Subscriber sub;
 	sensor_msgs::JointState localRx;
 
-
 public:
   RobotMode mode; //current mode (none, explorer, builder or inspector)
   bool structure_is_complete;
