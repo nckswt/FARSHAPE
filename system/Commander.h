@@ -1,7 +1,7 @@
 #ifndef COMMANDER_H
 #define COMMANDER_H
 
-#include "ros/ros.h" //Uncomment when uploaded on raspberry pi's
+#include <ros/ros.h> //Uncomment when uploaded on raspberry pi's
 #include <sensor_msgs/JointState.h>
 #include "Structure.h"
 #include <stdlib.h>
@@ -14,7 +14,7 @@
 
 class Commander : public FSObject{
 private:
-	Position target_position; //Target position commander wants to head towards
+	FSObject target; //commander's current target object
 	int priority; //this specific robot's position in the robot hierarchy
 	bool is_master;
 	int number_of_robots; //max of 3 robots. less if one deactivates.

@@ -20,7 +20,7 @@ public:
 	Structure(Position intial_position);
 	
 	int nextPiece(int* tt, float* tx, float* ty, float* tz);//Checks the next available spot (Status must be 0 and ID must be 0)
-	void getPiece(int* tt, float* tx, float* ty, float* tz);
+	void getPiece(int pos, int* tt, float* tx, float* ty, float* tz);
 	void loadPiece(int buildorder, int stat, int id);//To load the status and ID of the bar
 	void updatePiece(float x, float y, float z);//May not be needed
 	//Add function for a robot to check the current state of the structure

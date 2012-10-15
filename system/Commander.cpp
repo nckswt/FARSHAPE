@@ -94,7 +94,8 @@ void Commander::explore()
 
 	while(checkpoints < 4){
 		//See if object is in view
-		detected_object = camera.detectObject(); // 0 for nothing, 1 for Beam, 2 for Column
+		//<>TODO: implement!
+		//detected_object = camera.detectObject(); // 0 for nothing, 1 for Beam, 2 for Column
 
 		//if object is detected
 		if (detected_object != 0){
@@ -262,6 +263,16 @@ void Commander::readCommunications()
 		piece_locations.push_back(new FSObject(//ENTER DATA FROM MESSAGE HERE));
 	}
 	*/
+}
+
+void Commander::inspect(){
+	//<>TODO: Implement
+}
+
+
+int Commander::checkVitals(){
+	//<>TODO: implement
+	return 1;
 }
 
 

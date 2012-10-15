@@ -5,6 +5,7 @@
 #include "../location/Encoder.h"
 #include "../mobility/Motor.h"
 #include "../location/IRsensor.h"
+#include "includes.h"
 
 struct robot {
   int id; // is an enum

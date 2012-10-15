@@ -10,9 +10,8 @@
 
 #define MOTOR_SPEED 80
 #define MOTOR_PAUSE 200000
-#define LEFT_ADC_CHANNEL 0 //<>CHECK
-#define RIGHT_ADC_CHANNEL 1 //<>CHECK
-
+#define LEFT_IR_SENSOR 0
+#define RIGHT_IR_SENSOR 1
 
 // pthread_t updater;
 
@@ -21,8 +20,10 @@ Helm::Helm() {
   left_encoder = Encoder ( ENCODER1_ADDRESS, false, false );
   right_encoder = Encoder ( ENCODER2_ADDRESS, true,  true );
 
-  left_IR = IRsensor(LEFT_ADC_CHANNEL);
-  right_IR = IRsensor(RIGHT_ADC_CHANNEL);
+  // left_IR = IRsensor(LEFT_IR_SENSOR);
+  // right_IR = IRsensor(RIGHT_IR_SENSOR);
+
+  std::cout << LEFT_IR_SENSOR << std::endl;
 
   left_motor = Motor ( LEFT_MOTOR_PIN,  LEFT_MOTOR_REVERSED,  "/dev/servoblaster" );
   right_motor = Motor ( RIGHT_MOTOR_PIN, RIGHT_MOTOR_REVERSED, "/dev/servoblaster" );
@@ -230,9 +231,9 @@ void Helm::updateXY( float distance ) {
 //   }
 // }
 
-void Helm::goTo( xyz location ) {
+void Helm::goTo( Position location ) {
   
-  xyz delta;
+  Position delta;
   float distance;
   float theta;
   
@@ -248,7 +249,7 @@ void Helm::goTo( xyz location ) {
   
 }
   
-xyz Helm::getLocation() {
+Position Helm::getLocation() {
   return current_position; 
 }
 

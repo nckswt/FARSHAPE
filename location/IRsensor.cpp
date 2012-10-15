@@ -1,5 +1,9 @@
 #include "IRsensor.h"
 
+IRsensor::IRsensor(){
+//dummy
+}
+
 IRsensor::IRsensor(int adcChannel){
   this->adcChannel = adcChannel;
   this->calibrationDataFile = IR_CALIBRATION_FILE;
@@ -18,14 +22,14 @@ IRsensor::~IRsensor(){
 
 void IRsensor::readGP2D12CalibrationProfile(){
   //open calibration profile file
-  ifstream file;
-  file.open(calibrationDataFile.c_str(), ios::in);
+  std::ifstream file;
+  file.open(calibrationDataFile.c_str(), std::ios::in);
 
   //assuming one value for each half-cm from 10cm to 80cm
   int i = 0;
   while (file >> IRDistanceMap[i][1]){
       IRDistanceMap[i][0] = 10 + 0.5*i;
-      cout << this->IRDistanceMap[i][0] << "cm = " << this->IRDistanceMap[i][1] << std::endl;
+      std::cout << this->IRDistanceMap[i][0] << "cm = " << this->IRDistanceMap[i][1] << std::endl;
       i++;
   }
   file.close();

@@ -17,7 +17,7 @@ protected:
 
 public: 
 	FSObject(); //<>CHECK: WHY THE HELL DOES THIS DEFAULT CONSTRUCTOR WORK?
-	FSObject(Position initial_position, ObjectType type, std::string object_name = "");
+	FSObject(Position initial_position, ObjectType type, std::string object_name);
 	void getPosition(Position* updated_position);
 	void setPosition(Position new_position);
 	int getNextID();

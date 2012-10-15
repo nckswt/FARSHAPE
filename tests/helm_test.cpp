@@ -1,6 +1,7 @@
 #include "../system/Helm.h"
 #include <iostream>
 #include <stdlib.h>
+#include "../system/includes.h"
 #define DISTANCE_TOLERANCE 1
 #define ROTATION_TOLERANCE 5
 
@@ -12,7 +13,7 @@ int failedTests = 0;
 
 int main() {
   
-  xyz testLocation;
+  Position testLocation;
   float testRotation;
   
   Helm wesley;
