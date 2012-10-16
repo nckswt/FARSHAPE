@@ -25,12 +25,18 @@ ADC_SPI::~ADC_SPI() {}
 double ADC_SPI::getAverage() {
   
   double averageADCValue = 0;
+  double single = 0;
+  int count = 0;
   
   for ( int i = 0; i < AVERAGING; i++ ) {
-    averageADCValue += this->getSingle();
+    single = this->getSingle();
+    if (single < 1024){
+      averageADCValue += single;
+      count++;
+    }
   }
-  
-  return double(averageADCValue / AVERAGING);
+
+  return double(averageADCValue / count);
   
 }
 
@@ -41,7 +47,7 @@ int ADC_SPI::getSingle() {
   
   wiringPiSPIDataRW (spiChannel, RWBuffer, 3);
 
-  std::string buffstring((const char)RWBuffer);
-  std::cout << buffstring << std::endl; 
+//  std::string buffstring((const char*)RWBuffer);
+//  std::cout << "Buffer: " << buffstring << std::endl; 
   return (int(int(RWBuffer[1]) << 8) | int(RWBuffer[2]));
 }

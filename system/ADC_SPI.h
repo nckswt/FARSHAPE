@@ -1,7 +1,7 @@
 #ifndef _ADC_SPI_H_
 #define _ADC_SPI_H_
 
-#define AVERAGING 100
+#define AVERAGING 1000
 #define START_BYTE 0b00000001
 #define SINGLE 1
 #define DIFFERENTIAL 0

@@ -27,7 +27,7 @@ void IRsensor::readGP2D12CalibrationProfile(){
   //assuming one value for each half-cm from 10cm to 80cm
   int i = 0;
   while (file >> IRDistanceMap[i][1]){
-      IRDistanceMap[i][0] = 10 + 0.5*i;
+      IRDistanceMap[i][0] = 0.5*i;
       std::cout << this->IRDistanceMap[i][0] << "cm = " << this->IRDistanceMap[i][1] << std::endl;
       i++;
   }
@@ -46,7 +46,7 @@ int IRsensor::getSingle() {
 
 double IRsensor::getDistance() {
   double distance;
-  
+  this->value = this->adc->getAverage();
   for (int i = 0; i < 142; i++){
     if (this->value > this->IRDistanceMap[i][1]){
       return (this->IRDistanceMap[i-1][0] + this->IRDistanceMap[i][0])/2;
