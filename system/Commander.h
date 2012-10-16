@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include "includes.h"
 #include "FSObject.h"
+#include "../actuation/Arm.h"
 #include <math.h>
 #include "Helm.h"
 #include "../sensing/camera/camera.h"
@@ -23,6 +24,7 @@ private:
 	Structure* structure;
 	Helm* helm;
 	Camera* camera;
+	Arm* actuator;
 	std::vector<FSObject*> piece_locations;
 	
 	//ROS objects
@@ -47,7 +49,9 @@ public:
   void explore();//Go into explorer mode, define search area
   void build();//Go into build mode and place a part
   void inspect();//Go into inspector mode and verify construction
-  void waterCommander();
+  void demoCommander();
+  void demoSearch(float,float);
+  void demoPlace();
 
 };
 
