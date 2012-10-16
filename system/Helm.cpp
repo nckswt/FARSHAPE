@@ -283,12 +283,12 @@ Helm::~Helm() {
 }
 
 
-/*
+/* Lines up with nearby object based on IR sensors
 *
 *
 *
 */
-
+//<>UNTESTED!
 void Helm::lineUp(){
   float left_range, right_range, center_range; //Returned from IR sensors
   float precision = 3; //cm

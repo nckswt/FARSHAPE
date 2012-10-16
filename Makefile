@@ -36,8 +36,8 @@ monitor_test: tests/monitor_test.cpp $(MONITOR_OBJS)
 	$(CXX) tests/monitor_test.cpp $(MONITOR_OBJS) -o tests/monitor_test.exe
 
 CONFIG_IR_OBJS=location/IRsensor.o system/ADC_SPI.o
-config_ir: tests/config_ir.cpp $(CONFIG_IR_OBJS)
-	$(CXX) tests/config_ir.cpp $(CONFIG_IR_OBJS) $(WIRING_PI_LINKS) -o tests/config_ir.exe
+calibrate_IRs: tests/calibrate_IRs.cpp $(CONFIG_IR_OBJS)
+	$(CXX) tests/calibrate_IRs.cpp $(CONFIG_IR_OBJS) $(WIRING_PI_LINKS) -o tests/calibrate_IRs.exe
 
 IR_TEST_OBJS=location/IRsensor.o system/ADC_SPI.o
 ir_test: tests/irtest.cpp $(IR_TEST_OBJS)
