@@ -2,6 +2,8 @@
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
 #include <iostream>
+#include <stdio.h>
+#include <string>
 
 ADC_SPI::ADC_SPI( int adcChannel, int spiChannel = 0 ) {
   this->adcChannel = adcChannel;
@@ -38,5 +40,8 @@ int ADC_SPI::getSingle() {
   RWBuffer[2] = 0;
   
   wiringPiSPIDataRW (spiChannel, RWBuffer, 3);
+
+  std::string buffstring((const char)RWBuffer);
+  std::cout << buffstring << std::endl; 
   return (int(int(RWBuffer[1]) << 8) | int(RWBuffer[2]));
 }
