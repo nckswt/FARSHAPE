@@ -51,7 +51,7 @@ adc_test: tests/adc_test.cpp $(ADC_TEST_OBJS)
 #commander_test: tests/commander_test.cpp $(COMMANDER_TEST_OBJS)
 #	$(CXX) tests/commander_test.cpp $(COMMANDER_TEST_OBJS) $(ROS_LINKS) -o tests/commander_test.exe
 
-MAIN_OBJS=system/Structure.o sensing/camera/camera.o system/FSObject.o actuation/Arm.o system/Commander.o  $(HELM_TEST_OBJS)
+MAIN_OBJS=system/Structure.o sensing/camera/camera.o system/FSObject.o actuation/Arm.o  $(HELM_TEST_OBJS)
 main: system/Commander.cpp $(MAIN_OBJS)
 	$(CXX) -I/opt/ros/fuerte/include/ -I/home/pi/ros/orocos_kinematics_dynamics/orocos_kdl/install_dir/include system/Commander.cpp $(MAIN_OBJS) $(ROS_LINKS) $(WIRING_PI_LINKS) $(LIBS) -o main.exe
 
