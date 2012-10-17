@@ -4,7 +4,7 @@
 #include <iostream>
 #include <math.h>
 #include <stdio.h>
-#include <highgui.h>
+//#include <highgui.h>
 #include <opencv2/imgproc/imgproc.hpp>
 
 #define WIDTH 540
@@ -38,7 +38,7 @@ class Camera
     private:
 	    Mat original;
 	    Mat canny_output;
-	    VideoCapture cap;
+	   // VideoCapture cap;
 	    vector<vector<Point> > contours;
 	    vector<Vec4i> hierarchy;
 //	    vector<double> pos;
@@ -56,3 +56,4 @@ class Camera
 };
 
 #endif
+
