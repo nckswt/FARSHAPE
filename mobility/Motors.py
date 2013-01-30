@@ -28,7 +28,7 @@ class Motors:
             if re.search("servod",x):
                 print "Servoblaster Daemon is already running"
             else:
-                cmd = "sudo ./servod"
+                cmd = "sudo ./ServoBlaster/servod"
                 os.system(cmd)
                 break
 
@@ -108,7 +108,7 @@ class Motors:
 motors = Motors()
 motors.setup()
 timestep = 0.1 # seconds
-for i in range(50):
+"""for i in range(50):
     motors.goForward(i)
     time.sleep(timestep)
 
@@ -138,5 +138,12 @@ for i in range(50):
 
 for i in range(50):
     motors.rotateLeft(i)
-    time.sleep(timestep)
+    time.sleep(timestep)"""
+
+motors.goForward(30)
+time.sleep(1)
+motors.goBackward(30)
+time.sleep(1)
+motors.brake()
+
 motors.teardown()
