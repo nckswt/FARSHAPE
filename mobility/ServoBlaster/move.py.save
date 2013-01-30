@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+
+import time
+import os
+
+STEP = 1
+DELAY = 0.5
+
+def pwm(value):
+    print "motor[" + str(value) + "]"
+    cmd = "echo " + str(1) + "=" + str(value) + " > /dev/servoblaster"
+    mcd = "echo " + str(2) + "=" + str(value) + " > /dev/servoblaster"
+    os.system(cmd)
+    time.sleep(DELAY)
+ 
+while True:
+    for j in range(100, 200, STEP):
+        pwm(j)   
+        pwm(2,300-j)
+    for j in range(100, 200, (STEP*-1)):
+        pwm(1,j)
+        pwm(2,300-j)
