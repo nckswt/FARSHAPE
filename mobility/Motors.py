@@ -108,7 +108,8 @@ class Motors:
 motors = Motors()
 motors.setup()
 timestep = 0.1 # seconds
-"""for i in range(50):
+"""# test motor commands
+for i in range(50):
     motors.goForward(i)
     time.sleep(timestep)
 
@@ -140,6 +141,7 @@ for i in range(50):
     motors.rotateLeft(i)
     time.sleep(timestep)"""
 
+#move back and forth
 motors.goForward(30)
 time.sleep(1)
 motors.goBackward(30)
