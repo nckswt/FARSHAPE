@@ -55,7 +55,7 @@ class Motors:
             self.setMotors(speed,speed)
         else:
             self.setMotors(-speed,-speed)
-        time.sleep(math.fabs(distance)
+        time.sleep(math.fabs(distance))
         self.setMotors(0,0)
 
     #rotate a set angle (positive for counterclockwise, right for clockwise)
@@ -64,7 +64,7 @@ class Motors:
             self.setMotors(-speed,speed)
         else:
             self.setMotors(speed,-speed)
-        time.sleep(math.fabs(angle)
+        time.sleep(math.fabs(angle))
         self.setMotors(0,0)
 
     #Go straight ahead
