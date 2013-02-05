@@ -3,18 +3,23 @@
 ### Note: you will need to SSH tunnel X for this to work
 ###       as it pops open a window
 
-# import opencv
 import cv
-import time
+capture=cv.CaptureFromCAM(1)
 
-cv.NamedWindow('a_window', 320)
-
-capture1=cv.CaptureFromCAM(0)
+#Load the haar cascade
+#hc = cv.Load("/opt/ros/fuerte/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml")
 
 def repeat():
-	image=cv.QueryFrame(capture1)
-	cv.ShowImage('a_window', image) #Show window
+	image=cv.QueryFrame(capture)
+	#Detect face in image
+#	face = cv.HaarDetectObjects(image, hc, cv.CreateMemStorage())
+#	for (x,y,w,h),n in face:
+#		cv.Rectangle(image, (x,y), (x+w,y+h), 255)
+#		print 'face found at: '+str(w)+','+str(h)
+	cv.ShowImage('Image_Window',image)
+	cv.WaitKey(50)
+
 
 while True:
 	repeat()
-	time.sleep(10)
+
