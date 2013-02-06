@@ -1,28 +1,33 @@
 #include "../location/Encoder.h"
+#include "../system/i2c.h"
 #include <iostream>
 #include <stdint.h>
 #include <time.h>
 using namespace std;
 
+
 int main() {
   
-  Encoder* enc; // holds encoder object
+  Encoder enc; // holds encoder object
   uint64_t p; // holds position
   
   // test setting up of encoder1
-  enc = new Encoder ( ENCODER1_ADDRESS , false );
-    
-  // test getting encoder 1 position
-  p = enc->getEncoderPosition();
-  cout << "Encoder 1:" << endl << "Address: " << ENCODER1_ADDRESS << endl << "Position: " << 
-  p << endl;
-
-    // test setting up of encoder 2
-  enc = new Encoder ( ENCODER2_ADDRESS , true );
-    
-  // test getting encoder 2 position
-  p = enc->getEncoderPosition();
-  cout << "Encoder 2:" << endl << "Address: " << ENCODER1_ADDRESS << endl << "Position: " << 
-  p << endl;
+  enc = Encoder ( ENCODER1_ADDRESS , false );
+  cout << "Encoder 1 address: " << enc.getAddress() << endl;
   
+  // test setting up of encoder 2
+  Encoder enc2 = Encoder ( ENCODER2_ADDRESS , true );
+  cout << "Encoder 2 address: " << enc2.getAddress() << endl;
+  
+  while (1) {
+    // test getting encoder 1 position
+    p = enc.getEncoderPosition();
+    cout << "Encoder 1 Position: " << p << endl;
+    // test getting encoder 2 position
+    p = enc2.getEncoderPosition();
+    cout << "Encoder 2 Position: " << p << endl;  
+  
+    sleep(1);
+    
+  }
 }

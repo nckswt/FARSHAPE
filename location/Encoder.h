@@ -1,4 +1,3 @@
-#include "../system/i2c.h"
 #include <unistd.h>
 #include <stdint.h>
 
@@ -32,6 +31,8 @@ private:
 public:
   uint64_t getEncoderPosition();
   Encoder( int chipAddress , bool finalEncoder, int bus = 1 );
+  Encoder();
   ~Encoder( );
   float getEncoderDistance();
+  int getAddress();
 };

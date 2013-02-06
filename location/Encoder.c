@@ -1,8 +1,14 @@
+#include "../system/i2c.h"
 #include "Encoder.h"
+#include <iostream>
+
+Encoder::Encoder() { }
 
 Encoder::Encoder( int chipAddress, bool finalEncoder, int bus ) {
   this->chipAddress = chipAddress;
-  i2c_write( ENCODER_DEFAULT_ADDRESS, CHANGE_DEVICE_ADDRESS, chipAddress << 1 );
+  int a = chipAddress << 1;
+  std::cout << a << std::endl;
+  i2c_write( ENCODER_DEFAULT_ADDRESS, CHANGE_DEVICE_ADDRESS, a );
   if (!finalEncoder)
     i2c_write_probe( ENCODER1_ADDRESS, 	DISABLE_TERMINATOR);
   this->bus = bus;
@@ -27,6 +33,10 @@ uint64_t Encoder::getEncoderPosition() {
   
   return p;
 
+}
+
+int Encoder::getAddress() {
+  return this->chipAddress;
 }
 
 Encoder::~Encoder() {
