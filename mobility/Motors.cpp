@@ -6,13 +6,15 @@
 #include <cmath>
 #include "Motors.h"
 
+using namespace std;
+
 #define MICROSEC2SEC 1000000
 
 Motors::Motors(){
     leftMotor = '2'; //pin 2 in servoblaster, GPIO 18 and Pin P1-12 on the RPi
     rightMotor = '1'; //pin 1 in servoblaster, GPIO 17 and Pin P1-11 on the RPi
-    //if (0 == system("pidof 0x servod > /dev/null")){
-    //    std::cout << "ServoBlaster Daemon is already running!" << std::endl;
+//     if (0 == system("pidof 0x servod > /dev/null")){
+//       cout << "ServoBlaster Daemon is already running!" << endl;
 //     } else{
 //         system("sudo ./ServoBlaster/servod");
 //     }
@@ -26,8 +28,8 @@ Motors::~Motors(){
 }
 
 void Motors::setMotors(int leftMotorSpeed, int rightMotorSpeed){
-    std::ofstream f;
-    f.open("/dev/servoblaster", std::ios::trunc | std::ios::out);
+    ofstream f;
+    f.open("/dev/servoblaster", ios::trunc | ios::out);
     f << this->leftMotor << "=" << 150 + leftMotorSpeed << '\n';
     f << this->rightMotor << "=" << 150 - rightMotorSpeed << '\n';
     f.close();
@@ -74,8 +76,16 @@ void Motors::rotateRight(int speed){
 }
 
 //Rotate right (CW) about center of rotation
-void Motors::brake(){
+void Motors::idle(){
     this->setMotors(0,0);
+}
+
+void Motors::brake(){
+    ofstream f;
+    f.open("/dev/servoblaster", ios::trunc | ios::out);
+    f << this->leftMotor << "=" << 20 << '\n';
+    f << this->rightMotor << "=" << 20 << '\n';
+    f.close();
 }
 
 /*TESTING

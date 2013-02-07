@@ -1,6 +1,7 @@
 CC      := g++
 CFLAGS  ?= -O2
 CFLAGS  += -Wall
+CXXFLAGS= -O2 -Wall
 SOURCES=location/Encoder.c system/i2c.c system/i2cbusses.c
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLES=tests/encoder_test.c
@@ -20,7 +21,7 @@ drive_distance_test: tests/drive_distance_test.cpp $(DRIVE_DISTANCE_TEST_OBJS)
 
 FUCKYOU_TEST_OBJS=$(I2C_OBJECTS) location/Encoder.o $(MOTORS_OBJ)
 fuckyou_test: tests/fuckyou.cpp $(FUCKYOU_TEST_OBJS)
-	$(CC) tests/fuckyou.cpp $(FUCKYOU_TEST_OBJS) -o tests/fuckyou.exe
+	$(CC) tests/fuckyou.cpp -lpthread $(FUCKYOU_TEST_OBJS) -o tests/fuckyou.exe
 
 clean:
 	rm ./*/*.o

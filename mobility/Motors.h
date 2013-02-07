@@ -28,6 +28,7 @@ public:
 	void turnLeft(int speed = DEFAULTSPEED);
 	void turnRight(int speed = DEFAULTSPEED);
 	void brake();
+	void idle();
 
 };
 
