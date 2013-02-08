@@ -2,12 +2,8 @@ CC      := g++
 CFLAGS  ?= -O2
 CFLAGS  += -Wall
 CXXFLAGS= -O2 -Wall
-SOURCES=location/Encoder.c system/i2c.c system/i2cbusses.c
-OBJECTS=$(SOURCES:.cpp=.o)
-EXECUTABLES=tests/encoder_test.c
 I2C_OBJECTS=system/i2c.o system/i2cbusses.o
 MOTORS_OBJ=mobility/Motors.o
-ENCODER_TEST_OBJS=
 
 tests: encoder_test
 
