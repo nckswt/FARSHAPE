@@ -13,19 +13,19 @@ Encoder::Encoder( int chipAddress, bool finalEncoder, bool reversed, int bus ) {
   this->reversed = reversed;
   this->bus = bus;
   
-  this->chipAddress = ENCODER_DEFAULT_ADDRESS; // to handle setup
+  this->chipAddress = int(ENCODER_DEFAULT_ADDRESS); // to handle setup
   // Set encoder to new address. New address bits must be shifted
   _write( CHANGE_DEVICE_ADDRESS, chipAddress << 1 );
   
   // if successful, set new address
   this->chipAddress = chipAddress;
   
-  // reset the position to 0 before we use it
-  resetPosition();
-  
   // now that setup is done, disable terminator if we have other encoders
   if (!finalEncoder)
     _assert ( DISABLE_TERMINATOR );
+  
+  // reset the position to 0 before we use it
+  resetPosition();
   
 }
 
@@ -76,7 +76,9 @@ void Encoder::_assert(int flag) {
 }
 
 void Encoder::_write( int location, int data ) {
+  
   i2c_write( this->chipAddress, location, data );
+  
 }
 
 uint8_t Encoder::_read( int location ) {
