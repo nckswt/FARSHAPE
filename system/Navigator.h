@@ -57,7 +57,7 @@ public:
   Encoder rightEncoder;	
   Navigator();
   ~Navigator();
-
+  void go ( );
   uint64_t getLeft();
   void publish(); //to other robots
   
