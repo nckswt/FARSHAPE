@@ -34,10 +34,10 @@ void Helm::goDistance ( float distance ) {
   
     while ( (leftMotor.getSpeed() != 0) || (rightMotor.getSpeed() != 0) ) {
       
-      if ( convertToCm( leftEncoder .getPosition() ) >= distance )
+      if ( ( convertToCm( leftEncoder .getPosition() ) >= distance ) && (leftMotor .getSpeed() != 0) )
 	leftMotor .setSpeed(0);
       
-      if ( convertToCm( rightEncoder.getPosition() ) >= distance )
+      if ( ( convertToCm( rightEncoder.getPosition() ) >= distance ) && (rightMotor.getSpeed() != 0) )
 	rightMotor.setSpeed(0);
       
     }
@@ -48,10 +48,10 @@ void Helm::goDistance ( float distance ) {
     
     while ( (leftMotor.getSpeed() != 0) || (rightMotor.getSpeed() != 0) ) {
     
-      if ( MAX_VALUE - convertToCm( leftEncoder .getPosition() ) >= abs(distance) )
+      if ( ( MAX_VALUE - convertToCm( leftEncoder .getPosition() ) >= abs(distance) ) && (leftMotor .getSpeed() != 0) )
 	leftMotor .setSpeed(0);
       
-      if ( MAX_VALUE - convertToCm( rightEncoder.getPosition() ) >= abs(distance) )
+      if ( ( MAX_VALUE - convertToCm( rightEncoder.getPosition() ) >= abs(distance) ) && (rightMotor.getSpeed() != 0) )
 	rightMotor.setSpeed(0);
     
     }
@@ -79,10 +79,10 @@ void Helm::rotate( float theta ) {
     
     while ( (leftMotor.getSpeed() != 0) || (rightMotor.getSpeed() != 0) ) {
       
-      if ( MAX_VALUE - convertToCm( leftEncoder.getPosition() ) >= distance )
+      if ( ( MAX_VALUE - convertToCm( leftEncoder.getPosition() ) >= distance ) && (leftMotor.getSpeed() != 0) )
 	leftMotor .setSpeed(0);
       
-      if ( convertToCm( rightEncoder.getPosition() ) >= distance )
+      if ( ( convertToCm( rightEncoder.getPosition() ) >= distance ) && (rightMotor.getSpeed() != 0) )
 	
 	rightMotor.setSpeed(0);
     
@@ -99,10 +99,10 @@ void Helm::rotate( float theta ) {
     
     while ( (leftMotor.getSpeed() != 0) || (rightMotor.getSpeed() != 0) ) {
       
-      if ( convertToCm( leftEncoder.getPosition() ) >= distance )
+      if ( ( convertToCm( leftEncoder.getPosition() ) >= distance ) && (leftMotor.getSpeed() != 0) )
 	leftMotor .setSpeed(0);
       
-      if ( MAX_VALUE - convertToCm( rightEncoder.getPosition() ) >= distance )
+      if ( ( MAX_VALUE - convertToCm( rightEncoder.getPosition() ) >= distance ) && (rightMotor.getSpeed() != 0) )
 	rightMotor.setSpeed(0);
     
     }
