@@ -30,8 +30,6 @@ void Helm::goDistance ( float distance ) {
   leftMotor .setSpeed(100);
   rightMotor.setSpeed(100);
   
-  bool done;
-  
   if (distance > 0) {
   
     while ( (leftMotor.getSpeed() != 0) && (rightMotor.getSpeed() != 0) ) {
