@@ -32,7 +32,7 @@ void Helm::goDistance ( float distance ) {
   
   if (distance > 0) {
   
-    while ( (leftMotor.getSpeed() != 0) && (rightMotor.getSpeed() != 0) ) {
+    while ( (leftMotor.getSpeed() != 0) || (rightMotor.getSpeed() != 0) ) {
       
       if ( convertToCm( leftEncoder .getPosition() ) >= distance )
 	leftMotor .setSpeed(0);
@@ -46,7 +46,7 @@ void Helm::goDistance ( float distance ) {
 
   if (distance < 0) {
     
-    while ( (leftMotor.getSpeed() != 0) && (rightMotor.getSpeed() != 0) ) {
+    while ( (leftMotor.getSpeed() != 0) || (rightMotor.getSpeed() != 0) ) {
     
       if ( MAX_VALUE - convertToCm( leftEncoder .getPosition() ) >= abs(distance) )
 	leftMotor .setSpeed(0);
@@ -77,7 +77,7 @@ void Helm::rotate( float theta ) {
     
     float distance = degToArcLength( theta );
     
-    while ( (leftMotor.getSpeed() != 0) && (rightMotor.getSpeed() != 0) ) {
+    while ( (leftMotor.getSpeed() != 0) || (rightMotor.getSpeed() != 0) ) {
       
       if ( MAX_VALUE - convertToCm( leftEncoder.getPosition() ) >= distance )
 	leftMotor .setSpeed(0);
@@ -97,7 +97,7 @@ void Helm::rotate( float theta ) {
     
     float distance = degToArcLength( theta );
     
-    while ( (leftMotor.getSpeed() != 0) && (rightMotor.getSpeed() != 0) ) {
+    while ( (leftMotor.getSpeed() != 0) || (rightMotor.getSpeed() != 0) ) {
       
       if ( convertToCm( leftEncoder.getPosition() ) >= distance )
 	leftMotor .setSpeed(0);
