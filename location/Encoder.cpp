@@ -47,7 +47,7 @@ uint64_t Encoder::getPosition() {
   
   // TODO: smarter thing to do here?
   if (this->reversed && p!=0)
-    p=281474976710655-p;
+    p = MAX_VALUE - p;
   
   return p;
 

@@ -24,6 +24,10 @@ NAV_TEST_OBJS=$(ENCODER_TEST_OBJS) system/Navigator.o mobility/Motor.o
 nav_test: tests/nav_test.cpp $(NAV_TEST_OBJS)
 	$(CC) tests/nav_test.cpp $(NAV_TEST_OBJS) -o tests/nav_test.exe
 
+HELM_TEST_OBJS=$(MOTOR_TEST_OBJS) $(ENCODER_TEST_OBJS) system/Helm.o
+helm_test: tests/helm_test.cpp $(HELM_TEST_OBJS)
+	$(CC) tests/helm_test.cpp $(HELM_TEST_OBJS) -o tests/helm_test.exe
+
 clean:
 	rm ./*/*.o
 	rm ./*/*.exe
