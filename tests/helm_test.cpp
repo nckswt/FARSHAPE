@@ -5,17 +5,17 @@ int main() {
   
   Helm wesley;
   
-  std::cout << "Go +5 cm" << std::endl;
+  std::cout << "Go +60 cm" << std::endl;
   wesley.goDistance(60);
-
-//  std::cout << "Go -5 cm" << std::endl;
-//  wesley.goDistance(-5);
   
-//  std::cout << "Rotate +45 degrees" << std::endl;
-//  wesley.rotate(45);
+  std::cout << "Go -60 cm" << std::endl;
+  wesley.goDistance(-60);
   
-//  std::cout << "Rotate -45 degrees" << std::endl;
-//  wesley.rotate(-45);
+  std::cout << "Rotate +90 degrees" << std::endl;
+  wesley.rotate(90);
+  
+  std::cout << "Rotate -90 degrees" << std::endl;
+  wesley.rotate(-90);
  
   return 0;
   

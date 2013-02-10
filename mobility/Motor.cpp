@@ -39,7 +39,7 @@ void Motor::setSpeed( int speed ) {
 }
 
 void Motor::_setValue ( signed int speed ) {
-    
+    cout << int(this->pin) << '=' << 150-speed << endl;
     ofstream f;
     f.open(this->ctrl_interface, ios::trunc | ios::out);
     f << int(this->pin) << '=' << 150-speed << "\n";
