@@ -32,6 +32,8 @@ void Motor::setSpeed( int speed ) {
 //     _setValue( (speed / 2) );
 //   }
 
+  currentSpeed = speed;
+
   _setValue( (speed/2) * ( this->reversed ? -1 : 1 ) );
 
 }
@@ -43,4 +45,10 @@ void Motor::_setValue ( signed int speed ) {
     f << int(this->pin) << '=' << 150-speed << "\n";
     f.close();
     
+}
+
+int Motor::getSpeed() {
+  
+  return int(currentSpeed);
+  
 }

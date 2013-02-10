@@ -26,7 +26,7 @@ Encoder::Encoder( int chipAddress, bool finalEncoder, bool reversed, int bus ) {
   
   // reset the position to 0 before we use it
   resetPosition();
-  
+  std::cout << "Encoder initiliazed" << std::endl;
 }
 
 uint64_t Encoder::getPosition() {
