@@ -25,16 +25,10 @@ void Motor::setSpeed( int speed ) {
     // TODO: handle error
     return;
   }
-  
-//   if (this->reversed) {
-//     _setValue( (speed / 2) * -1 );
-//   } else {
-//     _setValue( (speed / 2) );
-//   }
 
   currentSpeed = speed;
 
-  _setValue( (speed/2) * ( this->reversed ? -1 : 1 ) );
+  _setValue( 150 - (speed/2) * ( this->reversed ? -1 : 1 ) );
 
 }
 
@@ -42,7 +36,7 @@ void Motor::_setValue ( signed int speed ) {
     cout << int(this->pin) << '=' << 150-speed << endl;
     ofstream f;
     f.open(this->ctrl_interface, ios::trunc | ios::out);
-    f << int(this->pin) << '=' << 150-speed << "\n";
+    f << int(this->pin) << '=' << speed << "\n";
     f.close();
     
 }
@@ -50,5 +44,11 @@ void Motor::_setValue ( signed int speed ) {
 int Motor::getSpeed() {
   
   return int(currentSpeed);
+  
+}
+
+void Motor::brake() {
+  
+  _setValue( 20 );
   
 }
