@@ -18,7 +18,7 @@ using namespace std; // GET RID OF THIS!
 class IRsensor
 {
 public:
-	IRsensor();
+	IRsensor(int adcChannel); //, string calibrationDataFile = "calibration.txt");
 	~IRsensor();
 	double readGP2D12Distance();
 
@@ -35,3 +35,5 @@ private:
 	double readGP2D12ADC();
 	void calibrateSensor();
 };
+
+#endif

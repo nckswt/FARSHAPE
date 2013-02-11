@@ -4,17 +4,17 @@ so this is merely a test stub. */
 
 #include "IRsensor.h"
 
-IRsensor::IRsensor(int adcChannel, string calibrationDataFile = "calibration.txt" ){
-  this.numberOfSamples = 100;
-  this.csPin = 5;
-  this.adcChannel = adcChannel;
-  this.calibrationDataFile = calibrationDataFile;
+IRsensor::IRsensor(int adcChannel){
+  this->numberOfSamples = 100;
+  this->csPin = 5;
+  this->adcChannel = adcChannel;
+  this->calibrationDataFile = "calibration.txt";
 
   //set LTC1098 channel
   if (adcChannel == 0)
-    this.chanBits = 0b11000000;
+    this->chanBits = 0b11010000;
   else
-    this.chanBits = 0b11100000;
+    this->chanBits = 0b11110000;
 
   //setup SPI
   wiringPiSetup();
@@ -35,13 +35,13 @@ IRsensor::~IRsensor(){
 void IRsensor::readGP2D12CalibrationProfile(){
   //open calibration profile file
   ifstream file;
-  file.open(calibrationDataFile, ios::in);
+  file.open(calibrationDataFile.c_str(), ios::in);
 
   //assuming one value for each half-cm from 10cm to 80cm
   int i = 0;
   while (file >> IRDistanceMap[i][1]){
       IRDistanceMap[i][0] = 10 + 0.5*i;
-      cout << IRDistanceMap[i][0] << "cm = " << IRDistanceMap[i][1] << endl;
+      cout << this->IRDistanceMap[i][0] << "cm = " << this->IRDistanceMap[i][1] << endl;
       i++;
   }
   file.close();
@@ -59,6 +59,7 @@ double IRsensor::readGP2D12ADC(){
 
     digitalWrite(csPin,LOW);
     wiringPiSPIDataRW (adcChannel, spiData, bufferLength);
+    //cout << int(((spiData [0] << 7) | (spiData [1] >> 1)) & 0x3FF) << endl;
     averageADCValue += int(((spiData [0] << 7) | (spiData [1] >> 1)) & 0x3FF);
     digitalWrite(csPin,HIGH);
 
@@ -66,6 +67,7 @@ double IRsensor::readGP2D12ADC(){
   }
   averageADCValue = averageADCValue/numberOfSamples;
 
+  //cout << "AVADC: " << averageADCValue << endl;
   return averageADCValue;
 }
 
@@ -82,13 +84,16 @@ void IRsensor::calibrateSensor(){
  file.close();
 }
 
-double IRsensor::readGP2D12Distance(double IRDistanceMap[141][2]){
+double IRsensor::readGP2D12Distance(){
   double distance, ADCValue;
   ADCValue = readGP2D12ADC();
-  cout << ADCValue;  
+  //cout << "ADC VALUES: " << ADCValue << endl;  
+  
   for (int i = 0; i < 142; i++){
-    if (ADCValue < IRDistanceMap[i][1]){
-      distance = (IRDistanceMap[i-1][1] + IRDistanceMap[i][1])/2;
+    //cout << this->IRDistanceMap[i][1] << endl;
+    if (ADCValue > this->IRDistanceMap[i][1]){
+      //cout << ADCValue << " v " << IRDistanceMap[i][1] << endl;
+      distance = (this->IRDistanceMap[i-1][0] + this->IRDistanceMap[i][0])/2;
       break;
     }
   }
@@ -96,16 +101,3 @@ double IRsensor::readGP2D12Distance(double IRDistanceMap[141][2]){
 }
 
 
-int main(int argc, char ** argv){
-  IRsensor leftIR(0);
-  IRsensor rightIR(1);
-
-  //output distance
-  while (1){
-    cout << "Left distance: " << leftIR.readGP2D12Distance(IRDistanceMap) << "cm" << endl; 
-    cout << "Right distance: " << rightIR.readGP2D12Distance(IRDistanceMap) << "cm" << endl; 
-    sleep(1);
-  }
-
-  return 0;
-}
