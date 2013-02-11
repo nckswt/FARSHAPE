@@ -94,7 +94,7 @@ void Helm::goDistance ( float distance ) {
     }
   }
   // update current location 
-  updateXY( distance );
+  //updateXY( distance );
   // glitch compensator
   usleep(MOTOR_PAUSE);
 }
@@ -238,6 +238,26 @@ float Helm::getRotation() {
   return this->rotation;
 }
 
+void Helm::goForward( int speed = MOTOR_SPEED ) {
+  leftMotor .setSpeed( speed );
+  rightMotor.setSpeed( speed );
+}
+
+void Helm::rotateLeft( int speed = MOTOR_SPEED ) {
+  leftMotor .setSpeed( -speed );
+  rightMotor.setSpeed(  speed );
+}
+
+void Helm::rotateRight( int speed = MOTOR_SPEED ) {
+  leftMotor .setSpeed(  speed );
+  rightMotor.setSpeed( -speed );
+}
+
+void Helm::stop() {
+  leftMotor .setSpeed( 0 );
+  rightMotor.setSpeed( 0 );
+}
+  
 Helm::~Helm() {
 
 //   pthread_join( updater );
