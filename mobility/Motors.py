@@ -98,6 +98,12 @@ class Motors:
         cmd = "echo " + str(self.rightMotor) + "=" + str(150 + speed) + " > /dev/servoblaster"
         os.system(cmd)
 
+    #Rotate right (CW) about center of rotation
+    def brake(self):
+        cmd = "echo " + str(self.leftMotor) + "=" + str(20) + " > /dev/servoblaster"
+        os.system(cmd)
+        cmd = "echo " + str(self.rightMotor) + "=" + str(20) + " > /dev/servoblaster"
+        os.system(cmd)
 
 motors = Motors()
 motors.setup()
