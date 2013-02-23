@@ -41,6 +41,12 @@ class Motors:
                 os.system("sudo killall servod")
                 break
 
+    #output to motor control file
+    def setMotors(self,leftMotorSpeed,rightMotorSpeed):
+        f = open("/dev/servoblaster", "w")
+        f.write(str(self.leftMotor) + "=" + str(150 + leftMotorSpeed))
+        f.write(str(self.leftMotor) + "=" + str(150 + rightMotorSpeed))
+        f.close()
 
     #Go straight ahead
     def goForward(self, speed):
@@ -55,6 +61,21 @@ class Motors:
         os.system(cmd)
         cmd = "echo " + str(self.rightMotor) + "=" + str(150 + speed) + " > /dev/servoblaster"
         os.system(cmd)
+
+    #move a set distance (positive for forward, negative for backward)
+    def goDistance(self, speed, distance):
+        self.setMotors(speed,speed)
+        time.sleep(distance)
+        self.setMotors(0,0)
+
+    #rotate a set angle (positive for counterclockwise, right for clockwise)
+    def rotateAngle(self, speed, angle):
+        if (angle > 0)
+            self.setMotors(-speed,speed)
+        else
+            self.setMotors(speed,-speed)
+        time.sleep(angle)
+        self.setMotors(0,0)
 
     #Turn left while moving forward
     def turnLeft(self, speed):
@@ -139,13 +160,18 @@ for i in range(50):
 
 for i in range(50):
     motors.rotateLeft(i)
-    time.sleep(timestep)"""
+    time.sleep(timestep)
 
 #move back and forth
 motors.goForward(30)
 time.sleep(1)
 motors.goBackward(30)
 time.sleep(1)
-motors.brake()
+motors.brake()"""
+
+motors.goDistance(15,1)
+motors.goDistance(15,-1)
+motors.rotateAngle(15,3)
+motors.rotateAngle(15,-3)
 
 motors.teardown()
