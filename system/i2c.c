@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include "i2cbusses.h"
 #include "i2c.h"
+#include <i2c/smbus.h>
 
 void i2c_write( int chipAddress , int dataAddress , int* data, int length, int bus ) {
   // file handle
