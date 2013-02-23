@@ -44,3 +44,4 @@ void setupEncoders() {
   i2c_write( ENCODER_DEFAULT_ADDRESS, CHANGE_DEVICE_ADDRESS, ENCODER2_ADDRESS );
   
 }
+

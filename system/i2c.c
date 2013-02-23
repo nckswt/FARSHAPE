@@ -2,12 +2,10 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <linux/i2c-dev.h>
-#include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
 #include <stdint.h>
 #include "i2cbusses.h"
 #include "i2c.h"
-#include <i2c/smbus.h>
 
 void i2c_write( int chipAddress , int dataAddress , int* data, int length, int bus ) {
   // file handle
