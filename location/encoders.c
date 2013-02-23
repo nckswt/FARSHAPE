@@ -1,4 +1,4 @@
-#include "i2c.h"
+#include "../system/i2c.h"
 #include <unistd.h>
 #include <stdint.h>
 
@@ -21,13 +21,13 @@
 #define SIGNED_VELOCITY_1 0x3F
 #define SIGNED_VELOCITY_BYTES 2
 
-int getEncoderPosition( int encoderNumber ) {
+int getEncoderPosition( int encoderAddress ) {
   
   uint32_t position;
-  position = i2c_read ( ENCODER1_ADDRESS , ROTATION_0 );
-  position = (position << 8) | i2c_read( ENCODER1_ADDRESS, ROTATION_1 );
-  position = (position << 8) | i2c_read( ENCODER1_ADDRESS, ROTATION_2 );
-  position = (position << 8) | i2c_read( ENCODER1_ADDRESS, ROTATION_3 );
+  position = i2c_read ( encoderAddress, ROTATION_0 );
+  position = (position << 8) | i2c_read( encoderAddress, ROTATION_1 );
+  position = (position << 8) | i2c_read( encoderAddress, ROTATION_2 );
+  position = (position << 8) | i2c_read( encoderAddress, ROTATION_3 );
 
 }
 
