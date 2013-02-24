@@ -21,15 +21,17 @@
 #define SIGNED_VELOCITY_1 0x3F
 #define SIGNED_VELOCITY_BYTES 2
 
-int getEncoderPosition( int encoderAddress ) {
+uint32_t getEncoderPosition( int encoderAddress ) {
   
   uint32_t position;
   position = 0xffffffff;
-  position = i2c_read ( encoderAddress, ROTATION_0 );
-  position = (position << 8) | i2c_read( encoderAddress, ROTATION_1 );
-  position = (position << 8) | i2c_read( encoderAddress, ROTATION_2 );
-  position = (position << 8) | i2c_read( encoderAddress, ROTATION_3 );
+  position = position & ( i2c_read( encoderAddress, ROTATION_0 ) << 0 );
+  position = position & ( i2c_read( encoderAddress, ROTATION_1 ) << 8 );
+  position = position & ( i2c_read( encoderAddress, ROTATION_2 ) << 16);
+  position = position & ( i2c_read( encoderAddress, ROTATION_3 ) << 24);
 
+  return position;
+  
 }
 
 void setupEncoders() {
