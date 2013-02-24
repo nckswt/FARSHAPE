@@ -49,22 +49,24 @@ class Motors:
         f.write(str(self.rightMotor) + "=" + str(150 - rightMotorSpeed) + "\n")
         f.close()
 
+    #<>TODO: get distance data from encoders
     #move a set distance (positive for forward, negative for backward)
     def goDistance(self, speed, distance):
         if (distance > 0):
             self.setMotors(speed,speed)
         else:
             self.setMotors(-speed,-speed)
-        time.sleep(math.fabs(distance)
+        time.sleep(math.fabs(distance))
         self.setMotors(0,0)
 
+    #<>TODO: get angle data from encoders
     #rotate a set angle (positive for counterclockwise, right for clockwise)
     def rotateAngle(self, speed, angle):
         if (angle > 0):
             self.setMotors(-speed,speed)
         else:
             self.setMotors(speed,-speed)
-        time.sleep(math.fabs(angle)
+        time.sleep(math.fabs(angle))
         self.setMotors(0,0)
 
     #Go straight ahead
