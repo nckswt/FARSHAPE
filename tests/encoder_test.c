@@ -12,6 +12,5 @@ int main() {
   
   // test getting encoder 2 position
   cout << "Encoder 2:" << endl << "Address: " << ENCODER2_ADDRESS << endl << "Position: " << getEncoderPosition(ENCODER2_ADDRESS) << endl;
-  getEncoderPosition(ENCODER2_ADDRESS);
   
 }
