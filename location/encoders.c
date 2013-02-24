@@ -27,7 +27,7 @@ uint8_t* getEncoderPosition( int encoderAddress ) {
   
   uint8_t *position = new uint8_t[6];
    position[0] = i2c_read( encoderAddress, ROTATION_0 );
-   position[1] = i2c_read( encoderAddress, ROTATION_1 )
+   position[1] = i2c_read( encoderAddress, ROTATION_1 );
    position[2] = i2c_read( encoderAddress, ROTATION_2 );
    position[3] = i2c_read( encoderAddress, ROTATION_3 );
    position[4] = i2c_read( encoderAddress, ROTATION_4 );
