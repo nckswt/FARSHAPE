@@ -15,20 +15,24 @@
 #define ROTATION_1 0x40
 #define ROTATION_2 0x43
 #define ROTATION_3 0x42
+#define ROTATION_4 0x44
+#define ROTATION_5 0x45
 #define ROTATION_BYTES 4
 
 #define SIGNED_VELOCITY_0 0x3E
 #define SIGNED_VELOCITY_1 0x3F
 #define SIGNED_VELOCITY_BYTES 2
 
-uint32_t getEncoderPosition( int encoderAddress ) {
+uint64_t getEncoderPosition( int encoderAddress ) {
   
-  uint32_t position;
+  uint64_t position;
   position = 0xffffffff;
   position = position & ( i2c_read( encoderAddress, ROTATION_0 ) << 0 );
   position = position & ( i2c_read( encoderAddress, ROTATION_1 ) << 8 );
   position = position & ( i2c_read( encoderAddress, ROTATION_2 ) << 16);
   position = position & ( i2c_read( encoderAddress, ROTATION_3 ) << 24);
+  position = position & ( i2c_read( encoderAddress, ROTATION_4 ) << 32);
+  position = position & ( i2c_read( encoderAddress, ROTATION_5 ) << 40);
 
   return position;
   
