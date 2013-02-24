@@ -107,7 +107,7 @@ void Motors::brake(){
 int main(){
     Motors motors;
     double timestep = 0.1; // seconds
-
+/*
     // test motor commands
     for (int i = 0; i<50; i++){
         motors.goForward(i);
@@ -155,12 +155,20 @@ int main(){
     motors.goBackward(30);
     usleep(MICROSEC2SEC *1);
     motors.brake();
-
+*/
     //move distance and angle
+<<<<<<< HEAD
     motors.goDistance(15,1);
     motors.goDistance(15,-1);
     motors.rotateAngle(15,3);
     motors.rotateAngle(15,-3);
+=======
+    motors.goDistance(20,1);
+    motors.goDistance(20,-1);
+    motors.rotateAngle(20,1);
+    motors.rotateAngle(20,-2);
+    motors.rotateAngle(20,1);
+>>>>>>> 24bb72962ca902a7675282f099c18f5e91550bda
 
     return 0;
 }
