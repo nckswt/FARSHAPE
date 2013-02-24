@@ -23,16 +23,21 @@
 #define SIGNED_VELOCITY_1 0x3F
 #define SIGNED_VELOCITY_BYTES 2
 
-uint64_t getEncoderPosition( int encoderAddress ) {
+uint8_t* getEncoderPosition( int encoderAddress ) {
   
-  uint64_t position;
-  position = 0x0000ffffffffffff;
-  position = position & ( i2c_read( encoderAddress, ROTATION_0 ) << 0 );
-  position = position & ( i2c_read( encoderAddress, ROTATION_1 ) << 8 );
-  position = position & ( i2c_read( encoderAddress, ROTATION_2 ) << 16);
-  position = position & ( i2c_read( encoderAddress, ROTATION_3 ) << 24);
-  position = position & ( i2c_read( encoderAddress, ROTATION_4 ) << 32);
-  position = position & ( i2c_read( encoderAddress, ROTATION_5 ) << 40);
+  uint8_t position[6];
+  position[0] = 0x44;
+  position[1] = 0x44;
+  position[2] = 0x44;
+  position[3] = 0x44;
+  position[4] = 0x44;
+  position[5] = 0x44;
+//   position = position & ( i2c_read( encoderAddress, ROTATION_0 ) << 0 );
+//   position = position & ( i2c_read( encoderAddress, ROTATION_1 ) << 8 );
+//   position = position & ( i2c_read( encoderAddress, ROTATION_2 ) << 16);
+//   position = position & ( i2c_read( encoderAddress, ROTATION_3 ) << 24);
+//   position = position & ( i2c_read( encoderAddress, ROTATION_4 ) << 32);
+//   position = position & ( i2c_read( encoderAddress, ROTATION_5 ) << 40);
 
   return position;
   
