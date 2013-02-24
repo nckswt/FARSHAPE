@@ -26,7 +26,7 @@
 uint64_t getEncoderPosition( int encoderAddress ) {
   
   uint64_t position;
-  position = 0xffffffff;
+  position = 0x0000ffffffffffff;
   position = position & ( i2c_read( encoderAddress, ROTATION_0 ) << 0 );
   position = position & ( i2c_read( encoderAddress, ROTATION_1 ) << 8 );
   position = position & ( i2c_read( encoderAddress, ROTATION_2 ) << 16);
