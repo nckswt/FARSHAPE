@@ -3,7 +3,7 @@
 #include <stdint.h>
 using namespace std;
 
-uint64_t getpos( uint8* posi ) {
+uint64_t getpos( uint8_t* posi ) {
   uint64_t pos = 0;
   for ( int i=0; i < 6; i++ ) {
     pos += *(posi+i);
