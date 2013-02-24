@@ -16,9 +16,9 @@
 #define ROTATION_1 0x40
 #define ROTATION_2 0x43
 #define ROTATION_3 0x42
-#define ROTATION_4 0x46
-#define ROTATION_5 0x47
-#define ROTATION_BYTES 4
+#define ROTATION_4 0x47
+#define ROTATION_5 0x46
+#define ROTATION_BYTES 6
 
 #define SIGNED_VELOCITY_0 0x3E
 #define SIGNED_VELOCITY_1 0x3F
