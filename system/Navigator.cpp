@@ -45,11 +45,8 @@ Cart3DCoord Navigator::mapStructurePosition(){
 
 SphCoord Navigator::cart2spherical(Cart3DCoord coord){
 	SphCoord spherical;
-    //r is distance to object
     spherical.r = sqrt(pow(coord.x,2) + pow(coord.y,2) + pow(coord.z,2));
-    //theta is lateral angle
     spherical.theta = acos(coord.z/spherical.r) * 180.0 / PI; 
-    //phi is elevation angle
     spherical.phi = atan2(coord.y,coord.x) * 180.0 / PI;
     return spherical;
 }

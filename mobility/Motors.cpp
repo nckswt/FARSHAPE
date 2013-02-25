@@ -80,7 +80,9 @@ void Motors::brake(){
     this->setMotors(0,0);
 }
 
-/*int main(){
+/*TESTING
+
+int main(){
     Motors motors;
     double timestep = 0.1; // seconds
 

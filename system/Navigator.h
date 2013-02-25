@@ -4,9 +4,9 @@
 #include <string>
 
 struct SphCoord{
-	double r;
-	double theta;
-	double phi;
+	double r; //distance to object
+	double theta; //lateral angle
+	double phi; //elevation angle
 };
 
 struct Cart3DCoord{
