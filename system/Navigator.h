@@ -1,17 +1,15 @@
-#import <string>
+#ifndef _NAVIGATOR_H_
+#define _NAVIGATOR_H_
 
-struct SphericalCoordinate{
+#include <string>
+
+struct SphCoord{
 	double r;
 	double theta;
 	double phi;
 };
 
-struct Cart2D{
-	double x;
-	double y;
-};
-
-struct Cart3D{
+struct Cart3DCoord{
 	double x;
 	double y;
 	double z;
@@ -28,19 +26,22 @@ class Navigator{
 public:
 	Navigator();
 	~Navigator();
-	void identifyTarget(string);
-	Cart3D* identifyObjects();
-	Cart3D* mapObjectPositions();
-	Cart3D mapStructurePosition();
-	SphericalCoordinate rect2spherical(Cart3D);
+	void identifyTarget(std::string imageFile);
+	Cart3DCoord* identifyObjects();
+	Cart3DCoord* mapObjectPositions();
+	Cart3DCoord mapStructurePosition();
+	SphCoord cart2spherical(Cart3DCoord position);
+	Cart3DCoord getTargetPosition();
 
 private:
 	ZoneEdges mapZoneEdges();
 
 	ZoneEdges zoneEdges;
-	Cart3D* otherRobotPositions;
-	Cart3D* memberPositions;
-	Cart3D structurePosition;
-	Cart3D targetPosition;
+	Cart3DCoord* otherRobotPositions;
+	Cart3DCoord* memberPositions;
+	Cart3DCoord structurePosition;
+	Cart3DCoord targetPosition;
 	int targetType;
 };
+
+#endif

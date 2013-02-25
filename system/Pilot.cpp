@@ -1,5 +1,6 @@
-Pilot::Pilot(){
+#include "Pilot.h"
 
+Pilot::Pilot(){
 }
 
 Pilot::~Pilot(){
@@ -7,22 +8,31 @@ Pilot::~Pilot(){
 }
 
 void Pilot::executePlan(){
-	this.releaseCondition = 1;
-	while (checkReleaseCondition());
-		if (!this.planIsSetup)
-			this.setUpPlan();
+	this->releaseCondition = 1;
+	while (checkReleaseCondition()){
+		if (!this->planIsSetup)
+			this->updatePlan();
 
-		for(std::vector<Behaviour>::iterator it = plan.begin(); it != plan.end(); ++it) {
-			//execute function
-			}
+		//<>TODO: REMOVE STUB!----------------------
+		behaviours.trackTarget();
+		//------------------------------------------
+		// for(std::vector<Behaviours>::iterator it = plan.begin(); it != plan.end(); ++it) {
+		// 	}
+	}
 
 }
 
 void Pilot::updatePlan(){
 	//set plan to track object
+
+	//<>TODO: REMOVE STUB!----------------------
+	behaviours.setupActuatorsAndSensors();
+	//------------------------------------------
+	this->planIsSetup = 1;
 }
 
 bool Pilot::checkReleaseCondition(){
-	//
-
+	//<>TODO: REMOVE STUB!----------------------
+	return 1;
+	//------------------------------------------
 }

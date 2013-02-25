@@ -1,3 +1,10 @@
+#include "Navigator.h"
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+
+#define PI 3.14159265
+
 Navigator::Navigator(){
 
 }
@@ -6,7 +13,7 @@ Navigator::~Navigator(){
 
 }
 
-void Navigator::identifyTarget(string){
+void Navigator::identifyTarget(std::string imageFile){
 	//open filename
 	//get x, z coordinates
 	//close filename
@@ -15,35 +22,38 @@ void Navigator::identifyTarget(string){
 	//get y coordinate
 
 	//set self.targetPosition
+
 	//<>TODO: REMOVE THIS STUB----------------------------
-	double randx = randint(3,10);
-	double randy = randint(3,10);
-	double randz = randint(0,3);
-	Cart3D STUBPOSITION = {randx, randy, randz};
-	STUBSPHERICAL = rectangular2spherical(STUBPOSITION);
-	this.targetPosition = STUBSPHERICAL;
+	srand(time(NULL));
+	this->targetPosition.x = rand() % 7 + 3;
+	this->targetPosition.y = rand() % 7 + 3;
+	this->targetPosition.z = rand() % 3;
 	//----------------------------------------------------
 }
 
-Cart3D* Navigator::identifyObjects(){
+Cart3DCoord* Navigator::identifyObjects(){
 
 }
 
-Cart3D* Navigator::mapObjectPositions(){
+Cart3DCoord* Navigator::mapObjectPositions(){
 
 }
 
-Cart3D Navigator::mapStructurePosition(){
+Cart3DCoord Navigator::mapStructurePosition(){
 
 }
 
-SphericalCoordinate Navigator::rect2spherical(Cart3D){
-	SphericalCoordinate spherical;
+SphCoord Navigator::cart2spherical(Cart3DCoord coord){
+	SphCoord spherical;
     //r is distance to object
-    spherical.r = math.sqrt(x^2 + y^2 + z^2);
+    spherical.r = sqrt(pow(coord.x,2) + pow(coord.y,2) + pow(coord.z,2));
     //theta is lateral angle
-    spherical.theta = math.degrees(math.acos(z/r)); 
+    spherical.theta = acos(coord.z/spherical.r) * 180.0 / PI; 
     //phi is elevation angle
-    spherical.phi = math.degrees(math.atan(y/x));
-    return spherical
+    spherical.phi = atan2(coord.y,coord.x) * 180.0 / PI;
+    return spherical;
+}
+
+Cart3DCoord Navigator::getTargetPosition(){
+	return this->targetPosition;
 }
