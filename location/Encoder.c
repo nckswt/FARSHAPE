@@ -1,6 +1,3 @@
-#include "../system/i2c.h"
-#include <unistd.h>
-#include <stdint.h>
 #include "encoders.h"
 
 Encoder::Encoder( int chipAddress, bool finalEncoder, int bus ) {

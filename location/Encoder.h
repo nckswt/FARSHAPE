@@ -1,3 +1,7 @@
+#include "../system/i2c.h"
+#include <unistd.h>
+#include <stdint.h>
+
 #define ENCODER1_ADDRESS 0x20
 #define ENCODER2_ADDRESS 0x22
 #define ENCODER_DEFAULT_ADDRESS 0x30
@@ -19,13 +23,14 @@
 #define SIGNED_VELOCITY_1 0x3F
 #define SIGNED_VELOCITY_BYTES 2
 
+
 class Encoder {
 private:
-  uint64_t getEncoderPosition();
   uint8_t chipAddress;
   bool finalEncoder;
   uint8_t bus;
 public:
+  uint64_t getEncoderPosition();
   Encoder( int chipAddress , bool finalEncoder, int bus = 1 );
   ~Encoder( );
   float getEncoderDistance();
