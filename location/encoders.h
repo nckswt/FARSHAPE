@@ -24,6 +24,7 @@ private:
   uint64_t getEncoderPosition();
   uint8_t chipAddress;
   bool finalEncoder;
+  uint8_t bus;
 public:
   Encoder( int chipAddress , bool finalEncoder, int bus = 1 );
   ~Encoder( );

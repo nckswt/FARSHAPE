@@ -4,17 +4,6 @@
 #include <time.h>
 using namespace std;
 
-<<<<<<< .merge_file_aXJAzT
-=======
-uint64_t getpos( uint8_t* posi ) {
-  uint64_t pos = 0;
-  for ( int i=0; i < 6; i++ ) {
-    pos += *(posi+i);
-  }
-  return pos;
-}
-
->>>>>>> .merge_file_eu8sXS
 int main() {
   
   // test setting up of encoders
