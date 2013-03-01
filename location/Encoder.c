@@ -1,4 +1,4 @@
-#include "encoders.h"
+#include "Encoder.h"
 
 Encoder::Encoder( int chipAddress, bool finalEncoder, int bus ) {
   this->chipAddress = chipAddress;
