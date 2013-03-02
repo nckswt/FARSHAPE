@@ -2,13 +2,15 @@
 #include "Encoder.h"
 #include <iostream>
 
-Encoder::Encoder() { }
+Encoder::Encoder() { 
+  
+}
 
-Encoder::Encoder( int chipAddress, bool finalEncoder, int bus ) {
+Encoder::Encoder( int chipAddress, bool finalEncoder, bool reversed, int bus ) {
   this->chipAddress = chipAddress;
-  int a = chipAddress << 1;
-  std::cout << a << std::endl;
-  i2c_write( ENCODER_DEFAULT_ADDRESS, CHANGE_DEVICE_ADDRESS, a );
+  this->reversed = reversed;
+  //
+  i2c_write( ENCODER_DEFAULT_ADDRESS, CHANGE_DEVICE_ADDRESS, chipAddress << 1 );
   if (!finalEncoder)
     i2c_write_probe( ENCODER1_ADDRESS, 	DISABLE_TERMINATOR);
   this->bus = bus;
@@ -28,8 +30,10 @@ uint64_t Encoder::getEncoderPosition() {
   
   for ( int i=5; i >= 0; i-- ) {
     p = (p << 8) + position[i];
-//     std::cout << "Byte " << i << " is " << position[i] << std::endl;
   }
+  
+  if (this->reversed)
+    p=281474976710655-p;
   
   return p;
 

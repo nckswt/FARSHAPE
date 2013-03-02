@@ -1,5 +1,6 @@
 #include "Behaviours.h"
 
+
 Behaviours::Behaviours(){
 }
 
@@ -14,16 +15,15 @@ void Behaviours::setupActuatorsAndSensors(){
 
 //<>TODO: GET DISTANCE FROM ENCODERS
 //move a set distance (positive for forward, negative for backward)
-void Behaviours::goDistance(double targetDistance, int speed = 30){
-    double initialPosition, currentPosition;
-    initialPosition = currentPosition = 0;
-    encoders.setLinearPosition();
+void Behaviours::goDistance(double targetDistance, int speed = 30, Location pos){
+    int initialPosition;
+    
     if (targetDistance > 0){
         motors.goForward();
     } else {
         motors.goBackward();
     }
-    while(abs(currentPosition - initialPosition) < abs(targetDistance))
+    while()
     	currentPosition = encoders.getLinearPositionDelta();
     motors.brake();
 }

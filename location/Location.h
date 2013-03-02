@@ -1,12 +1,14 @@
+#ifndef _LOCATION_H
+#define _LOCATION_H
 #include "Encoder.h"
 
 class Location {
 private:
-  signed float x;
-  signed float y;
-  signed float xPos;
-  signed float yPos;
-  signed float rotation;
+  float x;
+  float y;
+  float xPos;
+  float yPos;
+  float rotation;
   Encoder leftEncoder;
   Encoder rightEncoder;
   uint64_t leftEncoderPos;
@@ -16,6 +18,9 @@ public:
   Location ();
   ~Location ();
   void updateLocation();
+  float convertToCm( int bits );
+  float convertToBits ( float cm );
   int getX();
   int getY();
 };
+#endif

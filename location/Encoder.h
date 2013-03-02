@@ -1,3 +1,5 @@
+#ifndef _ENCODER_H_
+#define _ENCODER_H_
 #include <unistd.h>
 #include <stdint.h>
 
@@ -28,11 +30,13 @@ private:
   uint8_t chipAddress;
   bool finalEncoder;
   uint8_t bus;
+  bool reversed;
 public:
   uint64_t getEncoderPosition();
-  Encoder( int chipAddress , bool finalEncoder, int bus = 1 );
+  Encoder( int chipAddress , bool finalEncoder, bool reversed, int bus = 1 );
   Encoder();
   ~Encoder( );
   float getEncoderDistance();
   int getAddress();
 };
+#endif

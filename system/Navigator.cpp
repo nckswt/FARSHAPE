@@ -1,12 +1,12 @@
-#include "Navigator.h"
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
-
+#include "Navigator.h"
+#include "../location/Encoder.c"
 #define PI 3.14159265
 
 Navigator::Navigator(){
-
+  
 }
 
 Navigator::~Navigator(){

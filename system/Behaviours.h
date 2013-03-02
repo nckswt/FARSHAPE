@@ -5,7 +5,7 @@
 //#include "Sensors.h"
 #include "Navigator.h"
 #include "../mobility/Motors.h"
-//#include "../locaton/Encoders.h"
+#include "../location/Location.h"
 
 
 //Behaviours are atomic commands that each robot can perform. A behaviour list is a sequential form of Behaviours
@@ -16,7 +16,7 @@ public:
 
 	//Atomic Behaviours
 	void setupActuatorsAndSensors();
-	void goDistance(double targetDistance, int speed);
+	void goDistance(double targetDistance, int speed, Location pos);
 	void rotateAngle(double targetAngle, int speed);
 	Cart3DCoord findTarget();
 	void moveToTarget(SphCoord targetPosition);

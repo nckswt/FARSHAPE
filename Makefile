@@ -13,6 +13,10 @@ ENCODER_TEST_OBJS=$(I2C_OBJECTS) location/Encoder.o
 encoder_test: tests/encoder_test.c $(ENCODER_TEST_OBJS)
 	$(CC) tests/encoder_test.c $(ENCODER_TEST_OBJS) -o tests/encoder_test.exe
 
+DRIVE_DISTANCE_TEST_OBJS=$(I2C_OBJECTS) location/Encoder.o location/Location.o system/Behaviours.o
+drive_distance_test: tests/drive_distance_test.cpp $(DRIVE_DISTANCE_TEST_OBJS)
+	$(CC) tests/drive_distance_test.cpp $(DRIVE_DISTANCE_TEST_OBJS) -o tests/drive_distance_test.exe
+
 clean:
 	rm ./*/*.o
 	rm ./*/*.exe

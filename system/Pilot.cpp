@@ -1,4 +1,6 @@
 #include "Pilot.h"
+#include "../location/Encoder.h"
+#include "Behaviour.h"
 
 Pilot::Pilot(){
 }
