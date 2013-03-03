@@ -36,8 +36,6 @@ public:
   Encoder( int chipAddress , bool finalEncoder, bool reversed, int bus = 1 );
   Encoder();
   ~Encoder( );
-  float getEncoderDistance();
-  int getAddress();
 };
 
 float convertToCm (uint64_t bits);
