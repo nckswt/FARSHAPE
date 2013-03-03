@@ -32,11 +32,14 @@ private:
   uint8_t bus;
   bool reversed;
 public:
-  uint64_t getEncoderPosition();
+  uint64_t getPosition();
   Encoder( int chipAddress , bool finalEncoder, bool reversed, int bus = 1 );
   Encoder();
   ~Encoder( );
   float getEncoderDistance();
   int getAddress();
 };
+
+float convertToCm (uint64_t bits);
+
 #endif

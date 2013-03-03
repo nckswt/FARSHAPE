@@ -8,28 +8,26 @@
 
 #define MICROSEC2SEC 1000000
 
-using namespace std;
-
 Motors::Motors(){
     leftMotor = '2'; //pin 2 in servoblaster, GPIO 18 and Pin P1-12 on the RPi
     rightMotor = '1'; //pin 1 in servoblaster, GPIO 17 and Pin P1-11 on the RPi
-    if (0 == system("pidof 0x servod > /dev/null")){
-        cout << "ServoBlaster Daemon is already running!" << endl;
-    } else{
-        system("sudo ./ServoBlaster/servod");
-    }
+    //if (0 == system("pidof 0x servod > /dev/null")){
+    //    std::cout << "ServoBlaster Daemon is already running!" << std::endl;
+//     } else{
+//         system("sudo ./ServoBlaster/servod");
+//     }
 }
 
 Motors::~Motors(){
-    if (0 == system("pidof 0x servod > /dev/null")){
-        system("sudo killall servod");
-        cout << "ServoBlaster Daemon has been shut down!" << endl;
-    }   
+//     if (0 == system("pidof 0x servod > /dev/null")){
+//         system("sudo killall servod");
+//         cout << "ServoBlaster Daemon has been shut down!" << endl;
+//     }   
 }
 
 void Motors::setMotors(int leftMotorSpeed, int rightMotorSpeed){
-    ofstream f;
-    f.open("/dev/servoblaster", ios::trunc | ios::out);
+    std::ofstream f;
+    f.open("/dev/servoblaster", std::ios::trunc | std::ios::out);
     f << this->leftMotor << "=" << 150 + leftMotorSpeed << '\n';
     f << this->rightMotor << "=" << 150 - rightMotorSpeed << '\n';
     f.close();

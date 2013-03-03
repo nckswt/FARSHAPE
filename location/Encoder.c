@@ -2,6 +2,9 @@
 #include "Encoder.h"
 #include <iostream>
 
+#define BITS_TO_CM 0.10178119056 // cm/bit
+#define CM_TO_BITS 9.82499806173 // bits/cm 
+
 Encoder::Encoder() { 
   
 }
@@ -16,7 +19,7 @@ Encoder::Encoder( int chipAddress, bool finalEncoder, bool reversed, int bus ) {
   this->bus = bus;
 }
 
-uint64_t Encoder::getEncoderPosition() {
+uint64_t Encoder::getPosition() {
   
   int position[6];
   position[0] = i2c_read( this->chipAddress, ROTATION_0 );
@@ -32,6 +35,7 @@ uint64_t Encoder::getEncoderPosition() {
     p = (p << 8) + position[i];
   }
   
+  // TODO: smarter thing to do here?
   if (this->reversed)
     p=281474976710655-p;
   
@@ -44,4 +48,8 @@ int Encoder::getAddress() {
 }
 
 Encoder::~Encoder() {
+}
+
+float convertToCm( uint64_t bits ) {
+  return float( bits*BITS_TO_CM );
 }

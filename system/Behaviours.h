@@ -16,7 +16,7 @@ public:
 
 	//Atomic Behaviours
 	void setupActuatorsAndSensors();
-	void goDistance(double targetDistance, int speed, Location pos);
+	void goDistance(double targetDistance, int speed);
 	void rotateAngle(double targetAngle, int speed);
 	Cart3DCoord findTarget();
 	void moveToTarget(SphCoord targetPosition);
