@@ -38,7 +38,7 @@ private:
   // helper functions
   void _assert ( int flag );
   void _write ( int location, int data );
-  void _read ( int location );
+  uint8_t _read ( int location );
   
 public:
   

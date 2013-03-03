@@ -79,7 +79,7 @@ void Encoder::_write( int location, int data ) {
   i2c_write( this->chipAddress, location, data );
 }
 
-void Encoder::_read( int location ) {
+uint8_t Encoder::_read( int location ) {
   i2c_read ( this->chipAddress, location );
 }
 
