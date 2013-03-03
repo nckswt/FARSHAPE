@@ -80,7 +80,7 @@ void Encoder::_write( int location, int data ) {
 }
 
 uint8_t Encoder::_read( int location ) {
-  i2c_read ( this->chipAddress, location );
+  return i2c_read ( this->chipAddress, location );
 }
 
 
