@@ -7,6 +7,14 @@
 
 volatile Navigator nav;
 
+
+/** Constructor for Navigator object
+ * 
+ * Sets up all stuff needed to constantly update the robot's own position
+ * and to communicate that position to the rest of the robots. It sets up
+ * a timer which continuously reads from the encoders and passes a message
+ * to other robots via ROS. 
+ * */
 Navigator::Navigator(){
   Encoder leftEncoder ( ENCODER1_ADDRESS , false, false );
   Encoder rightEncoder ( ENCODER2_ADDRESS , true, true );

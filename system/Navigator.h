@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include "../location/Encoder.h"
 
+/*
 struct SphCoord{
   double r; //distance to object
   double theta; //lateral angle
@@ -24,11 +25,39 @@ struct ZoneEdges{
   double west;
 };
 
+*/
+
+struct xyz {
+  float x;
+  float y;
+  float z;
+};
+struct robot {
+  int id; // is an enum
+  xyz location;
+  int status; // is an enum
+};
+struct part {
+  int type; // is an enum
+  xyz location;
+  part* next;
+};
+
 class Navigator{
+private:
+  xyz currentPos;
+  robot robots[3];
+  part* parts;
+  // member encoders
+  Encoder leftEncoder;
+  Encoder rightEncoder;	
+
 public:
   Navigator();
   ~Navigator();
 
+  void publish(); //to other robots
+  
   // image stuff
 
   // not applicable:
@@ -37,7 +66,7 @@ public:
   // SphCoord cart2spherical(Cart3DCoord position);
   // Cart3DCoord getTargetPosition();	
 
-
+/*
 private:
   
   // natural members of the object

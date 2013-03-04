@@ -1,12 +1,71 @@
 #include "Pilot.h"
 #include "../location/Encoder.h"
 #include "Behaviour.h"
-#include "../mobility/Motors.cpp"
+#include "../mobility/Motor.h"
 
-volatile Pilot pilot();
-volatile Motors motors();
 
 Pilot::Pilot(){ 
+
+  this->leftMotor = Motor(2, true, "/dev/servoblaster");
+  this->rightMotor = Motor(1, false, "/dev/servoblaster");
+  
+}
+
+void Pilot::moveTo ( float x, float y ) {
+  // not yet implemented
+}
+
+/** Rotates the robot to a specific theta relative to absolute x-y
+ * 
+ * @param theta (Absolute) Rotation angle in degrees
+ * */
+void Pilot::rotate( int theta ) {
+  // not yet implemented
+}
+
+/** Sets the navigator 
+ * 
+ * @param n The navigator reference to pass to the pilot
+ * */
+void Pilot::setNavigator( Navigator* n ) {
+  
+/** Helper function to go a specific distance
+ * 
+ * @param distance the distance to travel
+ * */
+void Pilot::_goDistance( float distance ) {
+  
+  _resetEncoders();
+  
+  this->leftMotor->setSpeed( 100 );
+  this->rightMotor->setSpeed( 100 );
+  
+  bool exit = false;
+  
+  while (!exit) {
+    if ( _getDistance(this->n->leftEncoder) < 
+
+/** Reset encoder positions
+ * @todo Implement error handling for when Navigator object is not set
+ **/      
+void Pilot::_resetEncoders() {
+  if (this->n == NULL) {
+    return;
+  }
+
+  this->n->leftEncoder->resetPosition();
+  this->n->rightEncoder->resetPosition();
+
+}
+
+/** Gets encoder position and converts to distance
+ * 
+ * @param enc The encoder to pass
+ * 
+ * @return distance in cm
+ * */
+float Pilot::_getDistance( Encoder* enc ) {
+  return convertToCm( enc->getPosition() );
 }
 
 Pilot::~Pilot(){
