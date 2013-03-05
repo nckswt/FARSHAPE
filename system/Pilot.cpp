@@ -1,13 +1,13 @@
 #include "Pilot.h"
 #include "../location/Encoder.h"
-#include "Behaviour.h"
-#include "../mobility/Motor.h"
+// #include "Behaviour.h"
 
 
 Pilot::Pilot(){ 
 
-  this->leftMotor = Motor(2, true, "/dev/servoblaster");
-  this->rightMotor = Motor(1, false, "/dev/servoblaster");
+  const char* c = "/dev/servoblaster";
+  Motor leftMotor(2, true, "/dev/servoblaster");
+  Motor rightMotor(1, false, "/dev/servoblaster");
   
 }
 
@@ -29,6 +29,9 @@ void Pilot::rotate( int theta ) {
  * */
 void Pilot::setNavigator( Navigator* n ) {
   
+  this->n = n;
+
+}
 /** Helper function to go a specific distance
  * 
  * @param distance the distance to travel
@@ -37,13 +40,17 @@ void Pilot::_goDistance( float distance ) {
   
   _resetEncoders();
   
-  this->leftMotor->setSpeed( 100 );
-  this->rightMotor->setSpeed( 100 );
+  this->leftMotor.setSpeed( 100 );
+  this->rightMotor.setSpeed( 100 );
   
   bool exit = false;
   
   while (!exit) {
-    if ( _getDistance(this->n->leftEncoder) < 
+    if ( _getDistance(this->n->leftEncoder) < distance )
+      exit = true;
+  }
+  
+}
 
 /** Reset encoder positions
  * @todo Implement error handling for when Navigator object is not set
@@ -53,8 +60,8 @@ void Pilot::_resetEncoders() {
     return;
   }
 
-  this->n->leftEncoder->resetPosition();
-  this->n->rightEncoder->resetPosition();
+  this->n->leftEncoder.resetPosition();
+  this->n->rightEncoder.resetPosition();
 
 }
 
@@ -64,8 +71,8 @@ void Pilot::_resetEncoders() {
  * 
  * @return distance in cm
  * */
-float Pilot::_getDistance( Encoder* enc ) {
-  return convertToCm( enc->getPosition() );
+float Pilot::_getDistance( Encoder enc ) {
+  return convertToCm( enc.getPosition() );
 }
 
 Pilot::~Pilot(){

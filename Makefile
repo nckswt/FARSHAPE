@@ -1,7 +1,8 @@
 CC      := g++
 CFLAGS  ?= -O2
 CFLAGS  += -Wall
-CXXFLAGS= -O2 -Wall
+CXXFLAGS = -O2 -Wall
+
 I2C_OBJECTS=system/i2c.o system/i2cbusses.o
 MOTORS_OBJ=mobility/Motors.o
 
@@ -19,6 +20,9 @@ FUCKYOU_TEST_OBJS=$(I2C_OBJECTS) location/Encoder.o $(MOTORS_OBJ)
 fuckyou_test: tests/fuckyou.cpp $(FUCKYOU_TEST_OBJS)
 	$(CC) tests/fuckyou.cpp -lpthread $(FUCKYOU_TEST_OBJS) -o tests/fuckyou.exe
 
+DRIVER_TEST_OBJS=$(ENCODER_TEST_OBJS) system/Pilot.o system/Navigator.o mobility/Motor.o
+driver_test: tests/driver_test.cpp $(DRIVER_TEST_OBJS) 
+	$(CC) tests/driver_test.cpp $(DRIVER_TEST_OBJS) -o tests/driver_test.exe
 clean:
 	rm ./*/*.o
 	rm ./*/*.exe

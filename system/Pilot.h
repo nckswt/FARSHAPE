@@ -1,5 +1,7 @@
 #ifndef _PILOT_H_
 #define _PILOT_H_
+#include "../mobility/Motor.h"
+#include "Navigator.h"
 
 //The pilot executes the mission plan in managable steps by choosing elements from a behaviour list
 class Pilot {
@@ -8,7 +10,7 @@ private:
   Motor rightMotor;
   void _goDistance( float distance );
   // void _rotate( int theta );
-  float _getDistance();
+  float _getDistance( Encoder enc );
   void _resetEncoders();
   Navigator* n;
 public:

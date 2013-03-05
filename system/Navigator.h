@@ -49,13 +49,16 @@ private:
   robot robots[3];
   part* parts;
   // member encoders
+  void _readEncoders();
+  uint64_t leftPos;
+  uint64_t rightPos;
+public:
   Encoder leftEncoder;
   Encoder rightEncoder;	
-
-public:
   Navigator();
   ~Navigator();
 
+  uint64_t getLeft();
   void publish(); //to other robots
   
   // image stuff
