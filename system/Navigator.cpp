@@ -20,8 +20,11 @@
  * */
 Navigator::Navigator(){
   
-  Encoder leftEncoder ( ENCODER1_ADDRESS , false, false );
-  Encoder rightEncoder ( ENCODER2_ADDRESS , true, true );
+  Encoder leftEncoder;
+  Encoder rightEncoder;
+  
+  leftEncoder = Encoder ( ENCODER1_ADDRESS , false, false );
+  rightEncoder= Encoder ( ENCODER2_ADDRESS , true, true );
   
   leftPos = 0;
   rightPos = 0;

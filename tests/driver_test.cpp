@@ -8,9 +8,9 @@ int main () {
   
   Navigator n;
   
-  Pilot p;
+  //Pilot p;
   
-  p.setNavigator(&n);
+  //p.setNavigator(&n);
   
   while (1) {
     std::cout << n.getLeft() << std::endl;
