@@ -25,6 +25,8 @@
 #define SIGNED_VELOCITY_1 0x3F
 #define SIGNED_VELOCITY_BYTES 2
 
+#define MAX_VALUE 281474976710655
+
 
 class Encoder {
 private:
