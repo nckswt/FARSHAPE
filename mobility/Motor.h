@@ -5,6 +5,12 @@
 
 #define DEFAULTSPEED 30
 
+#define LEFT_MOTOR_PIN 		2
+#define RIGHT_MOTOR_PIN		1
+
+#define LEFT_MOTOR_REVERSED	true
+#define RIGHT_MOTOR_REVERSED	false
+
 class Motor {
 private:
   uint8_t pin;
