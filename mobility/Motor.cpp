@@ -26,16 +26,21 @@ void Motor::setSpeed( int speed ) {
     return;
   }
   
-  _setValue( (speed / 2) * (this->reversed ? -1 : 1) );
-  
+//   if (this->reversed) {
+//     _setValue( (speed / 2) * -1 );
+//   } else {
+//     _setValue( (speed / 2) );
+//   }
+
+  _setValue( (speed/2) * ( this->reversed ? -1 : 1 ) );
+
 }
 
 void Motor::_setValue ( signed int speed ) {
-  
-    char* c;
+    
     ofstream f;
     f.open(this->ctrl_interface, ios::trunc | ios::out);  
-    f << sprintf( "%i = %i", c, this->pin, speed + 150) << "\n";
+    f << this->pin << '=' << speed+150 << "\n";
     f.close();
     
 }
