@@ -20,6 +20,7 @@ private:
   void _setValue( signed int speed );
 public:
   void setSpeed( int speed );
+  int getSpeed();
   Motor( uint8_t pin, bool reversed, char* ctrl_interface );
   Motor();
   ~Motor();
