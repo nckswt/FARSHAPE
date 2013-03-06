@@ -24,6 +24,7 @@ public:
   Motor( uint8_t pin, bool reversed, char* ctrl_interface );
   Motor();
   ~Motor();
+  void brake();
 };
 
 #endif
