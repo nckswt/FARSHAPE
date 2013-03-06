@@ -84,7 +84,7 @@ private:
   uint64_t rightEncoderPos;
 
   // not implemented
-  /*ZoneEdges mapZoneEdges();
+  ZoneEdges mapZoneEdges();
   ZoneEdges zoneEdges;
   Cart3DCoord* otherRobotPositions;
   Cart3DCoord targetPosition;

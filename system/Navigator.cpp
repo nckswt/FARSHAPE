@@ -18,6 +18,7 @@
  * the other robots on its current position and also receive the current
  * position from the other robots. 
  * */
+
 Navigator::Navigator(){
   
   Encoder leftEncoder;
