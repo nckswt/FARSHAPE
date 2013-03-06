@@ -1,6 +1,10 @@
 #include "Helm.h"
 #include <math.h>
 #include <stdlib.h>
+#include <iostream>
+
+#define MOTOR_SPEED 80
+#define MOTOR_PAUSE 200000
 
 Helm::Helm() {
   
@@ -28,10 +32,12 @@ void Helm::goDistance ( float distance ) {
   resetEncoders();
   
   if (distance > 0) {
-    
-    leftMotor .setSpeed(100);
-    rightMotor.setSpeed(100);
-    
+
+  leftMotor .setSpeed(MOTOR_SPEED);
+  rightMotor.setSpeed(MOTOR_SPEED);
+
+  usleep(MOTOR_PAUSE);
+
     while ( (leftMotor.getSpeed() != 0) || (rightMotor.getSpeed() != 0) ) {
       
       if ( ( convertToCm( leftEncoder .getPosition() ) >= distance ) && (leftMotor .getSpeed() != 0) )
@@ -45,10 +51,12 @@ void Helm::goDistance ( float distance ) {
   }
 
   if (distance < 0) {
-    
-    leftMotor .setSpeed(-100);
-    rightMotor.setSpeed(-100);
-    
+
+    leftMotor .setSpeed(-MOTOR_SPEED);
+    rightMotor.setSpeed(-MOTOR_SPEED);
+
+    usleep(MOTOR_PAUSE);
+
     while ( (leftMotor.getSpeed() != 0) || (rightMotor.getSpeed() != 0) ) {
     
       if ( ( convertToCm( MAX_VALUE - leftEncoder .getPosition() ) >= abs(distance) ) && (leftMotor .getSpeed() != 0) )
@@ -60,12 +68,12 @@ void Helm::goDistance ( float distance ) {
     }
   
   }
-
+  usleep(MOTOR_PAUSE);
 }
 
 float Helm::degToArcLength( float theta ) {
   
-  return 2*M_PI*17.145*theta;
+  return theta*(M_PI/180)*17.145;
   
 }
 
@@ -75,11 +83,10 @@ void Helm::rotate( float theta ) {
   
   if (theta > 0) {
     
-    leftMotor .setSpeed(-100);
-    rightMotor.setSpeed( 100);
-    
+    leftMotor .setSpeed(-MOTOR_SPEED);
+    rightMotor.setSpeed( MOTOR_SPEED);
+    usleep(MOTOR_PAUSE);
     float distance = degToArcLength( theta );
-    
     while ( (leftMotor.getSpeed() != 0) || (rightMotor.getSpeed() != 0) ) {
       
       if ( ( convertToCm( MAX_VALUE - leftEncoder.getPosition() ) >= distance ) && (leftMotor.getSpeed() != 0) )
@@ -95,23 +102,22 @@ void Helm::rotate( float theta ) {
   
   if (theta < 0) {
     
-    leftMotor .setSpeed( 100);
-    rightMotor.setSpeed(-100);
-    
+    leftMotor .setSpeed( MOTOR_SPEED);
+    rightMotor.setSpeed(-MOTOR_SPEED);
+    usleep(MOTOR_PAUSE);
     float distance = degToArcLength( theta );
-    
     while ( (leftMotor.getSpeed() != 0) || (rightMotor.getSpeed() != 0) ) {
       
-      if ( ( convertToCm( leftEncoder.getPosition() ) >= distance ) && (leftMotor.getSpeed() != 0) )
+      if ( ( convertToCm( leftEncoder.getPosition() ) >= abs(distance) ) && (leftMotor.getSpeed() != 0) )
 	leftMotor .setSpeed(0);
       
-      if ( ( convertToCm( MAX_VALUE - rightEncoder.getPosition() ) >= distance ) && (rightMotor.getSpeed() != 0) )
+      if ( ( convertToCm( MAX_VALUE - rightEncoder.getPosition() ) >= abs(distance) ) && (rightMotor.getSpeed() != 0) )
 	rightMotor.setSpeed(0);
     
     }
     
   }
-  
+  usleep(MOTOR_PAUSE);
 }
 
 void Helm::goTo( xyz location ) {

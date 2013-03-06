@@ -28,15 +28,17 @@ void Motor::setSpeed( int speed ) {
 
   currentSpeed = speed;
 
-  _setValue( 150 - (speed/2) * ( this->reversed ? -1 : 1 ) );
+  _setValue( ((speed/2) * ( this->reversed ? -1 : 1 )) );
 
 }
 
 void Motor::_setValue ( signed int speed ) {
-    
+    if (speed == 0)
+        speed = 130;
+    cout << int(this->pin) << '=' << 150-speed << endl;
     ofstream f;
     f.open(this->ctrl_interface, ios::trunc | ios::out);
-    f << int(this->pin) << '=' << speed << "\n";
+    f << int(this->pin) << '=' << 150-speed << "\n";
     f.close();
     
 }
@@ -49,6 +51,6 @@ int Motor::getSpeed() {
 
 void Motor::brake() {
   
-  _setValue( 20 );
+  _setValue( 0 );
   
 }

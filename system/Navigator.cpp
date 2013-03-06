@@ -2,6 +2,7 @@
 #include <time.h>
 #include <math.h>
 #include <sys/time.h>
+#include <iostream>
 #include "Navigator.h"
 #include "../location/Encoder.h"
 #define PI 3.14159265
@@ -30,6 +31,10 @@ Navigator::Navigator(){
   leftPos = 0;
   rightPos = 0;
 
+}
+
+void Navigator::go( ) {
+  std::cout << "hit go " << std::endl;
   while (1) {
     _readEncoders();
     usleep(10000);
@@ -39,8 +44,11 @@ Navigator::Navigator(){
 
 void Navigator::_readEncoders() {
   
-  this->leftPos  = leftEncoder .getPosition();
-  this->rightPos = rightEncoder.getPosition();
+   this->leftPos  = leftEncoder .getPosition();
+   this->rightPos = rightEncoder.getPosition();
+  
+  std::cout << leftEncoder.getPosition() << std::endl;
+  std::cout << rightEncoder.getPosition() << std::endl;
   
 //   int ret;
 //   
