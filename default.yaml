@@ -1,0 +1,13 @@
+port: /dev/ttyUSB0
+rate: 100
+dynamixels: {
+base_rotate: {id: 1, max_speed : 50, write_rate : 100},
+base_pitch1: {id: 2, max_speed : 20, write_rate : 100},
+base_pitch2: {id: 3, max_speed : 20, write_rate : 100},
+arm_pitch1: {id: 4, max_speed : 20, write_rate : 100},
+arm_pitch2: {id: 5, max_speed : 20, write_rate : 100},
+wrist_pitch: {id: 6, max_speed : 20, write_rate : 100},
+wrist_rotate: {id: 7, max_speed : 50, write_rate : 100},
+gripper_width: {id: 8, max_speed : 100, write_rate : 100}
+}
+

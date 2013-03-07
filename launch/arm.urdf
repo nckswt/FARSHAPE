@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<robot name="mikebot">
+        <link name="base_link">
+                <visual>
+                        <geometry>
+                                <cylinder length="0.01" radius="0.09"/>
+                        </geometry>
+                        <origin rpy="0 0 0" xyz="0 0 0"/>
+                        <material name="black">
+                                <color rgba="0 0 0 1"/>
+                        </material>
+                </visual>
+        </link>
+
+        <link name="base">
+                <visual>
+                        <geometry>
+                                <cylinder length="0.075" radius="0.07"/>
+                        </geometry>
+                        <origin rpy="0 0 0" xyz="0 0 0.045"/>
+                        <material name="blue">
+                                <color rgba="0 0 0.8 1"/>
+                        </material>
+                </visual>
+    		<inertial>
+		      <mass value="0.2"/>
+		      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+		</inertial>
+        </link>
+
+        <link name="rotater">
+                <visual>
+                        <geometry>
+                                <cylinder length="0.01" radius="0.05"/>
+                        </geometry>
+                        <origin rpy="0 0 0" xyz="0 0 0.08"/>
+                        <material name="red">
+                                <color rgba="0.8 0 0 1"/>
+                        </material>
+                </visual>
+                <inertial>
+                        <mass value="0.4"/>
+                        <inertia ixx="0.0008633" ixy="0.0" ixz="0.0" iyy="0.0008633" iyz="0.0" izz="0.0017"/>
+                </inertial>
+        </link>
+
+        <link name="arm1">
+                <visual>
+                        <geometry>
+                                <box size="0.17 0.10 0.035"/>
+                        </geometry>
+                        <origin rpy="0 1.57 0" xyz="0 0 0.08"/>
+                        <material name="green">
+                                <color rgba="0 0.8 0 1"/>
+                        </material>
+                </visual>
+    		<inertial>
+		      <mass value="0.2"/>
+		      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+		</inertial>
+        </link>
+
+        <link name="arm2">
+                <visual>
+                        <geometry>
+                                <box size="0.15 0.11 0.03"/>
+                        </geometry>
+                        <origin rpy="0 1.57 0" xyz="0 0 0.08"/>
+                        <material name="blue"/>
+                </visual>
+    		<inertial>
+		      <mass value="0.2"/>
+		      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+		</inertial>
+        </link>
+
+	<link name="wrist">
+		<visual>
+			<geometry>
+				<box size="0.11 0.05 0.04"/>
+			</geometry>
+			<origin rpy="0 1.57 0" xyz="0 0 0.06"/>
+			<material name="red"/>
+		</visual>
+    		<inertial>
+		      <mass value="0.1"/>
+		      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+		</inertial>
+	</link>
+
+	<link name="left_gripper">
+		<visual>
+			<geometry>
+				<box size="0.03 0.02 0.025"/>
+			</geometry>
+			<origin rpy="0 1.57 0" xyz="0 0.025 0.1"/>
+			<material name="black"/>
+		</visual>
+    		<inertial>
+		      <mass value="0.02"/>
+		      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+		</inertial>
+	</link>
+
+        <link name="right_gripper">
+                <visual>
+                        <geometry>
+                                <box size="0.03 0.02 0.025"/>
+                        </geometry>
+                        <origin rpy="0 1.57 0" xyz="0 -0.025 0.10"/>
+                        <material name="black"/>
+                </visual>
+    		<inertial>
+		      <mass value="0.02"/>
+		      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+		</inertial>
+        </link>
+
+
+        <joint name="ground_to_base" type="fixed">
+                <parent link="base_link"/>
+                <child link="base"/>
+                <origin xyz="0 0 0"/>
+        </joint>
+
+        <joint name="base_to_rotater" type="revolute">
+                <parent link="base"/>
+                <child link="rotater"/>
+                <origin xyz="0 0 0.01"/>
+                <limit upper="2.62" lower="-2.62" velocity="1.0" effort="1.0"/>
+                <axis xyz="0 0 1"/>
+        </joint>
+
+        <joint name="rotater_to_arm1" type="revolute">
+                <parent link="rotater"/>
+                <child link="arm1"/>
+                <origin xyz="0 0 0.09" rpy="0 -1.57 0"/>
+                <limit upper="2.62" lower="-2.62" velocity="1.0" effort="1.0"/>
+                <axis xyz="0 1 0"/>
+        </joint>
+
+        <joint name="arm1_to_arm2" type="revolute">
+                <parent link="arm1"/>
+                <child link="arm2"/>
+                <origin xyz="0 0 0.16" rpy="0 1.57 0"/>
+                <limit upper="2.62" lower="-2.62" velocity="1.0" effort="1.0"/>
+                <axis xyz="0 1 0"/>
+        </joint>
+
+	<joint name="arm2_to_wrist" type="revolute">
+		<parent link="arm2"/>
+		<child link="wrist"/>
+		<origin xyz="0 0 0.16"/>
+		<limit upper="2.62" lower="-2.62" velocity="1.0" effort="1.0"/>
+		<axis xyz="0 1 0"/>
+	</joint>
+
+	<joint name="wrist_to_left_gripper" type="revolute">
+		<parent link="wrist"/>
+		<child link="left_gripper"/>
+		<origin xyz="0 0 0.02" rpy="0 0 0"/>
+		<axis xyz="0 0 1"/>
+		<limit effort="10.0" lower="-0.7" upper="0" velocity="1.0"/>
+	</joint>
+
+        <joint name="wrist_to_right_gripper" type="revolute">
+                <parent link="wrist"/>
+                <child link="right_gripper"/>
+                <origin xyz="0 0 0.02" rpy="0 0 0"/>
+		<axis xyz="0 0 1"/>
+                <limit effort="10.0" lower="0" upper="0.7" velocity="1.0"/>
+        </joint>
+
+</robot>
+
+
+
+
+

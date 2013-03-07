@@ -1,0 +1,8 @@
+  <launch>
+    <!-- Actuation Node-->
+    <!-- <param name="robot_description" textfile="arm.urdf"/> -->
+    <node pkg="arbotix_python" type="driver.py" name="Arm">
+    	<rosparam file="$(find arbotix_python)/default.yaml" command="load"/>
+    </node>
+    <node pkg="actuation" type="Actuator" name="Stasera"/>
+  </launch>
