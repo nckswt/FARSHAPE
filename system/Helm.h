@@ -31,15 +31,21 @@ private:
   Encoder rightEncoder;
   Motor leftMotor;
   Motor rightMotor;
+  
+  float rotation; // rotation in degrees from y axis. 
+  
   xyz currentPos;
   robot robots[3];
   part* parts;
   
   void resetEncoders();
   float degToArcLength( float theta );
-  
+  void updateRotation( float theta );
+  void updateXY( float distance );
+//   void* publish(void* ptr);
   void _readEncoders(); // unused for now
   void _setMotors(); // unused for now
+  
   
 public:
   
@@ -48,6 +54,8 @@ public:
   void rotate( float theta );
   Helm();
   ~Helm();
+  xyz getLocation();
+  float getRotation();
   
 };
 #endif

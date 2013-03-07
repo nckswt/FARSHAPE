@@ -2,6 +2,8 @@ CC      := g++
 CFLAGS  ?= -O2
 CFLAGS  += -Wall
 CXXFLAGS = -O2 -Wall
+CXXFLAGS+= -I/opt/ros/fuerte/include/ 
+LDFLAGS=-lpthread
 
 I2C_OBJECTS=system/i2c.o system/i2cbusses.o
 MOTORS_OBJ=mobility/Motors.o
@@ -27,6 +29,9 @@ nav_test: tests/nav_test.cpp $(NAV_TEST_OBJS)
 HELM_TEST_OBJS=$(MOTOR_TEST_OBJS) $(ENCODER_TEST_OBJS) system/Helm.o
 helm_test: tests/helm_test.cpp $(HELM_TEST_OBJS)
 	$(CC) tests/helm_test.cpp $(HELM_TEST_OBJS) -o tests/helm_test.exe
+
+receiver_test: tests/receiver_test.cpp
+	$(CC) tests/receiver_test.cpp -o tests/receiver_test.exe
 
 clean:
 	rm ./*/*.o
