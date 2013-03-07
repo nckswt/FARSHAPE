@@ -52,6 +52,10 @@ public:
   void goTo( xyz location ); // unused for now
   void goDistance( float distance );
   void rotate( float theta );
+  void goForward( int speed );
+  void rotateLeft( int speed );
+  void rotateRight( int speed );
+  void stop();
   Helm();
   ~Helm();
   xyz getLocation();
