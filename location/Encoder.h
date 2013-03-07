@@ -7,6 +7,7 @@
 #define ENCODER2_ADDRESS 0x22
 #define ENCODER_DEFAULT_ADDRESS 0x30
 
+#define RESET_POSITION 0x4A
 #define DISABLE_TERMINATOR 0x4B
 #define ENABLE_TERMINATOR 0x4C
 #define CHANGE_DEVICE_ADDRESS 0x4D
@@ -24,20 +25,32 @@
 #define SIGNED_VELOCITY_1 0x3F
 #define SIGNED_VELOCITY_BYTES 2
 
+#define MAX_VALUE 281474976710655
+
 
 class Encoder {
 private:
+  
+  // members
   uint8_t chipAddress;
   bool finalEncoder;
   uint8_t bus;
   bool reversed;
+  
+  // helper functions
+  void _assert ( int flag );
+  void _write ( int location, int data );
+  uint8_t _read ( int location );
+  
 public:
+  
   uint64_t getPosition();
   Encoder( int chipAddress , bool finalEncoder, bool reversed, int bus = 1 );
   Encoder();
   ~Encoder( );
-  float getEncoderDistance();
+  void resetPosition();
   int getAddress();
+  
 };
 
 float convertToCm (uint64_t bits);
