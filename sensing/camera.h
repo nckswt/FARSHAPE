@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <stdio.h>
-#include <highgui.h>
+#include <opencv/highgui.h>
 #include <opencv2/imgproc/imgproc.hpp>
 
 #define WIDTH 540

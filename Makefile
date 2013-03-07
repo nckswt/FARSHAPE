@@ -33,6 +33,9 @@ helm_test: tests/helm_test.cpp $(HELM_TEST_OBJS)
 receiver_test: tests/receiver_test.cpp
 	$(CC) tests/receiver_test.cpp -o tests/receiver_test.exe
 
+DRIVER_OBJS=$(HELM_TEST_OBJS) sensing/camera.o 
+driver: system/driver.cpp $(DRIVER_OBJS)
+	$(CC) system/driver.cpp $(DRIVER_OBJS) -o driver.exe
 clean:
 	rm ./*/*.o
 	rm ./*/*.exe

@@ -99,6 +99,10 @@ void Helm::goDistance ( float distance ) {
   usleep(MOTOR_PAUSE);
 }
 
+/** Helper function to convert degrees to arc length distance
+ * 
+ * @PARAM theta angle to convert in degrees
+ * */
 float Helm::degToArcLength( float theta ) {
   
   return theta*(M_PI/180)*17.145;

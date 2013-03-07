@@ -3,6 +3,7 @@
 
 Camera::Camera()
 {
+    VideoCapture cap;
     cap.open(0);
     x.clear();
     contours.clear();
