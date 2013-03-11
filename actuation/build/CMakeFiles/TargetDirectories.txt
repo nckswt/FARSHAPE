@@ -1,0 +1,16 @@
+/home/slash/fuerte_workspace/sandbox/actuation/build/CMakeFiles/Actuator.dir
+/home/slash/fuerte_workspace/sandbox/actuation/build/CMakeFiles/ROSBUILD_genmsg_cpp.dir
+/home/slash/fuerte_workspace/sandbox/actuation/build/CMakeFiles/ROSBUILD_genmsg_lisp.dir
+/home/slash/fuerte_workspace/sandbox/actuation/build/CMakeFiles/ROSBUILD_gensrv_cpp.dir
+/home/slash/fuerte_workspace/sandbox/actuation/build/CMakeFiles/ROSBUILD_gensrv_lisp.dir
+/home/slash/fuerte_workspace/sandbox/actuation/build/CMakeFiles/clean-test-results.dir
+/home/slash/fuerte_workspace/sandbox/actuation/build/CMakeFiles/rosbuild_precompile.dir
+/home/slash/fuerte_workspace/sandbox/actuation/build/CMakeFiles/rosbuild_premsgsrvgen.dir
+/home/slash/fuerte_workspace/sandbox/actuation/build/CMakeFiles/rospack_genmsg.dir
+/home/slash/fuerte_workspace/sandbox/actuation/build/CMakeFiles/rospack_genmsg_libexe.dir
+/home/slash/fuerte_workspace/sandbox/actuation/build/CMakeFiles/rospack_gensrv.dir
+/home/slash/fuerte_workspace/sandbox/actuation/build/CMakeFiles/test.dir
+/home/slash/fuerte_workspace/sandbox/actuation/build/CMakeFiles/test-future.dir
+/home/slash/fuerte_workspace/sandbox/actuation/build/CMakeFiles/test-results.dir
+/home/slash/fuerte_workspace/sandbox/actuation/build/CMakeFiles/test-results-run.dir
+/home/slash/fuerte_workspace/sandbox/actuation/build/CMakeFiles/tests.dir
