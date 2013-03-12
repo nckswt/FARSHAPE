@@ -42,13 +42,12 @@ private:
   float degToArcLength( float theta );
   void updateRotation( float theta );
   void updateXY( float distance );
-//   void* publish(void* ptr);
   void _readEncoders(); // unused for now
   void _setMotors(); // unused for now
   
   
 public:
-  
+  void publish();
   void goTo( xyz location ); // unused for now
   void goDistance( float distance );
   void rotate( float theta );
@@ -56,7 +55,7 @@ public:
   void rotateLeft( int speed );
   void rotateRight( int speed );
   void stop();
-  Helm();
+  Helm( bool t = true );
   ~Helm();
   xyz getLocation();
   float getRotation();

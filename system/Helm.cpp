@@ -2,18 +2,27 @@
 #include <math.h>
 #include <stdlib.h>
 #include <iostream>
-// #include "ros/ros.h"
-// #include "std_msgs/String.h"
-// #include <pthread.h>
+#include "ros/ros.h"
+#include "std_msgs/String.h"
+#include <pthread.h>
 
 #include <sstream>
 
 #define MOTOR_SPEED 80
 #define MOTOR_PAUSE 200000
 
-// pthread_t updater;
+pthread_t updater;
 
-Helm::Helm() {
+Helm* tom(false);
+
+void* callHandle(void *data) {
+  
+  tom->publish();
+}
+
+Helm::Helm( bool t ) {
+  
+  if (t) {
   
   leftEncoder  = Encoder ( ENCODER1_ADDRESS, false, false );
   rightEncoder = Encoder ( ENCODER2_ADDRESS, true,  true  );
@@ -25,8 +34,12 @@ Helm::Helm() {
   currentPos.y = 0;
   currentPos.z = 0;
   
-//   pthread_create( &updater, NULL, this->publish, NULL );
+  tom = this;
   
+//   pthread_create( &updater, NULL, this->publish, NULL );
+  char* msg1 = "hello";
+  pthread_create( &updater, NULL, &callHandle, (void*) msg1 );
+  }
 }
 
 void Helm::resetEncoders() {
@@ -194,27 +207,28 @@ void Helm::updateXY( float distance ) {
   
 }
 
-// void* Helm::publish(void* ptr) {
-//   
-//   ros::init(NULL, NULL, "posReporter");
-//   ros::NodeHandle n;
-//   ros::Publisher chatter_pub = n.advertise<std_msgs::String>("posReporter", 1000);
-//   ros::Rate loop_rate(10);
-//   while (ros::ok()) {
-//     std_msgs::String msg;
-//     
-//     std::stringstream ss;
-//     ss << "Current position: X-" << currentPos.x <<
-// 	  " Y-" << currentPos.y << " Z-" << currentPos.z;
-//     msg.data = ss.str();
-//     ROS_INFO("%s", msg.data.c_str());
-//     
-//     chatter_pub.publish(msg);
-//     
-//     loop_rate.sleep();
-//     
-//   }
-// }
+void Helm::publish() {
+  char ** argv;
+  int argc=1;
+  ros::init(argc, argv, "talker");
+  ros::NodeHandle n;
+  ros::Publisher chatter_pub = n.advertise<std_msgs::String>("posReporter", 1000);
+  ros::Rate loop_rate(10);
+  while (ros::ok()) {
+    std_msgs::String msg;
+    
+    std::stringstream ss;
+    ss << "Current position: X-" << currentPos.x <<
+	  " Y-" << currentPos.y << " Z-" << currentPos.z;
+    msg.data = ss.str();
+    ROS_INFO("%s", msg.data.c_str());
+    
+    chatter_pub.publish(msg);
+    
+    loop_rate.sleep();
+    
+  }
+}
 
 void Helm::goTo( xyz location ) {
   
@@ -264,6 +278,6 @@ void Helm::stop() {
   
 Helm::~Helm() {
 
-//   pthread_join( updater );
+  pthread_join( updater, NULL );
   
 }
