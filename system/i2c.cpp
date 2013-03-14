@@ -8,20 +8,6 @@
 #include "i2cbusses.h"
 #include "i2c.h"
 
-void i2c_write( int chipAddress , int dataAddress , int* data, int length, int bus ) {
-  // file handle
-  int i2c_file;
-  // open communications with a specific chip
-  i2c_file = open_chip( bus, chipAddress );
-  /* TODO: add error handling */
-  for (int i=0; i<length; i++) {
-    i2c_smbus_write_byte_data(i2c_file, dataAddress, *(data+i));
-  }
-
-  close(i2c_file);
-  
-}
-
 void i2c_write( int chipAddress , int dataAddress , int data, int bus ) {
   
   // file handle
@@ -33,6 +19,22 @@ void i2c_write( int chipAddress , int dataAddress , int data, int bus ) {
   
   // write the data to a specific address on the abovementioned chip
   i2c_smbus_write_byte_data(i2c_file, dataAddress, data);
+  
+  close(i2c_file);
+  
+}
+
+void i2c_write_word( int chipAddress , int dataAddress , int data, int bus ) {
+  
+  // file handle
+  int i2c_file;
+  
+  // open communications with a specific chip
+  i2c_file = open_chip( bus, chipAddress );
+  /* TODO: add error handling */
+  
+  // write the data to a specific address on the abovementioned chip
+  i2c_smbus_write_word_data(i2c_file, dataAddress, data);
   
   close(i2c_file);
   

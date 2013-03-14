@@ -5,9 +5,9 @@
 #include <stdint.h>
 #include <unistd.h>
 
-void i2c_write( int chipAddress , int dataAddress , int* data, int length = 1, int bus = I2C_BUS );
-void i2c_write( int chipAddress , int dataAddress , int data, int bus = I2C_BUS);
-void i2c_write_probe( int chipAddress , int dataAddress , int bus = I2C_BUS);
+void i2c_write( int chipAddress , int dataAddress , int data, int bus = I2C_BUS );
+void i2c_write_word( int chipAddress, int dataAddress, int data, int bus = I2C_BUS );
+void i2c_write_probe( int chipAddress , int dataAddress , int bus = I2C_BUS );
 
 uint8_t i2c_read ( int chipAddress , int dataAddress , int bus = I2C_BUS );
 int i2c_read_word( int chipAddress , int dataAddress , int bus = I2C_BUS );	
