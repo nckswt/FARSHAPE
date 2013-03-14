@@ -7,7 +7,7 @@ LDFLAGS=-lpthread
 I2C_OBJECTS=system/i2c.o system/i2cbusses.o
 ROS_LINKS=-L/opt/ros/fuerte/lib -lroscpp -lrostime -lrosconsole -lroscpp_serialization -lxmlrpcpp
 
-tests: encoder_test
+tests: encoder_test motor_test 
 
 ENCODER_TEST_OBJS=$(I2C_OBJECTS) location/Encoder.o
 encoder_test: tests/encoder_test.c $(ENCODER_TEST_OBJS)
@@ -17,14 +17,6 @@ MOTOR_TEST_OBJS=mobility/Motor.o
 motor_test: tests/motor_test.cpp $(MOTOR_TEST_OBJS)
 	$(CC) tests/motor_test.cpp $(MOTOR_TEST_OBJS) -o tests/motor_test.exe
 
-DRIVER_TEST_OBJS=$(ENCODER_TEST_OBJS) system/Pilot.o system/Navigator.o mobility/Motor.o
-driver_test: tests/driver_test.cpp $(DRIVER_TEST_OBJS) 
-	$(CC) tests/driver_test.cpp -lpthread $(DRIVER_TEST_OBJS) -o tests/driver_test.exe
-
-NAV_TEST_OBJS=$(ENCODER_TEST_OBJS) system/Navigator.o mobility/Motor.o
-nav_test: tests/nav_test.cpp $(NAV_TEST_OBJS)
-	$(CC) tests/nav_test.cpp $(NAV_TEST_OBJS) -o tests/nav_test.exe
-
 HELM_TEST_OBJS=$(MOTOR_TEST_OBJS) $(ENCODER_TEST_OBJS) system/Helm.o
 helm_test: tests/helm_test.cpp $(HELM_TEST_OBJS)
 	$(CC) tests/helm_test.cpp $(HELM_TEST_OBJS) $(ROS_LINKS) -o tests/helm_test.exe
@@ -32,12 +24,9 @@ helm_test: tests/helm_test.cpp $(HELM_TEST_OBJS)
 read_test: tests/read_test.cpp $(HELM_TEST_OBJS)
 	$(CXX) -I/opt/ros/fuerte/include/ tests/read_test.cpp $(HELM_TEST_OBJS) $(ROS_LINKS) -o tests/read_test.exe
 
-receiver_test: tests/receiver_test.cpp
-	$(CC) tests/receiver_test.cpp -o tests/receiver_test.exe
-
 DRIVER_OBJS=$(HELM_TEST_OBJS) sensing/camera.o 
-driver: system/driver.cpp $(DRIVER_OBJS)
-	$(CC) system/driver.cpp $(DRIVER_OBJS) -o driver.exe
+driver: tests/driver.cpp $(DRIVER_OBJS)
+	$(CC) tests/driver.cpp $(DRIVER_OBJS) -o driver.exe
 clean:
 	rm ./*/*.o
 	rm ./*/*.exe
