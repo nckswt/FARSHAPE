@@ -4,6 +4,7 @@
 #include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
 #include <stdint.h>
+#include <iostream>
 #include "i2cbusses.h"
 #include "i2c.h"
 
@@ -17,6 +18,8 @@ void i2c_write( int chipAddress , int dataAddress , int* data, int length, int b
     i2c_smbus_write_byte_data(i2c_file, dataAddress, *(data+i));
   }
 
+  close(i2c_file);
+  
 }
 
 void i2c_write( int chipAddress , int dataAddress , int data, int bus ) {
@@ -30,6 +33,24 @@ void i2c_write( int chipAddress , int dataAddress , int data, int bus ) {
   
   // write the data to a specific address on the abovementioned chip
   i2c_smbus_write_byte_data(i2c_file, dataAddress, data);
+  
+  close(i2c_file);
+  
+}
+
+void i2c_write_probe( int chipAddress , int dataAddress , int bus ) {
+  
+  // file handle
+  int i2c_file;
+  
+  // open communications with a specific chip
+  i2c_file = open_chip( bus, chipAddress );
+  /* TODO: add error handling */
+  
+  // write the data to a specific address on the abovementioned chip
+  i2c_smbus_write_byte(i2c_file, dataAddress);
+  
+  close(i2c_file);
   
 }
 
@@ -54,6 +75,7 @@ uint8_t i2c_read( int chipAddress, int dataAddress, int length, int bus ) {
   
   // open communications with a specific chip
   i2c_file = open_chip( bus, chipAddress );
+  
   /* TODO: add error handling */
   
   // holds data
@@ -64,6 +86,7 @@ uint8_t i2c_read( int chipAddress, int dataAddress, int length, int bus ) {
     data = uint8_t(i2c_smbus_read_byte_data(i2c_file, dataAddress+i));
   }
   
+  close(i2c_file);
   return data;
   
 }

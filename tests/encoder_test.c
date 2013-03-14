@@ -21,10 +21,10 @@ int main() {
   
   while (1) {
     // test getting encoder 1 position
-    p = enc.getEncoderPosition();
+    p = enc.getPosition();
     cout << "Encoder 1 Position: " << p << endl;
     // test getting encoder 2 position
-    p = enc2.getEncoderPosition();
+    p = enc2.getPosition();
     cout << "Encoder 2 Position: " << p << endl;  
   
     sleep(1);
