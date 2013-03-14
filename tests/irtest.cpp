@@ -1,4 +1,4 @@
-#include "../IRsensor.h"
+#include "../location/IRsensor.h"
 
 int main(int argc, char ** argv){
   IRsensor leftIR(0);
