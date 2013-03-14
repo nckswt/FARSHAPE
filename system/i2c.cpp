@@ -54,21 +54,7 @@ void i2c_write_probe( int chipAddress , int dataAddress , int bus ) {
   
 }
 
-void i2c_write_probe( int chipAddress , int dataAddress , int bus ) {
-  
-  // file handle
-  int i2c_file;
-  
-  // open communications with a specific chip
-  i2c_file = open_chip( bus, chipAddress );
-  /* TODO: add error handling */
-  
-  // write the data to a specific address on the abovementioned chip
-  i2c_smbus_write_byte(i2c_file, dataAddress);
-  
-}
-
-uint8_t i2c_read( int chipAddress, int dataAddress, int length, int bus ) {
+uint8_t i2c_read( int chipAddress, int dataAddress, int bus ) {
   
   // file handle
   int i2c_file;
@@ -81,15 +67,38 @@ uint8_t i2c_read( int chipAddress, int dataAddress, int length, int bus ) {
   // holds data
   uint8_t data;
   
-  // read the specified number of bytes
-  for (int i=0; i < length; i++) {
-    data = uint8_t(i2c_smbus_read_byte_data(i2c_file, dataAddress+i));
-  }
+  // read a byte from the I2C bus
+  data = uint8_t(i2c_smbus_read_byte_data(i2c_file, dataAddress));
   
   close(i2c_file);
+  
   return data;
   
 }
+
+int i2c_read_word( int chipAddress, int dataAddress, int bus ) {
+  
+  // file handle
+  int i2c_file;
+  
+  // open communications with a specific chip
+  i2c_file = open_chip( bus, chipAddress );
+  
+  /* TODO: add error handling */
+  
+  // holds data
+  int data;
+  
+  // read a word from the I2C bus
+  data = int(i2c_smbus_read_word_data(i2c_file, dataAddress));
+  
+  close(i2c_file);
+  
+  return data;
+  
+}
+
+
 
 int open_chip(int bus, int address) {
   char *end;
