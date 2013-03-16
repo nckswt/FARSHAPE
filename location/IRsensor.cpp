@@ -11,7 +11,7 @@ IRsensor::IRsensor(int adcChannel){
   this->numberOfSamples = 100;
   this->csPin = 5;
   this->adcChannel = adcChannel;
-  this->calibrationDataFile = "calibration.txt";
+  this->calibrationDataFile = "home/bot/FARSHAPE/location/calibration.txt";
   this->maxRange = 50.0; //cm
   this->IRoffset = 10.0; //cm
 

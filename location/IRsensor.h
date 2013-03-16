@@ -21,6 +21,7 @@ public:
 	IRsensor(int adcChannel); //, string calibrationDataFile = "calibration.txt");
 	~IRsensor();
 	double readGP2D12Distance();
+	double distanceFromRobot();
 
 	/* data */
     unsigned char chanBits;
