@@ -4,11 +4,16 @@ so this is merely a test stub. */
 
 #include "IRsensor.h"
 
+/**
+IR Sensor Constructor
+*/
 IRsensor::IRsensor(int adcChannel){
   this->numberOfSamples = 100;
   this->csPin = 5;
   this->adcChannel = adcChannel;
   this->calibrationDataFile = "calibration.txt";
+  this->maxRange = 50.0; //cm
+  this->IRoffset = 10.0; //cm
 
   //set LTC1098 channel
   if (adcChannel == 0)
@@ -27,11 +32,16 @@ IRsensor::IRsensor(int adcChannel){
   readGP2D12CalibrationProfile();
 }
 
+/**
+IR Sensor Destructor
+*/
 IRsensor::~IRsensor(){
 
 }
 
-
+/**
+Read Calibration file to convert ADC values to distances
+*/
 void IRsensor::readGP2D12CalibrationProfile(){
   //open calibration profile file
   ifstream file;
@@ -47,6 +57,9 @@ void IRsensor::readGP2D12CalibrationProfile(){
   file.close();
 }
 
+/**
+Read ADC values from the GP2D12
+*/
 double IRsensor::readGP2D12ADC(){
   unsigned char spiData[2];
   int bufferLength = 2;
@@ -71,6 +84,10 @@ double IRsensor::readGP2D12ADC(){
   return averageADCValue;
 }
 
+
+/**
+Generate the calibration file
+*/
 void IRsensor::calibrateSensor(){
   ofstream file;
   file.open("sensorCalibrationData");
@@ -84,6 +101,9 @@ void IRsensor::calibrateSensor(){
  file.close();
 }
 
+/**
+Read ADC values, compare them to distances, and output distances
+*/
 double IRsensor::readGP2D12Distance(){
   double distance, ADCValue;
   ADCValue = readGP2D12ADC();
@@ -100,4 +120,13 @@ double IRsensor::readGP2D12Distance(){
   return distance;
 }
 
-
+double IRsensor::distanceFromRobot(){
+  double distance; 
+  distance = readGP2D12Distance();
+  if (distance < this->IRoffset || distance > this->maxRange){
+    distance = -1;
+  } else {
+    distance -= this->IRoffset;
+  }
+    return distance;
+}
