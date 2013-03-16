@@ -2,7 +2,7 @@
 #include "Encoder.h"
 #include <iostream>
 
-#define BITS_TO_CM 0.050850058 // cm/bit
+#define BITS_TO_CM 0.06500000000 // cm/bit
 #define CM_TO_BITS 9.82499806173 // bits/cm 
 
 Encoder::Encoder() { 
