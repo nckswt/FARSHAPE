@@ -6,7 +6,7 @@ so this is merely a test stub. */
 
 /**
 IR Sensor Constructor
-*/
+*/ 
 IRsensor::IRsensor(int adcChannel){
   this->numberOfSamples = 100;
   this->csPin = 5;

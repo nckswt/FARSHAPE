@@ -28,6 +28,8 @@ public:
 	int numberOfSamples;
     int csPin;
     int adcChannel;
+    double maxRange;
+    double IRoffset;
 	string calibrationDataFile;
 
 private:
