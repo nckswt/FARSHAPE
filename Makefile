@@ -27,6 +27,11 @@ read_test: tests/read_test.cpp $(HELM_TEST_OBJS)
 DRIVER_OBJS=$(HELM_TEST_OBJS) sensing/camera.o 
 driver: tests/driver.cpp $(DRIVER_OBJS)
 	$(CC) tests/driver.cpp $(DRIVER_OBJS) -o driver.exe
+
+MONITOR_OBJS=power/Monitor.o $(I2C_OBJECTS)
+monitor_test: tests/monitor_test.cpp $(MONITOR_OBJS)
+	$(CC) tests/monitor_test.cpp $(MONITOR_OBJS) -o tests/monitor_test.exe
+
 clean:
 	rm ./*/*.o
 	rm ./*/*.exe

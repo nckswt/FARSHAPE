@@ -1,5 +1,5 @@
-#include "i2c.h"
-#include "i2cbusses.h"
+#include "../system/i2c.h"
+#include "../system/i2cbusses.h"
 
 #define CONFIGURATION_REGISTER 0x00
 #define SHUNT_VOLTAGE_REGISTER 0x01
@@ -8,10 +8,14 @@
 #define CURRENT_REGISTER 0x04
 #define CALIBRATION_REGISTER 0x05
 
-#define 320MV 0b11
-#define 160MV 0b10
-#define 80MV 0b01
-#define 40MV 0b00
+#define mv_320 0b11
+#define mv_160 0b10
+#define mv_80 0b01
+#define mv_40 0b00
+
+#define V5_BUS 0x40
+#define V9_BUS 0x45
+#define V11_BUS 0x44
 
 class Monitor {
 private:
@@ -24,7 +28,7 @@ private:
   signed int _readVoltage();
   signed int _readCurrent(); 
   unsigned int _readPower();
-  void setVoltageScaling();
+  void setVoltageScaling( );
   
 
 public:
