@@ -26,15 +26,20 @@ read_test: tests/read_test.cpp $(HELM_TEST_OBJS)
 
 DRIVER_OBJS=$(HELM_TEST_OBJS) sensing/camera.o 
 driver: tests/driver.cpp $(DRIVER_OBJS)
-	$(CC) tests/driver.cpp $(DRIVER_OBJS) -o driver.exe
+	$(CXX) tests/driver.cpp $(DRIVER_OBJS) -o driver.exe
 
 MONITOR_OBJS=power/Monitor.o $(I2C_OBJECTS)
 monitor_test: tests/monitor_test.cpp $(MONITOR_OBJS)
-	$(CC) tests/monitor_test.cpp $(MONITOR_OBJS) -o tests/monitor_test.exe
+	$(CXX) tests/monitor_test.cpp $(MONITOR_OBJS) -o tests/monitor_test.exe
 
-CONFIG_IR_OBJS=location/IRsensor.o system/ADC_SPI.o -lwiringPi
+CONFIG_IR_OBJS=location/IRsensor.o system/ADC_SPI.o -lwiringPi -lpthread
 config_ir: tests/config_ir.cpp $(CONFIG_IR_OBJS)
-	$(CC) tests/config_ir.cpp $(CONFIG_IR_OBJS) -o tests/config_ir.exe
+	$(CXX) tests/config_ir.cpp $(CONFIG_IR_OBJS) -o tests/config_ir.exe
+
+IR_TEST_OBJS=location/IRsensor.o system/ADC_SPI.o -lwiringPi -lpthread
+ir_test: tests/irtest.cpp $(IR_TEST_OBJS)
+	$(CXX) tests/irtest.cpp $(IR_TEST_OBJS) -o tests/irtest.exe
+
 clean:
 	rm ./*/*.o
 	rm ./*/*.exe
