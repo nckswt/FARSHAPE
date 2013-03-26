@@ -29,7 +29,7 @@ private:
   void readGP2D12CalibrationProfile();
 
   /* data */
-  ADC_SPI adc;
+  ADC_SPI adc( int adcChannel );
   double IRDistanceMap[141][2];
   int adcChannel;
   string calibrationDataFile;
