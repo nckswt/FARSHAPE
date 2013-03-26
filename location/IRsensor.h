@@ -1,8 +1,6 @@
 #ifndef _IRSENSOR_H_
 #define _IRSENSOR_H_
 
-#include <wiringPi.h>
-#include <wiringPiSPI.h>
 #include <iostream>
 #include <stdint.h>
 #include <stdio.h>
@@ -12,28 +10,31 @@
 #include <fcntl.h>
 #include <linux/kd.h>
 #include <fstream>
+#include "../system/ADC_SPI.h"
+
+#define DEFAULT_SPI_CHANNEL 0
+#define IR_CALIBRATION_FILE "calibration.txt"
 
 using namespace std; // GET RID OF THIS!
 
 class IRsensor
 {
 public:
-	IRsensor(int adcChannel); //, string calibrationDataFile = "calibration.txt");
-	~IRsensor();
-	double readGP2D12Distance();
-
-	/* data */
-    unsigned char chanBits;
-	double IRDistanceMap[141][2];
-	int numberOfSamples;
-    int csPin;
-    int adcChannel;
-	string calibrationDataFile;
+  IRsensor(int adcChannel); //, string calibrationDataFile = "calibration.txt");
+  ~IRsensor();
+  double getDistance();
 
 private:
-	void readGP2D12CalibrationProfile();
-	double readGP2D12ADC();
-	void calibrateSensor();
+  void readGP2D12CalibrationProfile();
+  void getValue();
+
+  /* data */
+  ADC_SPI adc;
+  double IRDistanceMap[141][2];
+  int adcChannel;
+  string calibrationDataFile;
+  double value;
+
 };
 
 #endif
