@@ -1,13 +1,19 @@
 #include "../location/IRsensor.h"
 
 int main() {
+  
+  IRsensor sens( 0 );
+  
   ofstream file;
   file.open("sensorCalibrationData");
 
   for (int i = 0; i < 142; i++){
     cout<< "Sample " << i <<": ";
     file << i << '\t';
-    file << readGP2D12ADC() << endl;
+    file << sens.getValue() << endl;
     sleep(5);
     }
- file.close();
+  file.close();
+ 
+  return 0;
+}
