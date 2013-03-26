@@ -6,13 +6,14 @@
 #define SINGLE 1
 #define DIFFERENTIAL 0
 #define SINGLE_DIFF_CONFIG 3
+#define SHIFT 4
 
 class ADC_SPI {
 private:
-  char adcChannel;
-  char configBits;
-  char spiChannel;
-  char RWBuffer[3];
+  unsigned char adcChannel;
+  unsigned char configBits;
+  unsigned char spiChannel;
+  unsigned char RWBuffer[3];
   
 public:
   ADC_SPI( int adcChannel, int spiChannel );
