@@ -5,7 +5,7 @@ IRsensor::IRsensor(int adcChannel){
   this->calibrationDataFile = IR_CALIBRATION_FILE;
   this->value = 0;
 
-  this->adc = ADC_SPI(this->adcChannel, DEFAULT_SPI_CHANNEL);
+  this->adc = new ADC_SPI(adcChannel, DEFAULT_SPI_CHANNEL);
   
   //Calibrate IR Sensor
   readGP2D12CalibrationProfile();
@@ -31,16 +31,16 @@ void IRsensor::readGP2D12CalibrationProfile(){
   file.close();
 }
 
-double IRsensor::getValue() {
-  value = this->adc.getAverage();
+int IRsensor::getValue() {
+  value = this->adc->getAverage();
   return value;
 }
 
-double IRSensor::getDistance() {
+double IRsensor::getDistance() {
   double distance;
   
   for (int i = 0; i < 142; i++){
-    if (ADCValue > this->IRDistanceMap[i][1]){
+    if (this->value > this->IRDistanceMap[i][1]){
       return (this->IRDistanceMap[i-1][0] + this->IRDistanceMap[i][0])/2;
     }
   }
