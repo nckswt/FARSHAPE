@@ -32,6 +32,9 @@ MONITOR_OBJS=power/Monitor.o $(I2C_OBJECTS)
 monitor_test: tests/monitor_test.cpp $(MONITOR_OBJS)
 	$(CC) tests/monitor_test.cpp $(MONITOR_OBJS) -o tests/monitor_test.exe
 
+CONFIG_IR_OBJS=location/IRsensor.o system/ADC_SPI.o -lwiringPi
+config_ir: tests/config_ir.cpp $(CONFIG_IR_OBJS)
+	$(CC) tests/config_ir.cpp $(CONFIG_IR_OBJS) -o tests/config_ir.exe
 clean:
 	rm ./*/*.o
 	rm ./*/*.exe
