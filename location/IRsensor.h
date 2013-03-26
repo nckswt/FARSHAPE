@@ -23,10 +23,10 @@ public:
   IRsensor(int adcChannel); //, string calibrationDataFile = "calibration.txt");
   ~IRsensor();
   double getDistance();
-
+  void getValue();
+  
 private:
   void readGP2D12CalibrationProfile();
-  void getValue();
 
   /* data */
   ADC_SPI adc;
