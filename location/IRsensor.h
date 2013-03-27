@@ -23,7 +23,9 @@ public:
   IRsensor(int adcChannel); //, string calibrationDataFile = "calibration.txt");
   ~IRsensor();
   double getDistance();
-  int getValue();
+  // the below should be made private when the code is considered stable
+  double getValue();
+  int getSingle();
   
 private:
   void readGP2D12CalibrationProfile();

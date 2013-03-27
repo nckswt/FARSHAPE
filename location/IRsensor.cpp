@@ -31,9 +31,14 @@ void IRsensor::readGP2D12CalibrationProfile(){
   file.close();
 }
 
-int IRsensor::getValue() {
+double IRsensor::getValue() {
   value = this->adc->getAverage();
   return value;
+}
+
+// This is just a test stub -- remove later
+int IRsensor::getSingle() {
+  return this->adc->getSingle();
 }
 
 double IRsensor::getDistance() {

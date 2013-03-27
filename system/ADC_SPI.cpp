@@ -13,10 +13,6 @@ ADC_SPI::ADC_SPI( int adcChannel, int spiChannel = 0 ) {
   if( wiringPiSPISetup(spiChannel, 500000) < 0)
     std::cout << "SPI Setup failed: " << std::endl;
   
-  RWBuffer[0] = START_BYTE;
-  RWBuffer[1] = this->configBits;
-  RWBuffer[2] = 0;
-  
 }
 
 ADC_SPI::~ADC_SPI() {}
@@ -26,15 +22,15 @@ double ADC_SPI::getAverage() {
   double averageADCValue = 0;
   
   for ( int i = 0; i < AVERAGING; i++ ) {
-    averageADCValue += getSingle();
-    usleep(10);
+    averageADCValue += this->getSingle();
   }
   
-  return averageADCValue / AVERAGING;
+  return double(averageADCValue / AVERAGING);
   
 }
 
 int ADC_SPI::getSingle() {
+  RWBuffer[0] = START_BYTE;
   RWBuffer[1] = this->configBits;
   RWBuffer[2] = 0;
   
