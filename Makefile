@@ -6,6 +6,7 @@ CXXFLAGS+= -I/opt/ros/fuerte/include/
 LDFLAGS=-lpthread
 I2C_OBJECTS=system/i2c.o system/i2cbusses.o
 ROS_LINKS=-L/opt/ros/fuerte/lib -lroscpp -lrostime -lrosconsole -lroscpp_serialization -lxmlrpcpp
+WIRING_PI_LINKS=-lwiringPi -lpthread
 
 tests: encoder_test motor_test 
 
@@ -32,13 +33,17 @@ MONITOR_OBJS=power/Monitor.o $(I2C_OBJECTS)
 monitor_test: tests/monitor_test.cpp $(MONITOR_OBJS)
 	$(CXX) tests/monitor_test.cpp $(MONITOR_OBJS) -o tests/monitor_test.exe
 
-CONFIG_IR_OBJS=location/IRsensor.o system/ADC_SPI.o -lwiringPi -lpthread
+CONFIG_IR_OBJS=location/IRsensor.o system/ADC_SPI.o
 config_ir: tests/config_ir.cpp $(CONFIG_IR_OBJS)
-	$(CXX) tests/config_ir.cpp $(CONFIG_IR_OBJS) -o tests/config_ir.exe
+	$(CXX) tests/config_ir.cpp $(CONFIG_IR_OBJS) $(WIRING_PI_LINKS) -o tests/config_ir.exe
 
-IR_TEST_OBJS=location/IRsensor.o system/ADC_SPI.o -lwiringPi -lpthread
+IR_TEST_OBJS=location/IRsensor.o system/ADC_SPI.o
 ir_test: tests/irtest.cpp $(IR_TEST_OBJS)
-	$(CXX) tests/irtest.cpp $(IR_TEST_OBJS) -o tests/irtest.exe
+	$(CXX) tests/irtest.cpp $(IR_TEST_OBJS) $(WIRING_PI_LINKS) -o tests/irtest.exe
+
+ADC_TEST_OBJS=system/ADC_SPI.o
+adc_test: tests/adc_test.cpp $(ADC_TEST_OBJS)
+	$(CXX) tests/adc_test.cpp $(ADC_TEST_OBJS) $(WIRING_PI_LINKS) -o tests/adc_test.exe
 
 clean:
 	rm ./*/*.o
