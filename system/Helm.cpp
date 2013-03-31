@@ -8,8 +8,7 @@
 
 #include <sstream>
 
-#define MOTOR_SPEED 80
-#define MOTOR_PAUSE 200000
+
 
 pthread_t updater;
 
@@ -20,6 +19,16 @@ void* callHandle(void *data) {
   tom->publish();
 }
 
+/** Constructor for Helm class.
+ * 
+ * Instantiates Encoders and Motors as private members, along with a 
+ * current location of 0. 
+ * 
+ * @CLASS Helm
+ * 
+ * @TODO Fix ROS messaging
+ * @PARAM t whether or not this is a fake object
+ * */
 Helm::Helm( bool t ) {
   
   if (t) {
@@ -42,6 +51,8 @@ Helm::Helm( bool t ) {
   }
 }
 
+/** Reset encoder positions to zero
+ * */
 void Helm::resetEncoders() {
   
   this->leftEncoder .resetPosition();
@@ -68,8 +79,8 @@ void Helm::goDistance ( float distance ) {
   if (distance > 0) {
 
     // full ahead
-    leftMotor .setSpeed(MOTOR_SPEED);
-    rightMotor.setSpeed(MOTOR_SPEED);
+    leftMotor .setSpeed(DEFAULT_SPEED);
+    rightMotor.setSpeed(DEFAULT_SPEED);
 
     // glitch compensator
     usleep(MOTOR_PAUSE);
@@ -89,8 +100,8 @@ void Helm::goDistance ( float distance ) {
 
   if (distance < 0) {
     // full back
-    leftMotor .setSpeed(-MOTOR_SPEED);
-    rightMotor.setSpeed(-MOTOR_SPEED);
+    leftMotor .setSpeed(-DEFAULT_SPEED);
+    rightMotor.setSpeed(-DEFAULT_SPEED);
 
     // glitch compensator
     usleep(MOTOR_PAUSE);
@@ -141,8 +152,8 @@ void Helm::rotate( float theta ) {
   if (theta > 0) {
     
     
-    leftMotor .setSpeed(-MOTOR_SPEED);
-    rightMotor.setSpeed( MOTOR_SPEED);
+    leftMotor .setSpeed(-DEFAULT_SPEED);
+    rightMotor.setSpeed( DEFAULT_SPEED);
     usleep(MOTOR_PAUSE);
     float distance = degToArcLength( theta );
     while ( (leftMotor.getSpeed() != 0) || (rightMotor.getSpeed() != 0) ) {
@@ -161,8 +172,8 @@ void Helm::rotate( float theta ) {
   // rotation is counterclockwise
   if (theta < 0) {
     
-    leftMotor .setSpeed( MOTOR_SPEED);
-    rightMotor.setSpeed(-MOTOR_SPEED);
+    leftMotor .setSpeed( DEFAULT_SPEED);
+    rightMotor.setSpeed(-DEFAULT_SPEED);
     usleep(MOTOR_PAUSE);
     float distance = degToArcLength( theta );
     while ( (leftMotor.getSpeed() != 0) || (rightMotor.getSpeed() != 0) ) {
@@ -188,6 +199,10 @@ void Helm::_readEncoders() {
 void Helm::_setMotors() {
 }
 
+/** Add theta to the current internal angle
+ * 
+ * @PARAM theta the angle in degrees to add
+ * */
 void Helm::updateRotation( float theta ) {
   
   this->rotation = this->rotation + theta;
@@ -200,13 +215,22 @@ void Helm::updateRotation( float theta ) {
   
 }
 
+/** Update current XY position based on a travelled distance
+ * 
+ * Calculates delta X and delta Y based on the distance travelled (the
+ * hypotenuse) and the currently stored internal rotation.
+ * 
+ * @PARAM distance the distance
+ * */
 void Helm::updateXY( float distance ) {
   
-  this->currentPos.x = distance * sinf( this->rotation );
-  this->currentPos.y = distance * cosf( this->rotation );
+  this->currentPos.x = this->currentPos.x + distance * sinf( this->rotation );
+  this->currentPos.y = this->currentPos.y + distance * cosf( this->rotation );
   
 }
 
+/** Publish current location to other robots
+ * */
 void Helm::publish() {
   char ** argv;
   int argc=1;
@@ -230,6 +254,10 @@ void Helm::publish() {
   }
 }
 
+/** Go to an XY location
+ * 
+ * @PARAM location Coordinate of location to travel to
+ * */
 void Helm::goTo( xyz location ) {
   
   xyz delta;
@@ -256,17 +284,17 @@ float Helm::getRotation() {
   return this->rotation;
 }
 
-void Helm::goForward( int speed = MOTOR_SPEED ) {
+void Helm::goForward( int speed = DEFAULT_SPEED ) {
   leftMotor .setSpeed( speed );
   rightMotor.setSpeed( speed );
 }
 
-void Helm::rotateLeft( int speed = MOTOR_SPEED ) {
+void Helm::rotateLeft( int speed = DEFAULT_SPEED ) {
   leftMotor .setSpeed( -speed );
   rightMotor.setSpeed(  speed );
 }
 
-void Helm::rotateRight( int speed = MOTOR_SPEED ) {
+void Helm::rotateRight( int speed = DEFAULT_SPEED ) {
   leftMotor .setSpeed(  speed );
   rightMotor.setSpeed( -speed );
 }

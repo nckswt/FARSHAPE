@@ -1,3 +1,9 @@
+/** @FILE Helm.h
+ * 
+ * @AUTHOR Chuck Wilson
+ * 
+ * Header file for @class Helm.
+ * */
 #ifndef _HELM_H_
 #define _HELM_H_
 
