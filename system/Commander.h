@@ -4,11 +4,11 @@
 #include "ros/ros.h" //Uncomment when uploaded on raspberry pi's
 #include "Structure.h"
 #include <stdlib.h>
+#include <math.h>
 
 #define ROS_RATE 10
 
 const float searchRadius = 2.0; //(2 meters)
-const float c_PI = 3.14159;//May not need
 
 class Commander : public FSObject
 {

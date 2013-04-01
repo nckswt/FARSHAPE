@@ -55,8 +55,8 @@ void Commander::search_Pieces()
 	angle = Encoders->get_Angle(); //Must be in radians
 
 	//Inital t
-	target_x = position.x + searchRadius*cos(angle - (c_PI/6));
-	target_y = position.y + searchRadius*sin(angle - (c_PI/6));
+  target_x = position.x + searchRadius*cos(angle - (M_PI/6));
+  target_y = position.y + searchRadius*sin(angle - (M_PI/6));
 
 	while(checkpoints < 4)
 	{
