@@ -6,8 +6,8 @@ int main(int argc, char ** argv){
 
   //output distance
   while (1){
-    cout << "Left distance: " << leftIR.readGP2D12Distance() << "cm" << endl; 
-    cout << "Right distance: " << rightIR.readGP2D12Distance() << "cm" << endl; 
+    cout << "Left distance: " << leftIR.getDistance() << "cm" << endl; 
+    cout << "Right distance: " << rightIR.getDistance() << "cm" << endl; 
     sleep(1);
   }
 

@@ -1,28 +1,12 @@
-/*NOTE: This code uses the SPI-based LTC1098 ADC. 
-The final robots will not use this ADC, 
-so this is merely a test stub. */
-
 #include "IRsensor.h"
 
 IRsensor::IRsensor(int adcChannel){
-  this->numberOfSamples = 100;
-  this->csPin = 5;
   this->adcChannel = adcChannel;
-  this->calibrationDataFile = "calibration.txt";
+  this->calibrationDataFile = IR_CALIBRATION_FILE;
+  this->value = 0;
 
-  //set LTC1098 channel
-  if (adcChannel == 0)
-    this->chanBits = 0b11010000;
-  else
-    this->chanBits = 0b11110000;
-
-  //setup SPI
-  wiringPiSetup();
-  if( wiringPiSPISetup(adcChannel, 500000) < 0)
-    cout << "SPI Setup failed: " << endl;
-  pinMode(csPin, OUTPUT);
-  digitalWrite(csPin, HIGH);
-
+  this->adc = new ADC_SPI(adcChannel, DEFAULT_SPI_CHANNEL);
+  
   //Calibrate IR Sensor
   readGP2D12CalibrationProfile();
 }
@@ -47,57 +31,25 @@ void IRsensor::readGP2D12CalibrationProfile(){
   file.close();
 }
 
-double IRsensor::readGP2D12ADC(){
-  unsigned char spiData[2];
-  int bufferLength = 2;
-  double averageADCValue = 0;
-
-  //take numberOfSamples samples and find average value
-  for (int i = 0; i < numberOfSamples; i++){
-    spiData[0] = chanBits;
-    spiData[1] = 0b0000000;
-
-    digitalWrite(csPin,LOW);
-    wiringPiSPIDataRW (adcChannel, spiData, bufferLength);
-    //cout << int(((spiData [0] << 7) | (spiData [1] >> 1)) & 0x3FF) << endl;
-    averageADCValue += int(((spiData [0] << 7) | (spiData [1] >> 1)) & 0x3FF);
-    digitalWrite(csPin,HIGH);
-
-    usleep(10);
-  }
-  averageADCValue = averageADCValue/numberOfSamples;
-
-  //cout << "AVADC: " << averageADCValue << endl;
-  return averageADCValue;
+double IRsensor::getValue() {
+  value = this->adc->getAverage();
+  return value;
 }
 
-void IRsensor::calibrateSensor(){
-  ofstream file;
-  file.open("sensorCalibrationData");
-
-  for (int i = 0; i < 142; i++){
-    cout<< "Sample " << i <<": ";
-    file << i << '\t';
-    file << readGP2D12ADC() << endl;
-    sleep(5);
-    }
- file.close();
+// This is just a test stub -- remove later
+int IRsensor::getSingle() {
+  return this->adc->getSingle();
 }
 
-double IRsensor::readGP2D12Distance(){
-  double distance, ADCValue;
-  ADCValue = readGP2D12ADC();
-  //cout << "ADC VALUES: " << ADCValue << endl;  
+double IRsensor::getDistance() {
+  double distance;
   
   for (int i = 0; i < 142; i++){
-    //cout << this->IRDistanceMap[i][1] << endl;
-    if (ADCValue > this->IRDistanceMap[i][1]){
-      //cout << ADCValue << " v " << IRDistanceMap[i][1] << endl;
-      distance = (this->IRDistanceMap[i-1][0] + this->IRDistanceMap[i][0])/2;
-      break;
+    if (this->value > this->IRDistanceMap[i][1]){
+      return (this->IRDistanceMap[i-1][0] + this->IRDistanceMap[i][0])/2;
     }
   }
-  return distance;
+  return 0;
 }
 
 
