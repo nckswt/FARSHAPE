@@ -4,12 +4,7 @@
 #include <stdint.h>
 #include "../location/Encoder.h"
 #include "../mobility/Motor.h"
-
-struct xyz {
-  float x;
-  float y;
-  float z;
-};
+#include "../location/includes.h"
 
 struct robot {
   int id; // is an enum

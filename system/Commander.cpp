@@ -1,5 +1,12 @@
 #include "Commander.h"
 sensor_msgs::JointState rx;
+
+/** Callback function for threaded communication 
+ * 
+ * Currently only handles position / velocity of other robots ??
+ * 
+ * @PARAM msg The message 
+ */
 void chatterCallback(const sensor_msgs::JointState::ConstPtr& msg)
 {
 	ROS_INFO("I Heard: [%s]",msg->name[0].c_str());
@@ -13,6 +20,7 @@ void chatterCallback(const sensor_msgs::JointState::ConstPtr& msg)
 	rx.velocity[0] = msg->velocity[0];
 	rx.effort[0] = msg->effort[0];
 }
+
 
 void Commander::setup_Comms()
 {
@@ -92,10 +100,10 @@ void Commander::search_Pieces()
 
 	//Communicate with camera, must switch between looking for columns/beams
 	/*
-		If we locate a bar, do the IR sensors reach it?
-			No -> Approach bar
-			Yes-> Add to locPieces
-		How do we avoid going after the same piece?
+   *	If we locate a bar, do the IR sensors reach it?
+   *		No -> Approach bar
+   *		Yes-> Add to locPieces
+   *	How do we avoid going after the same piece?
 	*/
 
 }
@@ -168,13 +176,4 @@ void Commander::check_Comms()
 	{
 
 	}
-}
-
-int main(int argc, char **argv)
-{
-	Commander* r1 = new Commander(0, 0, 0, "Ash", argc, argv); //get name from file.
-
-
-	system("PAUSE");//Only for testing purposes, take out before use
-	return 0;
 }

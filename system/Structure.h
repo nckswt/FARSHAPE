@@ -1,7 +1,7 @@
 #ifndef STRUCTURE_H
 #define STRUCTURE_H
 
-#include "FSObject.h"
+#include "../location/FSObject.h"
 #include <vector>
 
 //Add function that rebuilds structure object from data should master robot go down
@@ -11,15 +11,20 @@ private:
 	//Use vector of vectors?
 	std::vector<std::vector<float> > Build;
 	std::vector<float> *Piece;
-	const int Beam = 1;
-	const int Column = 2;
 
 public:
 	//Make it such that it loads this from file (if there is time)
-	Structure(float xi, float yi, float zi) : FSObject(xi, yi, zi, 3, "Mike Town") //Maybe refer to center of cube? in which case xi and yi need to offset
+  
+  /** Constructor for Structure
+   * 
+   * What the flying fuck is this doing, Mike?
+   * 
+   * @TODO Maybe refer to center of cube? in which case xi and yi need to offset
+   */
+  Structure(float xi, float yi, float zi) : FSObject(xi, yi, zi, 3, "Mike Town") 
 	{
 		Piece = new std::vector<float>;
-		Piece->push_back(Beam);	//Is it a beam or column?
+    Piece->push_back(BEAM);	//Is it a beam or column?
 		Piece->push_back(0);	//Status, 0 is for not reserved, 1 is for busy, 2 is for placed
 		Piece->push_back(0);	//ID of bar in this place, ID 0 is for "not reserved"
 		Piece->push_back(xi);	//Target coordinates
@@ -28,7 +33,7 @@ public:
 		Build.push_back(*Piece);
 
 		Piece = new std::vector<float>;
-		Piece->push_back(Column);	//Is it a beam or column?
+    Piece->push_back(COLUMN);	//Is it a beam or column?
 		Piece->push_back(0);	//Status, 0 is for not reserved
 		Piece->push_back(0);	//ID of bar in this place, ID 0 is for "not reserved"
 		Piece->push_back(xi + 0.169);	//Target coordinates
@@ -37,7 +42,7 @@ public:
 		Build.push_back(*Piece);
 
 		Piece = new std::vector<float>;
-		Piece->push_back(Beam);	//Is it a beam or column?
+    Piece->push_back(BEAM);	//Is it a beam or column?
 		Piece->push_back(0);	//Status, 0 is for not reserved
 		Piece->push_back(0);	//ID of bar in this place, ID 0 is for "not reserved"
 		Piece->push_back(xi + 0.169);	//Target coordinates
@@ -46,7 +51,7 @@ public:
 		Build.push_back(*Piece);
 
 		Piece = new std::vector<float>;
-		Piece->push_back(Column);	//Is it a beam or column?
+    Piece->push_back(COLUMN);	//Is it a beam or column?
 		Piece->push_back(0);	//Status, 0 is for not reserved
 		Piece->push_back(0);	//ID of bar in this place, ID 0 is for "not reserved"
 		Piece->push_back(xi + 0.169);	//Target coordinates
@@ -55,7 +60,7 @@ public:
 		Build.push_back(*Piece);
 
 		Piece = new std::vector<float>;
-		Piece->push_back(Beam);	//Is it a beam or column?
+    Piece->push_back(BEAM);	//Is it a beam or column?
 		Piece->push_back(0);	//Status, 0 is for not reserved
 		Piece->push_back(0);	//ID of bar in this place, ID 0 is for "not reserved"
 		Piece->push_back(xi);	//Target coordinates
@@ -64,7 +69,7 @@ public:
 		Build.push_back(*Piece);
 
 		Piece = new std::vector<float>;
-		Piece->push_back(Column);	//Is it a beam or column?
+    Piece->push_back(COLUMN);	//Is it a beam or column?
 		Piece->push_back(0);	//Status, 0 is for not reserved
 		Piece->push_back(0);	//ID of bar in this place, ID 0 is for "not reserved"
 		Piece->push_back(xi - 0.169);	//Target coordinates
@@ -73,7 +78,7 @@ public:
 		Build.push_back(*Piece);
 
 		Piece = new std::vector<float>;
-		Piece->push_back(Beam);	//Is it a beam or column?
+    Piece->push_back(BEAM);	//Is it a beam or column?
 		Piece->push_back(0);	//Status, 0 is for not reserved
 		Piece->push_back(0);	//ID of bar in this place, ID 0 is for "not reserved"
 		Piece->push_back(xi - 0.169);	//Target coordinates
@@ -82,7 +87,7 @@ public:
 		Build.push_back(*Piece);
 
 		Piece = new std::vector<float>;
-		Piece->push_back(Column);	//Is it a beam or column?
+    Piece->push_back(COLUMN);	//Is it a beam or column?
 		Piece->push_back(0);	//Status, 0 is for not reserved
 		Piece->push_back(0);	//ID of bar in this place, ID 0 is for "not reserved"
 		Piece->push_back(xi - 0.169);	//Target coordinates

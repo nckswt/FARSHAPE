@@ -45,6 +45,10 @@ ADC_TEST_OBJS=system/ADC_SPI.o
 adc_test: tests/adc_test.cpp $(ADC_TEST_OBJS)
 	$(CXX) tests/adc_test.cpp $(ADC_TEST_OBJS) $(WIRING_PI_LINKS) -o tests/adc_test.exe
 
+COMMANDER_TEST_OBJS=system/Commander.o system/Structure.o location/FSObject.o
+commander_test: tests/commander_test.cpp $(COMMANDER_TEST_OBJS)
+	$(CXX) tests/commander_test.cpp $(COMMANDER_TEST_OBJS) $(ROS_LINKS) -o tests/commander_test.exe
+
 clean:
 	rm ./*/*.o
 	rm ./*/*.exe

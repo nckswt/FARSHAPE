@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include "includes.h"
 
 /// Defines the types used
 enum ObjectType { UNKNOWN, ROBOT, BEAM, COLUMN, STRUCTURE };
@@ -16,14 +17,7 @@ protected:
   
   enum ObjectType type;
   
-  //Structure position represents the xyz of first member?
-  struct Coordinates 
-  {
-    float x;
-    float y;
-    float z;
-  };
-  Coordinates position;
+  xyzr position;
   float length, width, height;
   
 public: 
