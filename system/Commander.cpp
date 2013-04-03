@@ -7,43 +7,44 @@ bool receive;
 bool receiving;
 bool sending;
 
-Commander::Commander(Position initial_position, std::string robot_name,int argc, char **argv) : FSObject(initial_position, ROBOT, robot_name){
+Commander::Commander(Position initial_position, std::string robot_name,int argc, char **argv) : FSObject(initial_position, ROBOT_TYPE, robot_name){
 		number_of_robots = 3; //default
+		if (priority == 1)
+			is_master = true;
 
-		//On startup (creation of robot)
-		//Check vitals (probably nothing to do at this point)
-		//Since its Ash, roscore and rosinit need to be instantiated
-		if (name == "Ash") // && other robots haven't defined themselves as master (if it is reset) <- implement if theres time
-		{
-			priority = 1;
-			system("run_core.sh");//use to run roscore, setup, ROS_MASTER_URI etc,
+		if (is_master){
+			//use to run roscore, setup, ROS_MASTER_URI etc,
+			//<>TODO: implement master_setup.sh
+			system("master_setup.sh");
 		}
 		else
 		{
-			//If slave then run another script, need to deal with when the master changes
+			//setup non-master robots
+			//<>TODO: implement non_master_setup.sh
+			system("non_master_setup.sh");
 		}
-		//Create comms object and ping other robots
-		//Any other checks performed here
-		//Create structure object at (0,0,0)
 
-		//Maybe add code to check other robots for current mission should the robot reset due to power issues
+		Position structure_position{0,0,0,0};
+		Structure* structure = new Structure(structure_position);
+
+		structure.nextPiece()
 
 		//ROS SETUP****************************************
 		ros::init(argc, argv, name);
 		n = new ros::NodeHandle;
 		loop_rate = new ros::Rate(10);
+
+		//<>TODO sync with other robots (setting missions, etc)
 	}
 
 
-void chatterCallback(const sensor_msgs::JointState::ConstPtr& msg)
-{
+void chatterCallback(const sensor_msgs::JointState::ConstPtr& msg){
 	ROS_INFO("I Heard: [%s]",msg->name[0].c_str());
 	ROS_INFO("I Heard: [%f]",msg->position[0]);
 	ROS_INFO("I Heard: [%f]",msg->velocity[0]);
 	ROS_INFO("I Heard: [%f]",msg->effort[0]);
 
-	if (receive == true)
-	{
+	if (receive == true){
 		//Possibly use push_back so it stores multiple messages, then cycle through
 		receiving = true;
 		Rx.name[0] = msg->name[0];
@@ -86,7 +87,7 @@ void Commander::explore()
 	int checkpoints = 0;
 	angle = Encoders->get_Angle(); //Must be in radians
 
-	//Inital t
+	//Inital target
 	target_x = position.x + searchRadius*cos(angle - (c_PI/6));
 	target_y = position.y + searchRadius*sin(angle - (c_PI/6));
 
@@ -221,13 +222,39 @@ void Commander::readCommunications()
 	}
 }
 
-/*
+
 int main(int argc, char **argv)
 {
-	Commander* r1 = new Commander(0, 0, 0, "Ash", argc, argv); //get name from file.
+	//<>TODO implement init.tab to restart if necessary
 
+	Commander* commander = new Commander(0, 0, 0, "Ash", argc, argv); //get name from file.
+
+	//Initial setup of comms & create thread to update variables based on ROS messages
+	commander.setupComms();
+
+	std::cout << "well at least we got this far" << std::endl;
+
+	while (!strcture_is_complete){
+		commander.checkVitals();
+		switch(commander->mode){
+			case NO_MODE:
+				commander->mode = EXPLORER_MODE;
+				break;
+			case EXPLORER_MODE:
+				commander.explore();
+				commander->mode = BUILDER_MODE;
+				break;
+			case BUILDER_MODE:
+				commander.build();
+				commander->mode = INSPECTOR_MODE;
+				break;
+			case INSPECTOR_MODE:
+				commander.inspect();
+				commander->mode = EXPLORER_MODE;
+				break;
+		}
+	}
 
 	system("PAUSE");//Only for testing purposes, take out before use
 	return 0;
 }
-*/

@@ -14,10 +14,8 @@
 		float height;
 	};
 
-	// Defines the types used
-	enum ObjectType { UNKNOWN, ROBOT, BEAM, COLUMN, STRUCTURE };
-
-	enum RobotMode {NO_MODE, EXPLORER_MODE, BUILDER_MODE, INSPECTOR_MODE}
+	enum ObjectType { UNKNOWN_TYPE, ROBOT_TYPE, BEAM_TYPE, COLUMN_TYPE, STRUCTURE_TYPE };
+	enum RobotMode {NO_MODE, EXPLORER_MODE, BUILDER_MODE, INSPECTOR_MODE};
 
 	const float kSearchRadius = 2.0; //(2 meters)
 
