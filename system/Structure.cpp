@@ -1,8 +1,82 @@
 #include "Structure.h"
 
-int Structure::next_Piece(ObjectType* tt, float* tx, float* ty, float* tz)
-{
-	int cnt = 0;
+	Structure(Position intial_position) : FSObject(intial_position, STRUCTURE_TYPE, "Mike Town"){
+		Piece = new std::vector<float>;
+		Piece->push_back(Beam);	//Is it a beam or column?
+		Piece->push_back(0);	//Status, 0 is for not reserved, 1 is for busy, 2 is for placed
+		Piece->push_back(0);	//ID of bar in this place, ID 0 is for "not reserved"
+		Piece->push_back(xi);	//Target coordinates
+		Piece->push_back(yi);
+		Piece->push_back(zi);
+		Build.push_back(*Piece);
+
+		Piece = new std::vector<float>;
+		Piece->push_back(Column);	//Is it a beam or column?
+		Piece->push_back(0);	//Status, 0 is for not reserved
+		Piece->push_back(0);	//ID of bar in this place, ID 0 is for "not reserved"
+		Piece->push_back(xi + 0.169);	//Target coordinates
+		Piece->push_back(yi);
+		Piece->push_back(zi + 0.176);
+		Build.push_back(*Piece);
+
+		Piece = new std::vector<float>;
+		Piece->push_back(Beam);	//Is it a beam or column?
+		Piece->push_back(0);	//Status, 0 is for not reserved
+		Piece->push_back(0);	//ID of bar in this place, ID 0 is for "not reserved"
+		Piece->push_back(xi + 0.169);	//Target coordinates
+		Piece->push_back(yi - 0.169);
+		Piece->push_back(zi);
+		Build.push_back(*Piece);
+
+		Piece = new std::vector<float>;
+		Piece->push_back(Column);	//Is it a beam or column?
+		Piece->push_back(0);	//Status, 0 is for not reserved
+		Piece->push_back(0);	//ID of bar in this place, ID 0 is for "not reserved"
+		Piece->push_back(xi + 0.169);	//Target coordinates
+		Piece->push_back(yi - 0.338);
+		Piece->push_back(zi + 0.176);
+		Build.push_back(*Piece);
+
+		Piece = new std::vector<float>;
+		Piece->push_back(Beam);	//Is it a beam or column?
+		Piece->push_back(0);	//Status, 0 is for not reserved
+		Piece->push_back(0);	//ID of bar in this place, ID 0 is for "not reserved"
+		Piece->push_back(xi);	//Target coordinates
+		Piece->push_back(yi - 0.338);
+		Piece->push_back(zi);
+		Build.push_back(*Piece);
+
+		Piece = new std::vector<float>;
+		Piece->push_back(Column);	//Is it a beam or column?
+		Piece->push_back(0);	//Status, 0 is for not reserved
+		Piece->push_back(0);	//ID of bar in this place, ID 0 is for "not reserved"
+		Piece->push_back(xi - 0.169);	//Target coordinates
+		Piece->push_back(yi - 0.338);
+		Piece->push_back(zi + 0.176);
+		Build.push_back(*Piece);
+
+		Piece = new std::vector<float>;
+		Piece->push_back(Beam);	//Is it a beam or column?
+		Piece->push_back(0);	//Status, 0 is for not reserved
+		Piece->push_back(0);	//ID of bar in this place, ID 0 is for "not reserved"
+		Piece->push_back(xi - 0.169);	//Target coordinates
+		Piece->push_back(yi - 0.169);
+		Piece->push_back(zi);
+		Build.push_back(*Piece);
+
+		Piece = new std::vector<float>;
+		Piece->push_back(Column);	//Is it a beam or column?
+		Piece->push_back(0);	//Status, 0 is for not reserved
+		Piece->push_back(0);	//ID of bar in this place, ID 0 is for "not reserved"
+		Piece->push_back(xi - 0.169);	//Target coordinates
+		Piece->push_back(yi);
+		Piece->push_back(zi + 0.176);
+		Build.push_back(*Piece);
+	}
+
+
+int Structure::nextPiece(int* tt, float* tx, float* ty, float* tz){
+	int count = 0;
 	for(std::vector<std::vector<float> >::iterator it = Build.begin(); it != Build.end(); ++it) 
 	{
 		if ((*it)[2] == 0 && (*it)[1] == 0)//Next bar to go in, should there be anything about status? probably not for this.
@@ -12,14 +86,14 @@ int Structure::next_Piece(ObjectType* tt, float* tx, float* ty, float* tz)
 			*ty = (*it)[4];
 			*tz = (*it)[5];
 			(*it)[1] = 1;//Load status of bar to busy
-			return cnt; //Returns position in build order
+			return count; //Returns position in build order
 		}
-		cnt++;
+		count++;
 	}
 	return -1;//if all bars are being placed or already placed
 }
 
-void Structure::load_Piece(int buildorder, int stat, int id)
+void Structure::loadPiece(int buildorder, int stat, int id)
 {
 	(Build[buildorder])[1] = stat; //Placed or busy
 	(Build[buildorder])[2] = id; //ID of bar to be placed
