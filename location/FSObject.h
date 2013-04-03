@@ -12,7 +12,7 @@ class FSObject
 {
 protected:
   int ID;
-  static int nextID;
+  static int next_ID;
   std::string Name;
   
   enum ObjectType type;

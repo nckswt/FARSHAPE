@@ -15,15 +15,15 @@
 
 Helm::Helm() {
   
-  leftEncoder  = Encoder ( ENCODER1_ADDRESS, false, false );
-  rightEncoder = Encoder ( ENCODER2_ADDRESS, true,  true  );
+  left_encoder = Encoder ( ENCODER1_ADDRESS, false, false );
+  right_encoder = Encoder ( ENCODER2_ADDRESS, true,  true  );
   
-  leftMotor  = Motor ( LEFT_MOTOR_PIN,  LEFT_MOTOR_REVERSED,  "/dev/servoblaster" );
-  rightMotor = Motor ( RIGHT_MOTOR_PIN, RIGHT_MOTOR_REVERSED, "/dev/servoblaster" );
+  left_motor = Motor ( LEFT_MOTOR_PIN,  LEFT_MOTOR_REVERSED,  "/dev/servoblaster" );
+  right_motor = Motor ( RIGHT_MOTOR_PIN, RIGHT_MOTOR_REVERSED, "/dev/servoblaster" );
   
-  currentPos.x = 0;
-  currentPos.y = 0;
-  currentPos.z = 0;
+  current_position.x = 0;
+  current_position.y = 0;
+  current_position.z = 0;
   
 //   pthread_create( &updater, NULL, this->publish, NULL );
   
@@ -31,8 +31,8 @@ Helm::Helm() {
 
 void Helm::resetEncoders() {
   
-  this->leftEncoder .resetPosition();
-  this->rightEncoder.resetPosition();
+  this->left_encoder.resetPosition();
+  this->right_encoder.resetPosition();
   
 }
 
@@ -55,20 +55,20 @@ void Helm::goDistance ( float distance ) {
   if (distance > 0) {
 
     // full ahead
-    leftMotor .setSpeed(MOTOR_SPEED);
-    rightMotor.setSpeed(MOTOR_SPEED);
+    left_motor.setSpeed(MOTOR_SPEED);
+    right_motor.setSpeed(MOTOR_SPEED);
 
     // glitch compensator
     usleep(MOTOR_PAUSE);
 
     // drive until each encoder has reached its distance
-    while ( (leftMotor.getSpeed() != 0) || (rightMotor.getSpeed() != 0) ) {
+    while ( (left_motor.getSpeed() != 0) || (right_motor.getSpeed() != 0) ) {
       
-      if ( ( convertToCm( leftEncoder .getPosition() ) >= distance ) && (leftMotor .getSpeed() != 0) )
-	leftMotor .setSpeed(0);
+      if ( ( convertToCm( left_encoder.getPosition() ) >= distance ) && (left_motor.getSpeed() != 0) )
+	left_motor.setSpeed(0);
       
-      if ( ( convertToCm( rightEncoder.getPosition() ) >= distance ) && (rightMotor.getSpeed() != 0) )
-	rightMotor.setSpeed(0);
+      if ( ( convertToCm( right_encoder.getPosition() ) >= distance ) && (right_motor.getSpeed() != 0) )
+	right_motor.setSpeed(0);
       
     }
   
@@ -76,20 +76,20 @@ void Helm::goDistance ( float distance ) {
 
   if (distance < 0) {
     // full back
-    leftMotor .setSpeed(-MOTOR_SPEED);
-    rightMotor.setSpeed(-MOTOR_SPEED);
+    left_motor.setSpeed(-MOTOR_SPEED);
+    right_motor.setSpeed(-MOTOR_SPEED);
 
     // glitch compensator
     usleep(MOTOR_PAUSE);
 
     // drive until each encoder has reached its distance
-    while ( (leftMotor.getSpeed() != 0) || (rightMotor.getSpeed() != 0) ) {
+    while ( (left_motor.getSpeed() != 0) || (right_motor.getSpeed() != 0) ) {
     
-      if ( ( convertToCm( MAX_VALUE - leftEncoder .getPosition() ) >= abs(distance) ) && (leftMotor .getSpeed() != 0) )
-	leftMotor .setSpeed(0);
+      if ( ( convertToCm( MAX_VALUE - left_encoder.getPosition() ) >= abs(distance) ) && (left_motor.getSpeed() != 0) )
+	left_motor.setSpeed(0);
       
-      if ( ( convertToCm( MAX_VALUE - rightEncoder.getPosition() ) >= abs(distance) ) && (rightMotor.getSpeed() != 0) )
-	rightMotor.setSpeed(0);
+      if ( ( convertToCm( MAX_VALUE - right_encoder.getPosition() ) >= abs(distance) ) && (right_motor.getSpeed() != 0) )
+	right_motor.setSpeed(0);
     
     }
   }
@@ -128,18 +128,18 @@ void Helm::rotate( float theta ) {
   if (theta > 0) {
     
     
-    leftMotor .setSpeed(-MOTOR_SPEED);
-    rightMotor.setSpeed( MOTOR_SPEED);
+    left_motor.setSpeed(-MOTOR_SPEED);
+    right_motor.setSpeed( MOTOR_SPEED);
     usleep(MOTOR_PAUSE);
     float distance = degToArcLength( theta );
-    while ( (leftMotor.getSpeed() != 0) || (rightMotor.getSpeed() != 0) ) {
+    while ( (left_motor.getSpeed() != 0) || (right_motor.getSpeed() != 0) ) {
       
-      if ( ( convertToCm( MAX_VALUE - leftEncoder.getPosition() ) >= distance ) && (leftMotor.getSpeed() != 0) )
-	leftMotor .setSpeed(0);
+      if ( ( convertToCm( MAX_VALUE - left_encoder.getPosition() ) >= distance ) && (left_motor.getSpeed() != 0) )
+	left_motor.setSpeed(0);
       
-      if ( ( convertToCm( rightEncoder.getPosition() ) >= distance ) && (rightMotor.getSpeed() != 0) )
+      if ( ( convertToCm( right_encoder.getPosition() ) >= distance ) && (right_motor.getSpeed() != 0) )
 	
-	rightMotor.setSpeed(0);
+	right_motor.setSpeed(0);
     
     }
     
@@ -148,17 +148,17 @@ void Helm::rotate( float theta ) {
   // rotation is counterclockwise
   if (theta < 0) {
     
-    leftMotor .setSpeed( MOTOR_SPEED);
-    rightMotor.setSpeed(-MOTOR_SPEED);
+    left_motor.setSpeed( MOTOR_SPEED);
+    right_motor.setSpeed(-MOTOR_SPEED);
     usleep(MOTOR_PAUSE);
     float distance = degToArcLength( theta );
-    while ( (leftMotor.getSpeed() != 0) || (rightMotor.getSpeed() != 0) ) {
+    while ( (left_motor.getSpeed() != 0) || (right_motor.getSpeed() != 0) ) {
       
-      if ( ( convertToCm( leftEncoder.getPosition() ) >= abs(distance) ) && (leftMotor.getSpeed() != 0) )
-	leftMotor .setSpeed(0);
+      if ( ( convertToCm( left_encoder.getPosition() ) >= abs(distance) ) && (left_motor.getSpeed() != 0) )
+	left_motor.setSpeed(0);
       
-      if ( ( convertToCm( MAX_VALUE - rightEncoder.getPosition() ) >= abs(distance) ) && (rightMotor.getSpeed() != 0) )
-	rightMotor.setSpeed(0);
+      if ( ( convertToCm( MAX_VALUE - right_encoder.getPosition() ) >= abs(distance) ) && (right_motor.getSpeed() != 0) )
+	right_motor.setSpeed(0);
     
     }
     
@@ -189,8 +189,8 @@ void Helm::updateRotation( float theta ) {
 
 void Helm::updateXY( float distance ) {
   
-  this->currentPos.x = distance * sinf( this->rotation );
-  this->currentPos.y = distance * cosf( this->rotation );
+  this->current_position.x = distance * sinf( this->rotation );
+  this->current_position.y = distance * cosf( this->rotation );
   
 }
 
@@ -204,8 +204,8 @@ void Helm::updateXY( float distance ) {
 //     std_msgs::String msg;
 //     
 //     std::stringstream ss;
-//     ss << "Current position: X-" << currentPos.x <<
-// 	  " Y-" << currentPos.y << " Z-" << currentPos.z;
+//     ss << "Current position: X-" << current_position.x <<
+// 	  " Y-" << current_position.y << " Z-" << current_position.z;
 //     msg.data = ss.str();
 //     ROS_INFO("%s", msg.data.c_str());
 //     
@@ -222,9 +222,9 @@ void Helm::goTo( xyz location ) {
   float distance;
   float theta;
   
-  delta.x = location.x - currentPos.x;
-  delta.y = location.y - currentPos.y;
-  delta.z = location.z - currentPos.z;
+  delta.x = location.x - current_position.x;
+  delta.y = location.y - current_position.y;
+  delta.z = location.z - current_position.z;
   
   distance = sqrt( pow(delta.x, 2) + pow(delta.y, 2) );
   theta = atanf( delta.x / delta.y ) - this->rotation;
@@ -235,7 +235,7 @@ void Helm::goTo( xyz location ) {
 }
   
 xyz Helm::getLocation() {
-  return currentPos; 
+  return current_position; 
 }
 
 float Helm::getRotation() {
@@ -243,23 +243,23 @@ float Helm::getRotation() {
 }
 
 void Helm::goForward( int speed = MOTOR_SPEED ) {
-  leftMotor .setSpeed( speed );
-  rightMotor.setSpeed( speed );
+  left_motor.setSpeed( speed );
+  right_motor.setSpeed( speed );
 }
 
 void Helm::rotateLeft( int speed = MOTOR_SPEED ) {
-  leftMotor .setSpeed( -speed );
-  rightMotor.setSpeed(  speed );
+  left_motor.setSpeed( -speed );
+  right_motor.setSpeed(  speed );
 }
 
 void Helm::rotateRight( int speed = MOTOR_SPEED ) {
-  leftMotor .setSpeed(  speed );
-  rightMotor.setSpeed( -speed );
+  left_motor.setSpeed(  speed );
+  right_motor.setSpeed( -speed );
 }
 
 void Helm::stop() {
-  leftMotor .setSpeed( 0 );
-  rightMotor.setSpeed( 0 );
+  left_motor.setSpeed( 0 );
+  right_motor.setSpeed( 0 );
 }
   
 Helm::~Helm() {

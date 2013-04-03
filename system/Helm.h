@@ -21,15 +21,14 @@ struct part {
 class Helm {
   
 private:
-  
-  Encoder leftEncoder;
-  Encoder rightEncoder;
-  Motor leftMotor;
+  Encoder left_encoder;
+  Encoder right_encoder;
+  Motor left_motor;
   Motor rightMotor;
   
   float rotation; // rotation in degrees from y axis. 
   
-  xyz currentPos;
+  xyz current_position;
   robot robots[3];
   part* parts;
   
@@ -43,7 +42,6 @@ private:
   
   
 public:
-  
   void goTo( xyz location ); // unused for now
   void goDistance( float distance );
   void rotate( float theta );
