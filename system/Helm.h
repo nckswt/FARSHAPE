@@ -24,7 +24,7 @@ private:
   Encoder left_encoder;
   Encoder right_encoder;
   Motor left_motor;
-  Motor rightMotor;
+  Motor right_motor;
   
   float rotation; // rotation in degrees from y axis. 
   
