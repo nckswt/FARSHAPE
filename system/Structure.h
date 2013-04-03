@@ -3,6 +3,7 @@
 
 #include "FSObject.h"
 #include <vector>
+#include "includes.h"
 
 //Add function that rebuilds structure object from data should master robot go down
 class Structure: public FSObject
@@ -11,8 +12,8 @@ private:
 	//Use vector of vectors?
 	std::vector<std::vector<float> > Build;
 	std::vector<float> *Piece;
-	const int Beam = 1;
-	const int Column = 2;
+	//const int Beam = 1;
+	//const int Column = 2;
 
 public:
 	//Make it such that it loads this from file (if there is time)
@@ -92,6 +93,7 @@ public:
 	}
 	
 	int next_Piece(int* tt, float* tx, float* ty, float* tz);//Checks the next available spot (Status must be 0 and ID must be 0)
+	void get_Piece(int* tt, float* tx, float* ty, float* tz);
 	void load_Piece(int buildorder, int stat, int id);//To load the status and ID of the bar
 	void update_Piece(float x, float y, float z);//May not be needed
 	//Add function for a robot to check the current state of the structure

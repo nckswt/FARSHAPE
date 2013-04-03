@@ -16,6 +16,7 @@ Commander::Commander(Position initial_position, std::string robot_name,int argc,
 		if (name == "Ash") // && other robots haven't defined themselves as master (if it is reset) <- implement if theres time
 		{
 			priority = 1;
+			master = true;
 			system("run_core.sh");//use to run roscore, setup, ROS_MASTER_URI etc,
 		}
 		else
@@ -101,9 +102,9 @@ void Commander::explore()
 			{
 				//Check to see if robot is in the way?
 				//First check locPieces to see if theres an object with a very similar position
-				use_Comms("Piece",position.x + range*cos(angle),position.y + range*sin(angle),cam_detect);//z will be used to send if its a beam or a column
+				use_Comms("Add Piece",position.x + range*cos(angle),position.y + range*sin(angle),cam_detect);//z will be used to send if its a beam or a column
 
-				locPieces.push_back(new FSObject(position.x + range*cos(angle),position.y + range*sin(angle),0,cam_detect));
+				piece_locations.push_back(new FSObject(position.x + range*cos(angle),position.y + range*sin(angle),0,cam_detect));
 				//Send this to other robots
 				//Make sure robot will now turn around and continue instead of constantly detecting the same bar!
 			}
@@ -142,11 +143,11 @@ void Commander::explore()
 void Commander::build()
 {
 	//All robots will have their own structure object, only the master will add to it though, this avoids conflicts
-	strctr = new Structure(0,0,0);
-	int bar_type = 0;
+	structure = new Structure(0,0,0);
+	ObjectType bar_type;
 	int pos = 0;
 	bool verify = true;
-	pos = strctr->next_Piece(&bar_type, &target_x, &target_y, &target_z);
+	pos = structure->next_Piece(&bar_type, &target_x, &target_y, &target_z);
 	
 	while (pos > 0/*structure is not built*/)
 	{
@@ -155,22 +156,43 @@ void Commander::build()
 			//check to see if it needs to be verified or not
 			//Comms to master to see if this piece should be placed or not
 			//if its okay, verify should return true, need to make this member function
+			//Also both the master and the slave should mark the piece on the structure as busy
 		}
 		
 		if (verify == true)
 		{
 			//Go ahead and target the part
-			//Use locPieces vector
+			//Use locPieces vector (std::vector<FSObject*> piece_locations;)
+			for (std::vector<FSObject*>::iterator it = piece_locations.begin(); it != piece_locations.end(); it++)
+			{
+				if ((*it)->type == bar_type)
+				{
+					//Make sure another robot isnt going to the same location for that piece
+					//Or/And just remove it from all robots piece_locations
+					//Comms("Remove Piece"...);
+					if (1/*either no robots are going for it or it was removed)*/)
+					{
+						//Coordinates from (*it)->getPosition
+						//Send coordinates to helm with offset from bar
+						//Keep in mind that either the camera or IR sensors need to make sure we are perpendicular
+						//and centered
+						it = piece_locations.end();//To exit for loop
+					}
+				}
+			}
+			//Make sure another robot isnt going to the same location for that piece
 			//Send target to helm, make sure to consider offsets such that we don't run over it
+			
 			//Orient ourselves perpendicular to the bar and within arm reach
 			//Send arm distances
 			//Check to see if the piece was grabbed
+
+			verify = false;
 		}
 		//.....
 
-		pos = strctr->next_Piece(&bar_type, &target_x, &target_y, &target_z);
+		pos = structure->next_Piece(&bar_type, &target_x, &target_y, &target_z);
 	}
-	
 }
 
 void Commander::communicate(std::string cmd, float param1, float param2, float param3)
@@ -214,10 +236,10 @@ void Commander::readCommunications()
 		//Send a return
 		//Need to deal with if other robots ping
 	}
-	else if (localRx.name[0] = "Piece")
+	else if (localRx.name[0] = "Add Piece")
 	{
 		//Check to see if this piece has already been found, if not:
-		locPieces.push_back(new FSObject(/*enter data from message here*/));
+		piece_locations.push_back(new FSObject(/*enter data from message here*/));
 	}
 }
 

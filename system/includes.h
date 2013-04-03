@@ -15,7 +15,7 @@
 	};
 
 	// Defines the types used
-	enum ObjectType { UNKNOWN, ROBOT, BEAM, COLUMN, STRUCTURE };
+	enum ObjectType {ROBOT = 0, BEAM = 1, COLUMN = 2, STRUCTURE = 3, UNKNOWN = -1};
 
 	enum RobotMode {NO_MODE, EXPLORER_MODE, BUILDER_MODE, INSPECTOR_MODE}
 

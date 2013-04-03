@@ -5,13 +5,15 @@
 #include "Structure.h"
 #include <stdlib.h>
 #include "includes.h"
+#include <sensor_msgs/JointState.h>
 
 class Commander : public FSObject
 {
 private:
 	FSObject target; //commander's current target object
 	int priority; //this specific robot's position in the robot hierarchy
-	int number_of_robots; //max of 3 robots. less if one deactivates.
+	bool master;
+	int number_of_robots; //max of 3 robots. less if one deactivates. <> MAKE GLOBAL, REVISE
 	RobotMode mode; //current mode (none, explorer, builder or inspector)
 	Structure* structure;
 	std::vector<FSObject*> piece_locations;

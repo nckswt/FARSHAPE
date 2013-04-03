@@ -1,13 +1,13 @@
 #include "Structure.h"
 
-int Structure::next_Piece(int* tt, float* tx, float* ty, float* tz)
+int Structure::next_Piece(ObjectType* tt, float* tx, float* ty, float* tz)
 {
 	int cnt = 0;
 	for(std::vector<std::vector<float> >::iterator it = Build.begin(); it != Build.end(); ++it) 
 	{
 		if ((*it)[2] == 0 && (*it)[1] == 0)//Next bar to go in, should there be anything about status? probably not for this.
 		{
-			*tt = (*it)[0];//Tells robot if it needs to get a beam or column
+			*tt = int((*it)[0]);//Tells robot if it needs to get a beam or column
 			*tx = (*it)[3];//coordinates x,y,z
 			*ty = (*it)[4];
 			*tz = (*it)[5];
@@ -23,4 +23,12 @@ void Structure::load_Piece(int buildorder, int stat, int id)
 {
 	(Build[buildorder])[1] = stat; //Placed or busy
 	(Build[buildorder])[2] = id; //ID of bar to be placed
+}
+
+void Structure::get_Piece(int pos, ObjectType* tt, float* tx, float* ty, float* tz)
+{
+	*tt = int(Build[pos][0]);
+	*tx = Build[pos][3];
+	*ty = Build[pos][4];
+	*tz = Build[pos][5];
 }
