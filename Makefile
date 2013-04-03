@@ -49,6 +49,10 @@ COMMANDER_TEST_OBJS=system/Commander.o system/Structure.o location/FSObject.o
 commander_test: tests/commander_test.cpp $(COMMANDER_TEST_OBJS)
 	$(CXX) tests/commander_test.cpp $(COMMANDER_TEST_OBJS) $(ROS_LINKS) -o tests/commander_test.exe
 
+MAIN_OBJS=system/Commander.o system/Structure.o location/FSObject.o
+main: main.cpp $(MAIN_OBJS)
+	$(CXX) main.cpp $(MAIN_OBJS) $(ROS_LINKS) -o main.exe
+
 clean:
 	rm ./*/*.o
 	rm ./*/*.exe
