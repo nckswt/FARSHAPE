@@ -9,6 +9,9 @@ ADC_SPI::ADC_SPI( int adcChannel, int spiChannel = 0 ) {
   this->configBits = ((SINGLE << SINGLE_DIFF_CONFIG) | 
                      (this->adcChannel)) << SHIFT;
   
+  // setup wiringPi 
+  // TODO: is this required? perhaps do it another file, like a boot up script?
+  wiringPiSetup();
   //setup SPI
   if( wiringPiSPISetup(spiChannel, 500000) < 0)
     std::cout << "SPI Setup failed: " << std::endl;
