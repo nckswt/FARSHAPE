@@ -20,7 +20,7 @@ void chatterCallback(const sensor_msgs::JointState::ConstPtr& msg){
 	rx.velocity[0] = msg->velocity[0];
 	rx.effort[0] = msg->effort[0];
 }
-
+ 
 
 /** Constructor
 *
