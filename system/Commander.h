@@ -10,7 +10,7 @@
 
 class Commander : public FSObject{
 private:
-	FSObject target; //commander's current target object
+	Position target_position; //Target position commander wants to head towards
 	int priority; //this specific robot's position in the robot hierarchy
 	bool is_master;
 	int number_of_robots; //max of 3 robots. less if one deactivates.
