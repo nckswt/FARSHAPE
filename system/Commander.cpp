@@ -7,7 +7,8 @@ bool receive;
 bool receiving;
 bool sending;
 
-Commander::Commander(Position initial_position, std::string robot_name,int argc, char **argv) : FSObject(initial_position, ROBOT_TYPE, robot_name){
+  //Constructor
+  Commander::Commander(Position initial_position, std::string robot_name,int argc, char **argv) : FSObject(initial_position, ROBOT_TYPE, robot_name){
 		number_of_robots = 3; //default
 		if (priority == 1)
 			is_master = true;
@@ -16,14 +17,11 @@ Commander::Commander(Position initial_position, std::string robot_name,int argc,
 			//use to run roscore, setup, ROS_MASTER_URI etc,
 			//<>TODO: implement master_setup.sh
 			system("master_setup.sh");
-		}
-		else
-		{
+		} else {
 			//setup non-master robots
 			//<>TODO: implement non_master_setup.sh
 			system("non_master_setup.sh");
 		}
-
 
 		//Maybe add code to check other robots for current mission should the robot reset due to power issues
 
@@ -34,7 +32,6 @@ Commander::Commander(Position initial_position, std::string robot_name,int argc,
 
 		//<>TODO sync with other robots (setting missions, etc)
 	}
-
 
 void chatterCallback(const sensor_msgs::JointState::ConstPtr& msg)
 {
@@ -80,15 +77,16 @@ void Commander::setupComms()
 
 void Commander::explore()
 {
-	float angle = 0;//Must be in radians
-	float range = 0;
-	int cam_detect = 0;
-	int checkpoints = 0;
+	//<>TODO: change target to an FSObject
+	float angle = 0;//Returned from encoders, in Radians
+	float range = 0; //Returned from IR sensors
+	int cam_detect = 0; //Returns either a beam or a column
+	int checkpoints = 0; //search algorithm has 4 points
 	angle = Encoders->get_Angle(); //Must be in radians
 
 	//Inital target
-	target_x = position.x + searchRadius*cos(angle - (c_PI/6));
-	target_y = position.y + searchRadius*sin(angle - (c_PI/6));
+	target_position.x = position.x + searchRadius*cos(angle - (c_PI/6));
+	target_position.y = position.y + searchRadius*sin(angle - (c_PI/6));
 
 	while(checkpoints < 4)
 	{
@@ -247,15 +245,15 @@ void Commander::readCommunications()
 int main(int argc, char **argv)
 {
 	//<>TODO implement init.tab to restart if necessary
-
-	Commander* commander = new Commander(0, 0, 0, "Ash", argc, argv); //get name from file.
+	Position initial_position{0,0,0,0};
+	Commander* commander = new Commander(initial_position, "Ash", argc, argv); //get name from file.
 
 	//Initial setup of comms & create thread to update variables based on ROS messages
 	commander.setupComms();
 
 	std::cout << "well at least we got this far" << std::endl;
 
-	while (!strcture_is_complete){
+	while (!structure_is_complete){
 		commander.checkVitals();
 		switch(commander->mode){
 			case NO_MODE:

@@ -12,6 +12,7 @@ private:
 	//Use vector of vectors?
 	std::vector<std::vector<float> > Build;
 	std::vector<float> *Piece;
+	bool is_complete;
 
 
 public:

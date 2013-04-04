@@ -6,8 +6,7 @@
 #include "includes.h"
 
 
-class FSObject
-{
+class FSObject{
 protected:
 	int ID; //object ID
 	static int next_ID; //unassigned next ID. Updated whenever an ID is assigned.
@@ -17,6 +16,7 @@ protected:
 	Dimensions dimensions; //l,w,h
 
 public: 
+	FSObject(); //<>CHECK: WHY THE HELL DOES THIS DEFAULT CONSTRUCTOR WORK?
 	FSObject(Position initial_position, ObjectType type, std::string object_name = "");
 	void getPosition(Position* updated_position);
 	void setPosition(Position new_position);

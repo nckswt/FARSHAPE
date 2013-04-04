@@ -8,8 +8,7 @@
 #include "includes.h"
 #include "FSObject.h"
 
-class Commander : public FSObject
-{
+class Commander : public FSObject{
 private:
 	FSObject target; //commander's current target object
 	int priority; //this specific robot's position in the robot hierarchy
@@ -30,7 +29,8 @@ private:
 
 
 public:
-  Commander(Position initial_position, std::string robot_name, int argc, char **argv);
+Commander(Position initial_position, std::string robot_name,int argc, char **argv);
+  
   void setupComms(); //initialize communications
   void communicate(std::string,float,float,float); //send & receive messages
   void readCommunications(); //interpret incoming data
