@@ -15,6 +15,8 @@
 class Commander : public FSObject{
 private:
 	FSObject target; //commander's current target object
+	Position position_target;
+
 	int priority; //this specific robot's position in the robot hierarchy
 	bool is_master;
 	bool verify;

@@ -6,6 +6,7 @@
 
 sensor_msgs::JointState f_Rx;
 sensor_msgs::JointState f_Tx;
+sensor_msgs::JointState localRx;
 
 ros::NodeHandle* n;
 ros::Rate* loop_rate;
@@ -208,12 +209,25 @@ void Commander::build()
 	structure = new Structure(0,0,0);
 	ObjectType bar_type;
 	int pos = 0;
-	pos = structure->next_Piece(&bar_type, &target_x, &target_y, &target_z);
+	Position target_position;
+	target_position.x = 0;
+	target_position.y = 0;
+	target_position.z = 0;
+
+	pos = structure->next_Piece(&bar_type, &target_position.x, &target_position.y, &target_position.z);
 	
+
+
 	while (pos > 0)//structure is not built
 	{
 		if (master == false)
 		{
+			communicate("Request Structure",getID(),pos,0,0);
+			while(localRx.name[0] != "Approve Structure" && localRx.position[0] != getID() && localRx.velocity[0] != pos)
+			{
+				//Need some sort of timer, if it fails, ping and check if the master is down!
+				readCommunications();
+			}
 			//check to see if it needs to be verified or not
 			//Comms to master to see if this piece should be placed or not
 			//if its okay, verify should return true, need to make this member function
@@ -314,6 +328,10 @@ void Commander::readCommunications()
 	{
 		//Used for checking its not a robot or w/e
 	}
+	else if (localRx.name[0] == "Remove Piece")
+	{
+		
+	}
 	else if (localRx.name[0] == "Add Piece")
 	{
 		//position -> ID
@@ -360,7 +378,7 @@ void Commander::readCommunications()
 					//send back to requestor -> position[0] = ID of requestor
 					//Send back its okay -> velocity[0] = 1
 
-					communicate("Approve Piece",localRx.position[0],1,0,0);
+					communicate("Response Piece",localRx.position[0],1,0,0);
 
 					//Remove from vector
 					if (it == piece_locations.end())//Deals with the removal of the last index
@@ -373,7 +391,7 @@ void Commander::readCommunications()
 				{
 					//send back to requestor -> position[0] = ID of requestor
 					//Send back its no good -> velocity[0] = -1
-					communicate("Approve Piece",localRx.position[0],-1,0,0);
+					communicate("Response Piece",localRx.position[0],-1,0,0);
 				}
 			}
 
@@ -383,22 +401,26 @@ void Commander::readCommunications()
 			//Check if its within the build
 			if (localRx.position[0] < structure->getSize())
 			{
-				if (structure->getStatus() == NOT_RESERVED)
+				if (structure->getStatus(localRx.velocity[0]) == NOT_RESERVED)
 				{
 					//send back to requestor -> position[0] = ID of requestor
 					//send back its okay -> velocity[0] = 1
-					communicate("Approve Structure",localRx.position[0],1,0,0);
+					communicate("Response Structure",localRx.position[0],1,0,0);
 				}
-				else
+				else if (structure->getStatus(localRx.velocity[0]) == BUSY)
 				{
 					//send back to requestor -> position[0] = ID of requestor
 					//send back its busy -> position[0] = -1
-					communicate("Approve Structure",localRx.position[0],-1,0,0);
+					communicate("Response Structure",localRx.position[0],0,0,0);
+				}
+				else
+				{
+					communicate("Response Structure",localRx.position[0],-1,0,0);
 				}
 			}
 		}
 	}
-	else if (localRx.name[0] == "Approved Piece" && localRx.position[0] == getID())
+	else if (localRx.name[0] == "Response Piece" && localRx.position[0] == getID())
 	{
 		if (localRx.velocity[0] == 1)
 		{
@@ -409,7 +431,7 @@ void Commander::readCommunications()
 			verify = false;
 		}
 	}
-	else if (localRx.name[0] == "Approved Structure")
+	else if (localRx.name[0] == "Response Structure")
 	{
 		if (localRx.velocity[0] == 1)
 		{
