@@ -2,11 +2,15 @@
 #define COMMANDER_H
 
 #include "ros/ros.h" //Uncomment when uploaded on raspberry pi's
-//#include <sensor_msgs/JointState>
+#include <sensor_msgs/JointState.h>
 #include "Structure.h"
 #include <stdlib.h>
 #include "includes.h"
 #include "FSObject.h"
+#include <math.h>
+#include "Helm.h"
+#include "../sensing/camera/Camera.h"
+
 
 class Commander : public FSObject{
 private:
@@ -14,8 +18,9 @@ private:
 	int priority; //this specific robot's position in the robot hierarchy
 	bool is_master;
 	int number_of_robots; //max of 3 robots. less if one deactivates.
-	RobotMode mode; //current mode (none, explorer, builder or inspector)
 	Structure* structure;
+	Helm* helm;
+	Camera* camera;
 	std::vector<FSObject*> piece_locations;
 	
 	//ROS objects
@@ -29,7 +34,10 @@ private:
 
 
 public:
-Commander(Position initial_position, std::string robot_name,int argc, char **argv);
+  RobotMode mode; //current mode (none, explorer, builder or inspector)
+  bool structure_is_complete;
+
+  Commander(Position initial_position, std::string robot_name,int argc, char **argv);
   
   void setupComms(); //initialize communications
   void communicate(std::string,float,float,float); //send & receive messages

@@ -1,0 +1,2 @@
+/home/oscar/Documents/490/objectRecognition/CMakeFiles/camera.dir
+/home/oscar/Documents/490/objectRecognition/CMakeFiles/objectRecognition.dir

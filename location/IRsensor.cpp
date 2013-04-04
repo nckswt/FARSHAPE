@@ -25,7 +25,7 @@ void IRsensor::readGP2D12CalibrationProfile(){
   int i = 0;
   while (file >> IRDistanceMap[i][1]){
       IRDistanceMap[i][0] = 10 + 0.5*i;
-      cout << this->IRDistanceMap[i][0] << "cm = " << this->IRDistanceMap[i][1] << endl;
+      cout << this->IRDistanceMap[i][0] << "cm = " << this->IRDistanceMap[i][1] << std::endl;
       i++;
   }
   file.close();

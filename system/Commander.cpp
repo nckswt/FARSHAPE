@@ -31,6 +31,8 @@ bool sending;
 		loop_rate = new ros::Rate(10);
 
 		//<>TODO sync with other robots (setting missions, etc)
+		helm = new Helm();
+		camera = new Camera();
 	}
 
 void chatterCallback(const sensor_msgs::JointState::ConstPtr& msg)
@@ -53,12 +55,12 @@ void chatterCallback(const sensor_msgs::JointState::ConstPtr& msg)
 
 void Commander::setupComms()
 {
-	//Set this up to be dynamic
+/*	//Set this up to be dynamic
 	for (int i = 0; i < number_of_robots - 1; i++)
 	{
 		if (i == ID)
 		{
-			transmitters.push_back(nullptr);
+			transmitters.push_back(NULL);
 		}
 		else
 		{
@@ -73,55 +75,73 @@ void Commander::setupComms()
 	//ros::Publisher pub1 =  n->advertise<sensor_msgs::JointState>("Robot_", 20);
 	//ros::Publisher pub2 =  n->advertise<sensor_msgs::JointState>("Robot_", 20);
 	sub = n->subscribe(("Robot_" + ID) , 1000, chatterCallback);
-}
+*/}
 
 void Commander::explore()
 {
 	//<>TODO: change target to an FSObject
 	float angle = 0;//Returned from encoders, in Radians
-	float range = 0; //Returned from IR sensors
-	int cam_detect = 0; //Returns either a beam or a column
+	float left_range, right_range, center_range; //Returned from IR sensors
+	int detected_object = 0; //Returns either a beam or a column
 	int checkpoints = 0; //search algorithm has 4 points
-	angle = Encoders->get_Angle(); //Must be in radians
+	angle = helm->getRotation(); //Must be in radians
 
 	//Inital target
-	target_position.x = position.x + searchRadius*cos(angle - (c_PI/6));
-	target_position.y = position.y + searchRadius*sin(angle - (c_PI/6));
+	Position target_position;
+	target_position.x = position.x + kSearchRadius*cos(angle - (M_PI/6));
+	target_position.y = position.y + kSearchRadius*sin(angle - (M_PI/6));
 
-	while(checkpoints < 4)
-	{
-		cam_detect = check_Camera(); // 0 for nothing, 1 for Beam, 2 for Column
-		if (cam_detect != 0)
-		{
-			//Get -> left or right from camera to guide in, then send to motors
-			range = range_IR();
-			if (sensorIR->range_IR() < max_range_IR)
-			{
-				//Check to see if robot is in the way?
-				//First check locPieces to see if theres an object with a very similar position
-				use_Comms("Add Piece",position.x + range*cos(angle),position.y + range*sin(angle),cam_detect);//z will be used to send if its a beam or a column
+	while(checkpoints < 4){
+		//See if object is in view
+		detected_object = camera.detectObject(); // 0 for nothing, 1 for Beam, 2 for Column
 
-				piece_locations.push_back(new FSObject(position.x + range*cos(angle),position.y + range*sin(angle),0,cam_detect));
-				//Send this to other robots
-				//Make sure robot will now turn around and continue instead of constantly detecting the same bar!
+		//if object is detected
+		if (detected_object != 0){
+
+			//see if object is within range
+			left_range = helm->leftRange();
+			right_range = helm->rightRange();
+
+			//<>TODO: find center of object;
+			//<>STUB: currently just taking the average
+			center_range = (left_range + right_range)/2;
+
+			if (left_range < kMaxIRRange || right_range < kMaxIRRange){
+
+				//<>TODO:Check to see if robot is in the way
+
+				//<>TODO check if found object has already been found
+
+				//send position of found object to other robots
+				communicate("Add Piece",position.x + center_range*cos(angle),position.y + center_range*sin(angle),detected_object);
+
+				//<>TODO:add object to local piece list
+				//piece_locations.push_back(new FSObject(position.x + center_range*cos(center_range),position.y + center_range*sin(center_range),0,detected_object));
+				
+				//<>TODO: Coordinate piece_locations with other robots
+				
+				//<>TODO: Make sure robot will now turn around and continue instead of constantly detecting the same bar!
+			
+			} else if (1/*Make sure the robot stays within its own search zone*/) {
+				//<>TODO: If bar is in another search zone, check with the other robots to see if they have found it already,
+
+				//<>TODO: if not, add it
+				
+				//<>TODO: Head towards the piece based on camera
 			}
-			else if (1/*Make sure the robot stays within its own search zone*/)
-			{
-				//If bar is in another search zone, check with the other robots to see if they have found it already,
-				//if not, then its okay to add
-				//Allow camera to guide towards the piece
-			}
-		}
-		else
-		{
-			//Go towards target
-			if (checkpoints == 3)
-			{
-				//go to center of search area
-			}
-			else if (position.x == target_x /*within some sort of error*/ && position.y == target_y)
-			{
-				//rotate 60 degrees, range = radius
+
+		} else { //if no object is detected
+			
+			//<>TODO: Go towards target position
+			
+			if (checkpoints == 3){
+			
+				//<>TODO: go to center of search area
+			
+			} else if (fabs(target_position.y - position.y) < 1 && fabs(position.x - target_position.x) < 1){ //close to target
+
+				//<>TODO: rotate 60 degrees, range = radius
+				
 				checkpoints++;
 			}
 		}
@@ -139,14 +159,14 @@ void Commander::explore()
 }
 void Commander::build()
 {
-	//All robots will have their own structure object, only the master will add to it though, this avoids conflicts
+/*	//All robots will have their own structure object, only the master will add to it though, this avoids conflicts
 	structure = new Structure(0,0,0);
 	ObjectType bar_type;
 	int pos = 0;
 	bool verify = true;
 	pos = structure->next_Piece(&bar_type, &target_x, &target_y, &target_z);
 	
-	while (pos > 0/*structure is not built*/)
+	while (pos > 0)//structure is not built
 	{
 		if (master == false)
 		{
@@ -167,7 +187,7 @@ void Commander::build()
 					//Make sure another robot isnt going to the same location for that piece
 					//Or/And just remove it from all robots piece_locations
 					//Comms("Remove Piece"...);
-					if (1/*either no robots are going for it or it was removed)*/)
+					if (1)//either no robots are going for it or it was removed
 					{
 						//Coordinates from (*it)->getPosition
 						//Send coordinates to helm with offset from bar
@@ -190,12 +210,12 @@ void Commander::build()
 
 		pos = structure->next_Piece(&bar_type, &target_x, &target_y, &target_z);
 	}
-	
+*/	
 }
 
 void Commander::communicate(std::string cmd, float param1, float param2, float param3)
 {
-	while (sending == true)
+/*	while (sending == true)
 	{
 		//Careful not to get caught here
 	}
@@ -207,17 +227,18 @@ void Commander::communicate(std::string cmd, float param1, float param2, float p
 
 	for (std::vector<ros::Publisher*>::iterator it = transmitters.begin(); it != transmitters.end(); it++)
 	{
-		if ((*it) != nullptr)
+		if ((*it) != NULL)
 		{
 			(*it)->publish(Tx);
 			//ros::spinOnce();
 			//loop_rate->sleep();
 		}
 	}
+	*/
 }
 
 void Commander::readCommunications()
-{
+{/*
 	receive = false;
 	localRx.name.push_back(Rx.name[0]);
 	localRx.position.push_back(Rx.position[0]);
@@ -237,8 +258,9 @@ void Commander::readCommunications()
 	else if (localRx.name[0] = "Add Piece")
 	{
 		//Check to see if this piece has already been found, if not:
-		piece_locations.push_back(new FSObject(/*enter data from message here*/));
+		piece_locations.push_back(new FSObject(//ENTER DATA FROM MESSAGE HERE));
 	}
+	*/
 }
 
 
@@ -249,26 +271,26 @@ int main(int argc, char **argv)
 	Commander* commander = new Commander(initial_position, "Ash", argc, argv); //get name from file.
 
 	//Initial setup of comms & create thread to update variables based on ROS messages
-	commander.setupComms();
+	commander->setupComms();
 
 	std::cout << "well at least we got this far" << std::endl;
 
-	while (!structure_is_complete){
-		commander.checkVitals();
+	while (!commander->structure_is_complete){
+		commander->checkVitals();
 		switch(commander->mode){
 			case NO_MODE:
 				commander->mode = EXPLORER_MODE;
 				break;
 			case EXPLORER_MODE:
-				commander.explore();
+				commander->explore();
 				commander->mode = BUILDER_MODE;
 				break;
 			case BUILDER_MODE:
-				commander.build();
+				commander->build();
 				commander->mode = INSPECTOR_MODE;
 				break;
 			case INSPECTOR_MODE:
-				commander.inspect();
+				commander->inspect();
 				commander->mode = EXPLORER_MODE;
 				break;
 		}
@@ -277,4 +299,3 @@ int main(int argc, char **argv)
 	system("PAUSE");//Only for testing purposes, take out before use
 	return 0;
 }
-*/
