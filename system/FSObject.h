@@ -23,6 +23,8 @@ public:
 	int getNextID();
 	void resetID(int new_ID);
 	int	getID();
+	ObjectType getType();
+	std::string getName();
 	//~FSObject();
 };
 

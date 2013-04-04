@@ -1,12 +1,27 @@
 #include "Commander.h"
 #include <fstream>
+#include <pthread.h>
+#include <sstream>
 
-sensor_msgs::JointState Rx;
-sensor_msgs::JointState Tx;
-bool send;
-bool receive;
-bool receiving;
-bool sending;
+
+sensor_msgs::JointState f_Rx;
+sensor_msgs::JointState f_Tx;
+
+ros::NodeHandle* n;
+ros::Rate* loop_rate;
+
+bool f_send;
+bool f_receive;
+bool f_receiving;
+bool f_sending;
+
+struct passing_thread
+{
+	int param1;
+	int param2;
+	char** param3;
+	std::string param4;
+};
 
   //Constructor
   Commander::Commander(Position initial_position, std::string robot_name,int argc, char **argv) : FSObject(initial_position, ROBOT_TYPE, robot_name){
@@ -27,9 +42,9 @@ bool sending;
 		//Maybe add code to check other robots for current mission should the robot reset due to power issues
 
 		//ROS SETUP****************************************
-		ros::init(argc, argv, name);
-		n = new ros::NodeHandle;
-		loop_rate = new ros::Rate(10);
+		//ros::init(argc, argv, name);
+		//n = new ros::NodeHandle;
+		//loop_rate = new ros::Rate(10);
 
 		//<>TODO sync with other robots (setting missions, etc)
 		helm = new Helm();
@@ -43,19 +58,43 @@ void chatterCallback(const sensor_msgs::JointState::ConstPtr& msg)
 	ROS_INFO("I Heard: [%f]",msg->velocity[0]);
 	ROS_INFO("I Heard: [%f]",msg->effort[0]);
 
-	if (receive == true){
+	if (f_receive == true){
 		//Possibly use push_back so it stores multiple messages, then cycle through
-		receiving = true;
-		Rx.name[0] = msg->name[0];
-		Rx.position[0] = msg->position[0];
-		Rx.velocity[0] = msg->velocity[0];
-		Rx.effort[0] = msg->effort[0];
-		receiving = false;
+		f_receiving = true;
+		f_Rx.name[0] = msg->name[0];
+		f_Rx.position[0] = msg->position[0];
+		f_Rx.velocity[0] = msg->velocity[0];
+		f_Rx.effort[0] = msg->effort[0];
+		f_receiving = false;
 	}
 }
 
-void Commander::setupComms()
+void Commander::setupComms()//Should be run in the constructor
 {
+	f_receive = true;
+	f_receiving = false;
+	f_send = false;
+	f_sending = false;
+	verify = true;
+
+
+	f_Rx.name.push_back("NULL");
+	f_Rx.name.push_back("NULL");
+	f_Rx.position.push_back(0.0);
+	f_Rx.velocity.push_back(0.0);
+	f_Rx.effort.push_back(0.0);
+
+	f_Tx.name.push_back("NULL");
+	f_Tx.name.push_back("NULL");
+	f_Tx.position.push_back(0.0);
+	f_Tx.velocity.push_back(0.0);
+	f_Tx.effort.push_back(0.0);
+
+	localRx.name.push_back("NULL");
+	localRx.name.push_back("NULL");
+	localRx.position.push_back(0.0);
+	localRx.velocity.push_back(0.0);
+	localRx.effort.push_back(0.0);
 /*	//Set this up to be dynamic
 	for (int i = 0; i < number_of_robots - 1; i++)
 	{
@@ -69,10 +108,10 @@ void Commander::setupComms()
 			transmitters.push_back(new Publisher(n->advertise<sensor_msgs::JointState>("Robot_" + i, 20)));
 		}
 	}
-	Rx.name.push_back("");
-	Rx.position.push_back(0.0);
-	Rx.velocity.push_back(0.0);
-	Rx.effort.push_back(0.0);
+	f_Rx.name.push_back("");
+	f_Rx.position.push_back(0.0);
+	f_Rx.velocity.push_back(0.0);
+	f_Rx.effort.push_back(0.0);
 	//ros::Publisher pub1 =  n->advertise<sensor_msgs::JointState>("Robot_", 20);
 	//ros::Publisher pub2 =  n->advertise<sensor_msgs::JointState>("Robot_", 20);
 	sub = n->subscribe(("Robot_" + ID) , 1000, chatterCallback);
@@ -165,11 +204,10 @@ void Commander::explore()
 }
 void Commander::build()
 {
-/*	//All robots will have their own structure object, only the master will add to it though, this avoids conflicts
+	//All robots will have their own structure object, only the master will add to it though, this avoids conflicts
 	structure = new Structure(0,0,0);
 	ObjectType bar_type;
 	int pos = 0;
-	bool verify = true;
 	pos = structure->next_Piece(&bar_type, &target_x, &target_y, &target_z);
 	
 	while (pos > 0)//structure is not built
@@ -216,57 +254,172 @@ void Commander::build()
 
 		pos = structure->next_Piece(&bar_type, &target_x, &target_y, &target_z);
 	}
-*/	
+	
 }
 
-void Commander::communicate(std::string cmd, float param1, float param2, float param3)
+void Commander::communicate(std::string cmd, float param1, float param2, float param3, float param4)
 {
-/*	while (sending == true)
+	while (f_sending == true)
 	{
 		//Careful not to get caught here
+		//Maybe add a counter and a sleep
 	}
 
-	Tx.name.push_back(cmd);
-	Tx.position.push_back(param1);
-	Tx.velocity.push_back(param2);
-	Tx.effort.push_back(param3);
+	f_send = false;
 
+	f_Tx.name[0] = cmd;
+	f_Tx.position[0] = param1;
+	f_Tx.velocity[0] = param2;
+	f_Tx.effort[0] = param3;
+
+	f_Tx.position[1] = param4;
+
+	f_send = true;
+	/*
 	for (std::vector<ros::Publisher*>::iterator it = transmitters.begin(); it != transmitters.end(); it++)
 	{
-		if ((*it) != NULL)
+		if ((*it) != NULL)//Double check this, implementation may have changed
 		{
-			(*it)->publish(Tx);
-			//ros::spinOnce();
-			//loop_rate->sleep();
+			(*it)->publish(f_Tx);
 		}
 	}
 	*/
 }
 
 void Commander::readCommunications()
-{/*
-	receive = false;
-	localRx.name.push_back(Rx.name[0]);
-	localRx.position.push_back(Rx.position[0]);
-	localRx.velocity.push_back(Rx.velocity[0]);
-	localRx.effort.push_back(Rx.effort[0]);
-	receive = true;
+{
+	f_receive = false;
+	localRx.name.push_back(f_Rx.name[0]);
+	localRx.position.push_back(f_Rx.position[0]);
+	localRx.velocity.push_back(f_Rx.velocity[0]);
+	localRx.effort.push_back(f_Rx.effort[0]);
+	f_receive = true;
 
-	if (localRx.name[0] = "")
+	if (localRx.name[0] == "NULL")
 	{
 		//No command received
 	}
-	else if (localRx.name[0] = "Ping")
+	else if (localRx.name[0] == "New Bot")
 	{
-		//Send a return
-		//Need to deal with if other robots ping
+		//Create new publisher to send to rebooted or added robot
 	}
-	else if (localRx.name[0] = "Add Piece")
+	else if (localRx.name[0] == "Ping")
 	{
-		//Check to see if this piece has already been found, if not:
-		piece_locations.push_back(new FSObject(//ENTER DATA FROM MESSAGE HERE));
+		//Send a return with coordinates
+		Position temp;
+		getPosition(&temp);
+		communicate("Return",temp.x,temp.y,temp.r);
 	}
-	*/
+	else if (localRx.name[0] == "Return")
+	{
+		//Used for checking its not a robot or w/e
+	}
+	else if (localRx.name[0] == "Add Piece")
+	{
+		//position -> ID
+		//velocity -> type
+		//effort -> x
+		//position[1] -> y
+		//Check to see if this piece has already been found, if not: 
+		//piece_locations.push_back(new FSObject(//ENTER DATA FROM MESSAGE HERE));
+		for (std::vector<FSObject*>::iterator it = piece_locations.begin(); it != piece_locations.end(); it++)
+		{
+			if ((*it)->getID() == localRx.position[0])
+			{
+				it = piece_locations.end();//Should prevent multiple copies of the same message from 
+											//creating duplicates.
+			}
+			else if (it == piece_locations.end())
+			{
+				Position temp;
+				temp.x = localRx.effort[0];
+				temp.y = localRx.position[1];
+				temp.z = 0;
+				temp.r = 0;
+
+				piece_locations.push_back(new FSObject(temp,int(localRx.velocity[0]),"Member"));
+				it = piece_locations.end();
+			}
+		}
+		
+	}
+	else if (is_master == true)
+	{
+		if (localRx.name[0] == "Request Piece")
+		{
+			//position[0] is the requestor
+			//position[1] is the type
+			//velocity is the x
+			//effort is the y
+
+			for (std::vector<FSObject*>::iterator it = piece_locations.begin(); it != piece_locations.end(); it++)
+			{
+				if ((*it)->getType() == int(localRx.position[1]))
+				{
+					//Go ahead
+					//send back to requestor -> position[0] = ID of requestor
+					//Send back its okay -> velocity[0] = 1
+
+					communicate("Approve Piece",localRx.position[0],1,0,0);
+
+					//Remove from vector
+					if (it == piece_locations.end())//Deals with the removal of the last index
+					{
+						it--;
+					}
+					piece_locations.erase(it+1);
+				}
+				else if (it == piece_locations.end())
+				{
+					//send back to requestor -> position[0] = ID of requestor
+					//Send back its no good -> velocity[0] = -1
+					communicate("Approve Piece",localRx.position[0],-1,0,0);
+				}
+			}
+
+		}
+		else if (localRx.name[0] == "Request Structure")
+		{
+			//Check if its within the build
+			if (localRx.position[0] < structure->getSize())
+			{
+				if (structure->getStatus() == NOT_RESERVED)
+				{
+					//send back to requestor -> position[0] = ID of requestor
+					//send back its okay -> velocity[0] = 1
+					communicate("Approve Structure",localRx.position[0],1,0,0);
+				}
+				else
+				{
+					//send back to requestor -> position[0] = ID of requestor
+					//send back its busy -> position[0] = -1
+					communicate("Approve Structure",localRx.position[0],-1,0,0);
+				}
+			}
+		}
+	}
+	else if (localRx.name[0] == "Approved Piece" && localRx.position[0] == getID())
+	{
+		if (localRx.velocity[0] == 1)
+		{
+			verify = true;
+		}
+		else
+		{
+			verify = false;
+		}
+	}
+	else if (localRx.name[0] == "Approved Structure")
+	{
+		if (localRx.velocity[0] == 1)
+		{
+			verify = true;
+		}
+		else
+		{
+			verify = false;
+		}
+	}
 }
 
 void Commander::inspect(){
@@ -279,6 +432,86 @@ int Commander::checkVitals(){
 	return 1;
 }
 
+void *thread_function(void *arg)
+{
+	
+	ROS_INFO("Entered Thread");
+	//sleep(5);
+	struct passing_thread params = *((struct passing_thread*)arg);
+	int ID = params.param1;
+	ROS_INFO("Params1: [%i]",params.param1);
+	//int ID = *((int *)arg);
+	
+	ros::init(params.param2, params.param3, params.param4);
+	n = new ros::NodeHandle;
+	loop_rate = new ros::Rate(1);
+	//sleep(1);
+	//-------------------------------------SETUP--------------------------------------------------------------------
+	//ROS Comm Objects
+	std::vector<ros::Publisher> transmitters;
+	ros::Subscriber subsicle;
+	ros::Publisher pub1;
+	ros::Publisher pub2;
+	ros::Publisher pub3;
+	ros::Publisher pubs[3];
+	pubs[0] = pub1;
+	pubs[1] = pub2;
+	pubs[2] = pub3;
+	std::string topic = "/Robot_";
+	std::ostringstream oss;
+	//Set this up to be dynamic
+
+	for (int i = 1; i < numRobots+1; i++)
+	{
+		ROS_INFO("i: [%i]",i);
+		if (i == ID)
+		{
+
+		}
+		else
+		{
+			topic = "/Robot_";
+			oss << i;
+			topic += oss.str();
+			ROS_INFO("Publish Topic: [%s]",topic.c_str());
+			pubs[i - 1] = n->advertise<sensor_msgs::JointState>(topic, 20);
+			transmitters.push_back(pubs[i - 1]);
+			oss.str("");
+		}
+	}
+
+	f_Rx.name.push_back("NULL");
+	f_Rx.position.push_back(0.0);
+	f_Rx.velocity.push_back(0.0);
+	f_Rx.effort.push_back(0.0);
+
+	topic = "/Robot_";
+	oss << ID;
+	topic += oss.str();
+	oss.str("");
+	//sleep(1);
+	ROS_INFO("Subscribe Topic: [%s]",topic.c_str());
+	subsicle = n->subscribe<sensor_msgs::JointState>(topic, 20, chatterCallback);
+
+	//--------------------------------------------------------------------------------------------------------------
+	ROS_INFO("Before while loop");
+	while (true)
+	{
+		if (f_send == true)
+		{
+			for (std::vector<ros::Publisher>::iterator it = transmitters.begin(); it != transmitters.end(); it++)
+			{
+				(*it).publish(f_Tx);
+			}
+		}
+
+		loop_rate->sleep();
+		ros::spinOnce();
+	}
+	
+	//pthread_exit(NULL);
+	return NULL;
+}
 
 int main(int argc, char **argv)
 {
@@ -293,11 +526,22 @@ int main(int argc, char **argv)
 	//<>STUB
 	std::cout << "Robot name is: " << robot_name << std::endl;
 
-	Position initial_position{0,0,0,0};
+	Position initial_position{0,0,0,0};//Needs to be changed for each robot according to start up positions
 	Commander* commander = new Commander(initial_position, robot_name, argc, argv); //get name from file.
 
 	//Initial setup of comms & create thread to update variables based on ROS messages
 	commander->setupComms();
+
+	//THREAD CREATION
+	struct passing_thread params;
+	
+	params.param1 = commander.getID();
+	params.param2 = argc;
+	params.param3 = argv;
+	params.param4 = commander.getName();
+
+	pthread_t thread_ID;
+	pthread_create(&thread_ID, NULL, &thread_function, &params); 
 
 	std::cout << "well at least we got this far" << std::endl;
 
@@ -321,7 +565,5 @@ int main(int argc, char **argv)
 				break;
 		}
 	}
-
-	system("PAUSE");//Only for testing purposes, take out before use
 	return 0;
 }

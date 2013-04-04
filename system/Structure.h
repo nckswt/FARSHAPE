@@ -23,6 +23,8 @@ public:
 	void getPiece(int pos, int* tt, float* tx, float* ty, float* tz);
 	void loadPiece(int buildorder, int stat, int id);//To load the status and ID of the bar
 	void updatePiece(float x, float y, float z);//May not be needed
+	int Structure::getSize();
+	MemberStatus Structure::getStatus(int);
 	//Add function for a robot to check the current state of the structure
 	~Structure();
 };

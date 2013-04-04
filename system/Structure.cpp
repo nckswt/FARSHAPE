@@ -111,3 +111,14 @@ void Structure::getPiece(int pos, int* tt, float* tx, float* ty, float* tz)
 	*ty = Build[pos][4];
 	*tz = Build[pos][5];
 }
+
+int Structure::getSize()
+{
+	return Build.size();
+}
+
+MemberStatus Structure::getStatus(int pos)
+{
+	//Deal with pos out of range?
+	return Build[pos][1];
+}

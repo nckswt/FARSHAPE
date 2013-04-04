@@ -41,3 +41,13 @@ void FSObject::resetID(int new_ID){
 int FSObject::getNextID(){
 	return next_ID;
 }
+
+ObjectType getType()
+{
+	return type;
+}
+
+std::string getName()
+{
+	return name;
+}
