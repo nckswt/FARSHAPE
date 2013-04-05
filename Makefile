@@ -2,13 +2,13 @@ CC      := g++
 CFLAGS  ?= -O2
 CFLAGS  += -Wall
 CXXFLAGS = -O2 -Wall
-CXXFLAGS+= -I/opt/ros/fuerte/include/ 
+CXXFLAGS+= -I/opt/ros/fuerte/include/ -I/home/pi/ros/orocos_kinematics_dynamics/orocos_kdl/install_dir/include  
 LDFLAGS=-lpthread
 I2C_OBJECTS=system/i2c.o system/i2cbusses.o
 ROS_LINKS=-L/opt/ros/fuerte/lib -lroscpp -lrostime -lrosconsole -lroscpp_serialization -lxmlrpcpp
 WIRING_PI_LINKS=-lwiringPi -lpthread
-LIBS = `pkg-config --libs opencv`
-CFLAGS += `pkg-config --cflags opencv`
+LIBS = `pkg-config --libs opencv` `pkg-config --libs orocos-kdl`
+CFLAGS += `pkg-config --cflags opencv` `pkg-config --cflags orocos-kdl`
 
 tests: encoder_test motor_test 
 
@@ -51,9 +51,9 @@ adc_test: tests/adc_test.cpp $(ADC_TEST_OBJS)
 #commander_test: tests/commander_test.cpp $(COMMANDER_TEST_OBJS)
 #	$(CXX) tests/commander_test.cpp $(COMMANDER_TEST_OBJS) $(ROS_LINKS) -o tests/commander_test.exe
 
-MAIN_OBJS=system/Structure.o sensing/camera/camera.o system/FSObject.o $(HELM_TEST_OBJS)
+MAIN_OBJS=system/Structure.o sensing/camera/camera.o system/FSObject.o actuation/Arm.o system/Commander.o  $(HELM_TEST_OBJS)
 main: system/Commander.cpp $(MAIN_OBJS)
-	$(CXX) -I/opt/ros/fuerte/include/ system/Commander.cpp $(MAIN_OBJS) $(ROS_LINKS) $(WIRING_PI_LINKS) $(LIBS) -o main.exe
+	$(CXX) -I/opt/ros/fuerte/include/ -I/home/pi/ros/orocos_kinematics_dynamics/orocos_kdl/install_dir/include system/Commander.cpp $(MAIN_OBJS) $(ROS_LINKS) $(WIRING_PI_LINKS) $(LIBS) -o main.exe
 
 clean:
 	rm ./*/*.o
