@@ -306,7 +306,7 @@ void Commander::build()
 				if ((*it)->type == bar_type)
 				{
 					//Tune these values so it works
-					target_position = (*it)->getPosition();
+					(*it)->getPosition(&target_position);
 					target_position.x = target_position.x + 0.1;
 					target_position.y = target_position.y + 0.1;
 					target_position.z = 0;
@@ -334,7 +334,7 @@ void Commander::build()
 			verify = false;
 		}
 		//.....
-		pos = structure->next_Piece(&bar_type, &target_x, &target_y, &target_z);
+		pos = structure->nextPiece(&bar_type, &target_position.x, &target_position.y, &target_position.z);
 	}
 	
 }
@@ -394,7 +394,7 @@ void Commander::readCommunications()
 		//Send a return with coordinates
 		Position temp;
 		getPosition(&temp);
-		communicate("Return",temp.x,temp.y,temp.r);
+		communicate("Return",temp.x,temp.y,temp.r,0.0);
 	}
 	else if (localRx.name[0] == "Return")
 	{
@@ -427,7 +427,7 @@ void Commander::readCommunications()
 				temp.z = 0;
 				temp.r = 0;
 
-				piece_locations.push_back(new FSObject(temp,int(localRx.velocity[0]),"Member"));
+				piece_locations.push_back(new FSObject(temp,ObjectType(int(localRx.velocity[0])),"Member"));
 				it = piece_locations.end();
 			}
 		}

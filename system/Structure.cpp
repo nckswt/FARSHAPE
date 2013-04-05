@@ -80,7 +80,7 @@
 	}
 
 
-int Structure::nextPiece(int* tt, float* tx, float* ty, float* tz){
+int Structure::nextPiece(ObjectType* tt, float* tx, float* ty, float* tz){
 	int count = 0;
 	for(std::vector<std::vector<float> >::iterator it = Build.begin(); it != Build.end(); ++it) 
 	{

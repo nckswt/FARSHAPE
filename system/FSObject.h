@@ -7,7 +7,7 @@
 
 
 class FSObject{
-protected:
+private:
 	int ID; //object ID
 	static int next_ID; //unassigned next ID. Updated whenever an ID is assigned.
 	std::string name; //identifying name
