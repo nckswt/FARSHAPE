@@ -51,7 +51,7 @@ public:
   void inspect();//Go into inspector mode and verify construction
   void demoCommander();
   void demoSearch(float,float);
-  void demoPlace();
+  void demoExplore();
 
 };
 

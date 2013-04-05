@@ -28,22 +28,27 @@ struct passing_thread
 
 void Commander::demoCommander()
 {
+	//Setup any specific stuff in here
 	bool facecheck = false;
 	bool pick_up_verify = false;
+	
 	//Either start by rotating 180 degrees, or start facing bar
-	//Setup any specific stuff in here
-
-	demoSearch(22.0,24.0);
+	
+	
 
 	//Possibly give the arm the IR sensor data...if it works well
 	//Now we are in position
 	//Verify that we picked it up
 	while (pick_up_verify == false)//Camera function changes this
 	{
+		demoSearch(22.0,24.0);
+		sleep(2);
 		actuator->actuate_Arm(0.25,0.0,-0.09,"Grab");//For 23 actual we use 25
 		sleep(2);
-		//check camera
-		sleep(2); 
+		if (helm->leftRange() > max_range && helm->rightRange() > max_range)
+		{
+			pick_up_verify = true;
+		}
 	}
 
 	//Rotate back to the structure
@@ -54,6 +59,7 @@ void Commander::demoCommander()
 	//Now we check to see if the structure is complete
 }
 
+//Search for a bar on the ground
 void Commander::demoSearch(float min_range, float max_range)
 {
 	//Use camera/IR sensors to lock on to bar
@@ -67,13 +73,17 @@ void Commander::demoSearch(float min_range, float max_range)
 		{
 			helm->lineUp();
 		}
+		else
+		{
+			//Move towards using camera, or just go straight some small amount
+		}
 	}
 }
 
-//So far we dont use this...
-void Commander::demoPlace()
+//For a proper demo search
+void Commander::demoExplore()
 {
-	//Use IR sensor for distance feedback, send to arm
+	
 }
 
   //Constructor
@@ -372,6 +382,10 @@ void Commander::readCommunications()
 	{
 		//No command received
 	}
+	else if (localRx.name[0] == "Demo Placed")
+	{
+
+	}
 	else if (localRx.name[0] == "New Bot")
 	{
 		//Create new publisher to send to rebooted or added robot
@@ -453,7 +467,6 @@ void Commander::readCommunications()
 					communicate("Response Piece",localRx.position[0],-1,0,0);
 				}
 			}
-
 		}
 		else if (localRx.name[0] == "Request Structure")
 		{
