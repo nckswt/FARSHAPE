@@ -86,7 +86,7 @@ int Structure::nextPiece(ObjectType* tt, float* tx, float* ty, float* tz){
 	{
 		if ((*it)[2] == 0 && (*it)[1] == 0)//Next bar to go in, should there be anything about status? probably not for this.
 		{
-			*tt = int((*it)[0]);//Tells robot if it needs to get a beam or column
+			*tt = ObjectType(int((*it)[0]));//Tells robot if it needs to get a beam or column
 			*tx = (*it)[3];//coordinates x,y,z
 			*ty = (*it)[4];
 			*tz = (*it)[5];
