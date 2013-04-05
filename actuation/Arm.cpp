@@ -283,7 +283,7 @@ int Arm::interact_Arm(double x, double y, double z, string action)
       if ((msg[1].data < tar_pos[1] && delta_pos[1] > 0) || (msg[1].data > tar_pos[1] && delta_pos[1] < 0))
       {
         msg[1].data = start_pos[1] + (100*delta_pos[1]*counter*step_size);//Base pitch lead
-        cout << "ACCELERATED" << endl;
+        //cout << "ACCELERATED" << endl;
       }
 
       msg[2].data = start_pos[2] + (delta_pos[2]*counter*step_size);//Arm pitch lead
