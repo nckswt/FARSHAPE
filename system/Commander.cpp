@@ -528,7 +528,7 @@ int Commander::checkVitals(){
 
 void *thread_function(void *arg)
 {
-	
+	int numRobots = 3;
 	ROS_INFO("Entered Thread");
 	//sleep(5);
 	struct passing_thread params = *((struct passing_thread*)arg);
