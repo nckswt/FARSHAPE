@@ -608,6 +608,15 @@ void *thread_function(void *arg)
 	return NULL;
 }
 
+int main (int argc, char** argv)
+{
+	Position initial_position{0,0,0,0};
+	Commander* commander = new Commander(initial_position, "Botty", argc, argv);
+	//commander->setupComms();
+	commander->demoCommander();
+	return 0;
+}
+/*
 int main(int argc, char **argv)
 {
 	//<>TODO implement init.tab to restart if necessary
@@ -662,3 +671,4 @@ int main(int argc, char **argv)
 	}
 	return 0;
 }
+*/
