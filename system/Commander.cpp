@@ -16,7 +16,7 @@ extern bool f_receive;
 extern bool f_receiving;
 extern bool f_sending;
 
-extern struct passing_thread
+struct passing_thread
 {
 	int param1;
 	int param2;
