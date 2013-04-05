@@ -24,6 +24,58 @@ struct passing_thread
 	std::string param4;
 };
 
+
+
+void Commander::demoCommander()
+{
+	bool facecheck = false;
+	bool pick_up_verify = false;
+	//Either start by rotating 180 degrees, or start facing bar
+	//Setup any specific stuff in here
+
+	demoSearch(22.0,24.0);
+
+	//Possibly give the arm the IR sensor data...if it works well
+	//Now we are in position
+	//Verify that we picked it up
+	while (pick_up_verify == false)//Camera function changes this
+	{
+		actuator->actuate_Arm(0.25,0.0,-0.09,"Grab");//For 23 actual we use 25
+		sleep(2);
+		//check camera
+		sleep(2); 
+	}
+
+	//Rotate back to the structure
+	demoSearch(29.0,31.0);
+
+	actuator->actuate_Arm(0.26,0.0,0.28,"Top"); //For 30 actual we use 26
+
+	//Now we check to see if the structure is complete
+}
+
+void Commander::demoSearch(float min_range, float max_range)
+{
+	//Use camera/IR sensors to lock on to bar
+	left_range = helm->leftRange();
+	right_range = helm->rightRange();
+	while (left_range > min_range && left_range < max_range && (abs(left_range - right_range) < 1.5))
+	{
+		left_range = helm->leftRange();
+		right_range = helm->rightRange();
+		if (left_range < kMaxIRRange || right_range < kMaxIRRange)//Add camera tracking 
+		{
+			helm->lineUp();
+		}
+	}
+}
+
+//So far we dont use this...
+void Commander::demoPlace()
+{
+	//Use IR sensor for distance feedback, send to arm
+}
+
   //Constructor
   Commander::Commander(Position initial_position, std::string robot_name,int argc, char **argv) : FSObject(initial_position, ROBOT_TYPE, robot_name){
 		number_of_robots = 3; //default
@@ -50,6 +102,7 @@ struct passing_thread
 		//<>TODO sync with other robots (setting missions, etc)
 		helm = new Helm();
 		camera = new Camera();
+		actuator = new Arm();
 	}
 
 void chatterCallback(const sensor_msgs::JointState::ConstPtr& msg)
@@ -450,10 +503,6 @@ void Commander::readCommunications()
 	}
 }
 
-void Commander::waterCommander()
-{
-	
-}
 
 void Commander::inspect(){
 	//<>TODO: Implement
