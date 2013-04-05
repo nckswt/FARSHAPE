@@ -3,7 +3,6 @@
 
 #include "ros/ros.h"
 #include "std_msgs/Float64.h"
-#include <kdl_parser/kdl_parser.hpp>
 #include <sstream>
 #include <string>
 #include <iostream>
