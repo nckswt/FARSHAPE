@@ -58,6 +58,7 @@ void chatterCallback(const sensor_msgs::JointState::ConstPtr& msg)
 	ROS_INFO("I Heard: [%f]",msg->position[0]);
 	ROS_INFO("I Heard: [%f]",msg->velocity[0]);
 	ROS_INFO("I Heard: [%f]",msg->effort[0]);
+	ROS_INFO("I Heard: [%f]",msg->position[1]);
 
 	if (f_receive == true){
 		//Possibly use push_back so it stores multiple messages, then cycle through
@@ -178,7 +179,7 @@ void Commander::explore()
 		} else { //if no object is detected
 			
 			//<>TODO: Go towards target position
-
+			
 			
 			if (checkpoints == 3){
 			
@@ -242,17 +243,23 @@ void Commander::build()
 			{
 				if ((*it)->type == bar_type)
 				{
-					//Make sure another robot isnt going to the same location for that piece
-					//Or/And just remove it from all robots piece_locations
-					//Comms("Remove Piece"...);
-					if (1)//either no robots are going for it or it was removed
-					{
-						//Coordinates from (*it)->getPosition
-						//Send coordinates to helm with offset from bar
-						//Keep in mind that either the camera or IR sensors need to make sure we are perpendicular
-						//and centered
-						it = piece_locations.end();//To exit for loop
-					}
+					//Tune these values so it works
+					target_position = (*it)->getPosition();
+					target_position.x = target_position.x + 0.1;
+					target_position.y = target_position.y + 0.1;
+					target_position.z = 0;
+					target_position.r = 0;
+
+					helm->goTo(target_position);
+					//Coordinates from (*it)->getPosition
+					//Send coordinates to helm with offset from bar
+					//Keep in mind that either the camera or IR sensors need to make sure we are perpendicular
+					//and centered
+					it = piece_locations.end();//To exit for loop
+				}
+				else if (false)//If none are found, search.
+				{
+
 				}
 			}
 			//Make sure another robot isnt going to the same location for that piece
@@ -265,7 +272,6 @@ void Commander::build()
 			verify = false;
 		}
 		//.....
-
 		pos = structure->next_Piece(&bar_type, &target_x, &target_y, &target_z);
 	}
 	
@@ -330,7 +336,7 @@ void Commander::readCommunications()
 	}
 	else if (localRx.name[0] == "Remove Piece")
 	{
-		
+
 	}
 	else if (localRx.name[0] == "Add Piece")
 	{
@@ -442,6 +448,11 @@ void Commander::readCommunications()
 			verify = false;
 		}
 	}
+}
+
+void Commander::waterCommander()
+{
+	
 }
 
 void Commander::inspect(){
