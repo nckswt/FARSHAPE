@@ -610,6 +610,10 @@ void *thread_function(void *arg)
 int main (int argc, char** argv)
 {
 	Position initial_position{0,0,0,0};
+	initial_position.x = 0;
+	initial_position.y = 0;
+	initial_position.z = 0;
+	initial_position.r = 0;
 	Commander* commander = new Commander(initial_position, "Botty", argc, argv);
 	//commander->setupComms();
 	commander->demoCommander();

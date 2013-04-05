@@ -21,8 +21,8 @@ Helm::Helm() {
   left_encoder = Encoder ( ENCODER1_ADDRESS, false, false );
   right_encoder = Encoder ( ENCODER2_ADDRESS, true,  true );
 
-  left_IR = IRsensor(kLeftADCChannel);
-  right_IR = IRsensor(kRightADCChannel);
+  left_IR = IRsensor(kLeftADCChannel, "left_IR_calibration.txt");
+  right_IR = IRsensor(kRightADCChannel, "right_IR_calibration.txt");
 
   left_motor = Motor ( LEFT_MOTOR_PIN,  LEFT_MOTOR_REVERSED,  "/dev/servoblaster" );
   right_motor = Motor ( RIGHT_MOTOR_PIN, RIGHT_MOTOR_REVERSED, "/dev/servoblaster" );
