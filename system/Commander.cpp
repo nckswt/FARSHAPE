@@ -31,6 +31,7 @@ void Commander::demoCommander()
 	//Setup any specific stuff in here
 	bool facecheck = false;
 	bool pick_up_verify = false;
+	float max_range = 40;
 	
 	//Either start by rotating 180 degrees, or start facing bar
 	
@@ -63,8 +64,8 @@ void Commander::demoCommander()
 void Commander::demoSearch(float min_range, float max_range)
 {
 	//Use camera/IR sensors to lock on to bar
-	left_range = helm->leftRange();
-	right_range = helm->rightRange();
+	float left_range = helm->leftRange();
+	float right_range = helm->rightRange();
 	while (left_range > min_range && left_range < max_range && (abs(left_range - right_range) < 1.5))
 	{
 		left_range = helm->leftRange();
@@ -112,7 +113,7 @@ void Commander::demoExplore()
 		//<>TODO sync with other robots (setting missions, etc)
 		helm = new Helm();
 		camera = new Camera();
-		actuator = new Arm();
+		actuator = new Arm(argc,argv);
 	}
 
 void chatterCallback(const sensor_msgs::JointState::ConstPtr& msg)
@@ -182,6 +183,7 @@ void Commander::setupComms()//Should be run in the constructor
 	sub = n->subscribe(("Robot_" + ID) , 1000, chatterCallback);
 */}
 
+/*
 void Commander::explore()
 {
 	//<>TODO: change target to an FSObject
@@ -231,7 +233,7 @@ void Commander::explore()
 
 				//<>TODO: Make sure robot will now turn around and continue instead of constantly detecting the same bar!
 			
-			} else if (1/*Make sure the robot stays within its own search zone*/) {
+			} else if (1) {
 				//<>TODO: If bar is in another search zone, check with the other robots to see if they have found it already,
 
 				//<>TODO: if not, add it
@@ -258,25 +260,22 @@ void Commander::explore()
 	}
 	//Now share the discovered bars information between robots
 
-	//Communicate with camera, must switch between looking for columns/beams
-	/*
-		If we locate a bar, do the IR sensors reach it?
-			No -> Approach bar
-			Yes-> Add to locPieces
-		How do we avoid going after the same piece?
-	*/
 
 }
+*/
+
 void Commander::build()
 {
 	//All robots will have their own structure object, only the master will add to it though, this avoids conflicts
-	structure = new Structure(0,0,0);
-	ObjectType bar_type;
-	int pos = 0;
 	Position target_position;
 	target_position.x = 0;
 	target_position.y = 0;
 	target_position.z = 0;
+
+	structure = new Structure(target_position);
+	ObjectType bar_type;
+	int pos = 0;
+
 
 	pos = structure->next_Piece(&bar_type, &target_position.x, &target_position.y, &target_position.z);
 	
