@@ -99,6 +99,7 @@ void Commander::demoExplore()
 		if (priority == 1)
 			is_master = true;
 
+		/*
 		if (is_master){
 			//use to run roscore, setup, ROS_MASTER_URI etc,
 			//<>TODO: implement master_setup.sh
@@ -108,7 +109,9 @@ void Commander::demoExplore()
 			//<>TODO: implement non_master_setup.sh
 			system("non_master_setup.sh");
 		}
-
+		*/
+		ROS_INFO("Initializing Commander");
+		sleep(1);
 		//Maybe add code to check other robots for current mission should the robot reset due to power issues
 
 		//ROS SETUP****************************************
@@ -117,6 +120,7 @@ void Commander::demoExplore()
 		//loop_rate = new ros::Rate(10);
 
 		//<>TODO sync with other robots (setting missions, etc)
+
 		helm = new Helm();
 		camera = new Camera();
 		actuator = new Arm(argc,argv);
@@ -615,13 +619,18 @@ void *thread_function(void *arg)
 
 int main (int argc, char** argv)
 {
+	ROS_INFO("Main Started.");
+	sleep(2);
 	Position initial_position{0,0,0,0};
 	initial_position.x = 0;
 	initial_position.y = 0;
 	initial_position.z = 0;
 	initial_position.r = 0;
+	ROS_INFO("Creating Commander");
 	Commander* commander = new Commander(initial_position, "Botty", argc, argv);
 	//commander->setupComms();
+	sleep(1);
+	ROS_INFO("Commander created!");
 	commander->demoCommander();
 	return 0;
 }

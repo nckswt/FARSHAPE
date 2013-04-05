@@ -21,19 +21,19 @@ Arm::Arm(int argc, char **argv)
 {
 	//ROS SETUP****************************************
 	ros::init(argc, argv, "Arm");
-	n = new ros::NodeHandle;
+	arm_handle = new ros::NodeHandle;
 	loop_rate = new ros::Rate(100);
 	high_rate = new ros::Rate(1000);
 
-	wr_rot_pub = n->advertise<std_msgs::Float64>("/wrist_rotate/command/", 20);
-  bs_rot_pub = n->advertise<std_msgs::Float64>("/base_rotate/command/", 20);
-  bs_pit1_pub = n->advertise<std_msgs::Float64>("/base_pitch1/command/", 20);
-  bs_pit2_pub = n->advertise<std_msgs::Float64>("/base_pitch2/command/", 20);
-  ar_pit1_pub = n->advertise<std_msgs::Float64>("/arm_pitch1/command/", 20);
-  ar_pit2_pub = n->advertise<std_msgs::Float64>("/arm_pitch2/command/", 20);
-  wr_pit_pub = n->advertise<std_msgs::Float64>("/wrist_pitch/command/", 20);
-  gp_lnr_pub = n->advertise<std_msgs::Float64>("/gripper_width/command/", 20);
-  servo_feedback = n->subscribe<sensor_msgs::JointState>("/joint_states", 20, servoCallBack);
+	wr_rot_pub = arm_handle->advertise<std_msgs::Float64>("/wrist_rotate/command/", 20);
+  bs_rot_pub = arm_handle->advertise<std_msgs::Float64>("/base_rotate/command/", 20);
+  bs_pit1_pub = arm_handle->advertise<std_msgs::Float64>("/base_pitch1/command/", 20);
+  bs_pit2_pub = arm_handle->advertise<std_msgs::Float64>("/base_pitch2/command/", 20);
+  ar_pit1_pub = arm_handle->advertise<std_msgs::Float64>("/arm_pitch1/command/", 20);
+  ar_pit2_pub = arm_handle->advertise<std_msgs::Float64>("/arm_pitch2/command/", 20);
+  wr_pit_pub = arm_handle->advertise<std_msgs::Float64>("/wrist_pitch/command/", 20);
+  gp_lnr_pub = arm_handle->advertise<std_msgs::Float64>("/gripper_width/command/", 20);
+  servo_feedback = arm_handle->subscribe<sensor_msgs::JointState>("/joint_states", 20, servoCallBack);
 
 
   //KDL CHAIN SETUP************************************

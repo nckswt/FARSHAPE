@@ -39,7 +39,7 @@ private:
 
   	ros::Subscriber servo_feedback;
 
-  	ros::NodeHandle* n;
+  	ros::NodeHandle* arm_handle;
 
     ros::Rate* loop_rate;
     ros::Rate* high_rate;
