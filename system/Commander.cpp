@@ -4,17 +4,17 @@
 #include <sstream>
 
 
-extern sensor_msgs::JointState f_Rx;
-extern sensor_msgs::JointState f_Tx;
-extern sensor_msgs::JointState localRx;
+sensor_msgs::JointState f_Rx;
+sensor_msgs::JointState f_Tx;
+sensor_msgs::JointState localRx;
 
-extern ros::NodeHandle* n;
-extern ros::Rate* loop_rate;
+ros::NodeHandle* n;
+ros::Rate* loop_rate;
 
-extern bool f_send;
-extern bool f_receive;
-extern bool f_receiving;
-extern bool f_sending;
+bool f_send;
+bool f_receive;
+bool f_receiving;
+bool f_sending;
 
 struct passing_thread
 {
