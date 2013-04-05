@@ -2,9 +2,10 @@
 #define _CAMERA_H_
 
 #include <iostream>
-#include <math.h>
+//#include <math.h>
 #include <stdio.h>
 //#include <highgui.h>
+#include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
 #define WIDTH 540
@@ -38,13 +39,9 @@ class Camera
     private:
 	    Mat original;
 	    Mat canny_output;
-	   // VideoCapture cap;
+	    VideoCapture cap;
 	    vector<vector<Point> > contours;
 	    vector<Vec4i> hierarchy;
-//	    vector<double> pos;
-//	    vector<double> x;
-//	    vector<double> width;
-//	    vector<double> height;
 	    vector<double> bluex;
 	    vector<double> bluey;
 	    vector<double> bluewidth;

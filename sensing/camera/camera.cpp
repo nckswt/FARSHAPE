@@ -3,7 +3,7 @@
 
 Camera::Camera()
 {
-//    cap.open(1);
+    cap.open(0);
     bluex.clear();
     bluey.clear();
     greenx.clear();
@@ -14,19 +14,19 @@ Camera::Camera()
     greenheight.clear();
     contours.clear();
     hierarchy.clear();
-//    if(!cap.isOpened())
-  //  {
-//	printf("Failed to open video device\n");
-  //  }    
+    if(!cap.isOpened())
+    {
+    	printf("Failed to open video device\n");
+    }    
 }
 
 Camera::Camera(int device)
 {
-    //cap.open(device);
-    //if(!cap.isOpened())
-    //{
-//	printf("Failed to open video device\n");
-  //  }
+    cap.open(device);
+    if(!cap.isOpened())
+    {
+       printf("Failed to open video device\n");
+    }
 }
 
 Camera::~Camera()
@@ -45,7 +45,7 @@ Camera::~Camera()
 
 Mat Camera::streamVid()
 {
-    //cap >> original;
+    cap >> original;
     return original;
 }
 
