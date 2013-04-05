@@ -120,5 +120,5 @@ int Structure::getSize()
 MemberStatus Structure::getStatus(int pos)
 {
 	//Deal with pos out of range?
-	return Build[pos][1];
+	return MemberStatus(Build[pos][1]);
 }
