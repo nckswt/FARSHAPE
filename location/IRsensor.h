@@ -13,13 +13,12 @@
 #include "../system/ADC_SPI.h"
  
 #define DEFAULT_SPI_CHANNEL 0
-#define IR_CALIBRATION_FILE "calibration.txt"
 
 class IRsensor
 {
 public:
   IRsensor();
-  IRsensor(const int adcChannel); //, string calibrationDataFile = "calibration.txt");
+  IRsensor(const int adcChannel, std::string calibrationDataFile);
   ~IRsensor();
   double getDistance();
   // the below should be made private when the code is considered stable

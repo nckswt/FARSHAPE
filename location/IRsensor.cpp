@@ -4,11 +4,10 @@ IRsensor::IRsensor(){
 //dummy
 }
 
-IRsensor::IRsensor(int adcChannel){
+IRsensor::IRsensor(const int adcChannel, std::string calibrationDataFile){
   this->adcChannel = adcChannel;
-  this->calibrationDataFile = IR_CALIBRATION_FILE;
+  this->calibrationDataFile = calibrationDataFile;
   this->value = 0;
-
   this->adc = new ADC_SPI(adcChannel, DEFAULT_SPI_CHANNEL);
   
   //Calibrate IR Sensor
