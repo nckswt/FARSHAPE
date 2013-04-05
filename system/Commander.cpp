@@ -34,7 +34,7 @@ void Commander::demoCommander()
 	
 	//Either start by rotating 180 degrees, or start facing bar
 	
-	
+	//DO ROTATION HERE IF NECESSARY
 
 	//Possibly give the arm the IR sensor data...if it works well
 	//Now we are in position
