@@ -28,6 +28,7 @@ struct passing_thread
 
 void Commander::demoCommander()
 {
+	ROS_INFO("Entered demoCommander()");
 	//Setup any specific stuff in here
 	bool facecheck = false;
 	bool pick_up_verify = false;
@@ -44,10 +45,12 @@ void Commander::demoCommander()
 	{
 		demoSearch(22.0,24.0);
 		sleep(2);
+		ROS_INFO("Attempting to pick up");
 		actuator->actuate_Arm(0.25,0.0,-0.09,"Grab");//For 23 actual we use 25
 		sleep(2);
 		if (helm->leftRange() > max_range && helm->rightRange() > max_range)
 		{
+			ROS_INFO("Got the bar!!!");
 			pick_up_verify = true;
 		}
 	}
@@ -63,15 +66,18 @@ void Commander::demoCommander()
 //Search for a bar on the ground
 void Commander::demoSearch(float min_range, float max_range)
 {
+	ROS_INFO("Entered demoSearch()");
 	//Use camera/IR sensors to lock on to bar
 	float left_range = helm->leftRange();
 	float right_range = helm->rightRange();
-	while (left_range > min_range && left_range < max_range && (abs(left_range - right_range) < 1.5))
+	while (left_range > min_range && left_range < max_range && (abs(left_range - right_range) < 2.0))
 	{
+		ROS_INFO("In range");
 		left_range = helm->leftRange();
 		right_range = helm->rightRange();
 		if (left_range < kMaxIRRange || right_range < kMaxIRRange)//Add camera tracking 
 		{
+			ROS_INFO("Attempting to line up");
 			helm->lineUp();
 		}
 		else
