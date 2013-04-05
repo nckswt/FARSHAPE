@@ -1,5 +1,5 @@
-#ifndef ACTUATION_H
-#define ACTUATION_H
+#ifndef ARM_H
+#define ARM_H
 
 #include "ros/ros.h"
 #include "std_msgs/Float64.h"
