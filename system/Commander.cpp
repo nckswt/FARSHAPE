@@ -45,9 +45,11 @@ void Commander::demoCommander()
 	{
 		demoSearch(22.0,24.0);
 		sleep(2);
+	
+
 		ROS_INFO("Attempting to pick up");
 		actuator->actuate_Arm(0.25,0.0,-0.09,"Grab");//For 23 actual we use 25
-		sleep(2);
+		//sleep(2);
 		ROS_INFO("Left Range: [%f]", helm->leftRange());
 		ROS_INFO("Right Range: [%f]", helm->rightRange());
 		if (helm->leftRange() > max_range && helm->rightRange() > max_range)

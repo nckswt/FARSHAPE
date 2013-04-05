@@ -404,13 +404,13 @@ int Arm::interact_Arm(double x, double y, double z, string action)
   	return ret;
   }
 
-/*
+
   int main(int argc, char **argv)
   {
   	Arm* Actuator = new Arm(argc,argv);
   	Actuator->actuate_Arm(0.25,0.0,-0.09,"Grab");//For 23 actual we use 25
-    Actuator->actuate_Arm(0.31,0.0,0.06,"Column");
-    //Actuator->actuate_Arm(0.26,0.0,0.28,"Top"); //For 30 actual we use 26
+    //Actuator->actuate_Arm(0.31,0.0,0.06,"Top");
+    Actuator->actuate_Arm(0.26,0.0,0.28,"Top"); //For 30 actual we use 26
   	return 0;
   }
-  */
+  
