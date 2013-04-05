@@ -48,6 +48,8 @@ void Commander::demoCommander()
 		ROS_INFO("Attempting to pick up");
 		actuator->actuate_Arm(0.25,0.0,-0.09,"Grab");//For 23 actual we use 25
 		sleep(2);
+		ROS_INFO("Left Range: [%f]", helm->leftRange());
+		ROS_INFO("Right Range: [%f]", helm->rightRange());
 		if (helm->leftRange() > max_range && helm->rightRange() > max_range)
 		{
 			ROS_INFO("Got the bar!!!");
@@ -59,8 +61,41 @@ void Commander::demoCommander()
 	demoSearch(29.0,31.0);
 
 	actuator->actuate_Arm(0.26,0.0,0.28,"Top"); //For 30 actual we use 26
-
+	/*
 	//Now we check to see if the structure is complete
+	Mat frame;
+    int blueHSV[2][3] = {{100,75,0},{180,255,255}};
+    int greenHSV[2][3] = {{60,80,0},{95,170,255}};
+    vector<double> bluex;
+    vector<double> bluey;
+    vector<double> bluewidth;
+    vector<double> blueheight;
+
+    vector<double> greenx;
+    vector<double> greeny;
+    vector<double> greenwidth;
+    vector<double> greenheight;
+
+    camera->edgeThreshold(camera->ColorThreshold(camera->streamVid(),blueHSV), Scalar(255,150,150),P_BLUE);
+	bluey = camera->getY(P_BLUE);
+	bluex = camera->getX(P_BLUE);
+	bluewidth = camera->getWidth(P_BLUE);
+	blueheight = camera->getHeight(P_BLUE);
+
+	camera->edgeThreshold(camera->ColorThreshold(camera->streamVid(),greenHSV), Scalar(150,255,150),P_GREEN);
+	greeny = camera->getY(P_GREEN);
+	greenx = camera->getX(P_GREEN);
+	greenwidth = camera->getWidth(P_GREEN);
+	greenheight = camera->getHeight(P_GREEN);	
+
+ 	//detect if bar has been placed properly
+/*	Algorithm: Get Y value and check width of green bar
+	for(int i=0, j=0, k=0; i<greeny.size(), j<greenwidth.size(), k<greenheight.size(); i++, j++, k++)
+	{
+	    if(greeny[i] < 50 && greenwidth[j] > 100)
+		cout<<"Bar is on top at "<<greeny[i]<<"\twidth: "<<greenwidth[j]<<"\theight: "<<greenheight[k]<<endl;
+	}
+*/
 }
 
 //Search for a bar on the ground
@@ -552,7 +587,7 @@ void *thread_function(void *arg)
 	//sleep(1);
 	//-------------------------------------SETUP--------------------------------------------------------------------
 	//ROS Comm Objects
-	std::vector<ros::Publisher> transmitters;
+	std::vector<ros::Publisher> transmitters;ROS_INFO("Main Started.");
 	ros::Subscriber subsicle;
 	ros::Publisher pub1;
 	ros::Publisher pub2;
