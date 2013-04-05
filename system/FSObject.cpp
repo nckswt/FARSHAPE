@@ -42,12 +42,12 @@ int FSObject::getNextID(){
 	return next_ID;
 }
 
-ObjectType getType()
+ObjectType FSObject::getType()
 {
 	return type;
 }
 
-std::string getName()
+std::string FSObject::getName()
 {
 	return name;
 }

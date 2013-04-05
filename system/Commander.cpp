@@ -277,13 +277,13 @@ void Commander::build()
 	int pos = 0;
 
 
-	pos = structure->next_Piece(&bar_type, &target_position.x, &target_position.y, &target_position.z);
+	pos = structure->nextPiece(&bar_type, &target_position.x, &target_position.y, &target_position.z);
 	
 
 
 	while (pos > 0)//structure is not built
 	{
-		if (master == false)
+		if (is_master == false)
 		{
 			communicate("Request Structure",getID(),pos,0,0);
 			while(localRx.name[0] != "Approve Structure" && localRx.position[0] != getID() && localRx.velocity[0] != pos)
